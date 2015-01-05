@@ -1,5 +1,4 @@
-﻿
-using Kaerber.MUD.Common;
+﻿using Kaerber.MUD.Common;
 
 namespace Kaerber.MUD.Views {
     public interface IConnectionView : IView {

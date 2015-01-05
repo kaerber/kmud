@@ -1,0 +1,207 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{91B38300-C8D7-4DB3-A599-6B2B3B84EE5A}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Kaerber.MUD.Tests</RootNamespace>
+    <AssemblyName>Kaerber.MUD.Tests</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="IronPython, Version=2.7.5.0, Culture=neutral, PublicKeyToken=7f709c5b713576e1, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\IronPython.2.7.5\lib\Net45\IronPython.dll</HintPath>
+    </Reference>
+    <Reference Include="IronPython.Modules, Version=2.7.5.0, Culture=neutral, PublicKeyToken=7f709c5b713576e1, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\IronPython.2.7.5\lib\Net45\IronPython.Modules.dll</HintPath>
+    </Reference>
+    <Reference Include="IronPython.SQLite, Version=2.7.5.0, Culture=neutral, PublicKeyToken=7f709c5b713576e1, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\IronPython.2.7.5\lib\Net45\IronPython.SQLite.dll</HintPath>
+    </Reference>
+    <Reference Include="IronPython.Wpf, Version=2.7.5.0, Culture=neutral, PublicKeyToken=7f709c5b713576e1, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\IronPython.2.7.5\lib\Net45\IronPython.Wpf.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Dynamic, Version=1.1.0.20, Culture=neutral, PublicKeyToken=7f709c5b713576e1, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\IronPython.2.7.5\lib\Net45\Microsoft.Dynamic.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Scripting, Version=1.1.0.20, Culture=neutral, PublicKeyToken=7f709c5b713576e1, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\IronPython.2.7.5\lib\Net45\Microsoft.Scripting.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Scripting.AspNet, Version=1.0.0.0, Culture=neutral, PublicKeyToken=7f709c5b713576e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\IronPython.2.7.5\lib\Net45\Microsoft.Scripting.AspNet.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Scripting.Metadata, Version=1.1.0.20, Culture=neutral, PublicKeyToken=7f709c5b713576e1, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\IronPython.2.7.5\lib\Net45\Microsoft.Scripting.Metadata.dll</HintPath>
+    </Reference>
+    <Reference Include="Moq">
+      <HintPath>..\packages\Moq.4.2.1409.1722\lib\net40\Moq.dll</HintPath>
+    </Reference>
+    <Reference Include="nunit.framework">
+      <HintPath>..\packages\NUnit.2.6.4\lib\nunit.framework.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Controllers\Commands\DigTest.cs" />
+    <Compile Include="Controllers\Commands\GoTest.cs" />
+    <Compile Include="Controllers\Commands\KillTest.cs" />
+    <Compile Include="Controllers\Commands\MLCommandTest.cs" />
+    <Compile Include="Controllers\Commands\SayTest.cs" />
+    <Compile Include="Controllers\ComplexNodeTest.cs" />
+    <Compile Include="Controllers\ConnectionControllerStateMachineTest.cs" />
+    <Compile Include="Controllers\DictionaryNodeTest.cs" />
+    <Compile Include="Controllers\EnumNodeTest.cs" />
+    <Compile Include="Controllers\FlagsNodeTest.cs" />
+    <Compile Include="Controllers\HierarchyNodeTest.cs" />
+    <Compile Include="Controllers\ListNodeTest.cs" />
+    <Compile Include="Controllers\NumberNodeTest.cs" />
+    <Compile Include="Controllers\PlayerInputTest.cs" />
+    <Compile Include="Controllers\StringNodeTest.cs" />
+    <Compile Include="Controllers\UserLoginConnectionCommandTest.cs" />
+    <Compile Include="Entities\Abilities\AutoAttackAbilityTest.cs" />
+    <Compile Include="Entities\Abilities\KillAbilityTest.cs" />
+    <Compile Include="Entities\ActionQueueSetTest.cs" />
+    <Compile Include="Entities\Actions\AutoAttackActionTest.cs" />
+    <Compile Include="Entities\AffectInfoTest.cs" />
+    <Compile Include="Entities\AffectSetTest.cs" />
+    <Compile Include="Entities\AffectTest.cs" />
+    <Compile Include="Entities\AreaTest.cs" />
+    <Compile Include="Entities\Aspects\AspectFactoryTest.cs" />
+    <Compile Include="Entities\Aspects\CharacterSetTest.cs" />
+    <Compile Include="Entities\Aspects\CombatTest.cs" />
+    <Compile Include="Entities\Aspects\ComplexAspectTest.cs" />
+    <Compile Include="Entities\Aspects\EquipmentTest.cs" />
+    <Compile Include="Entities\Aspects\ExitSetTest.cs" />
+    <Compile Include="Entities\Aspects\HealthTest.cs" />
+    <Compile Include="Entities\Aspects\ItemSetTest.cs" />
+    <Compile Include="Entities\Aspects\ManaTest.cs" />
+    <Compile Include="Entities\Aspects\MoneyTest.cs" />
+    <Compile Include="Entities\Aspects\MovementTest.cs" />
+    <Compile Include="Entities\Aspects\RaceFactoryTest.cs" />
+    <Compile Include="Entities\Aspects\RaceTest.cs" />
+    <Compile Include="Entities\Aspects\SpecFactoryTest.cs" />
+    <Compile Include="Entities\Aspects\SpecTest.cs" />
+    <Compile Include="Entities\Aspects\StackTest.cs" />
+    <Compile Include="Entities\Aspects\StatsTest.cs" />
+    <Compile Include="Entities\Aspects\WeaponTest.cs" />
+    <Compile Include="Entities\AttackTest.cs" />
+    <Compile Include="Entities\BaseEntityTest.cs" />
+    <Compile Include="Entities\CharacterEquipmentTest.cs" />
+    <Compile Include="Entities\CharacterRaceTest.cs" />
+    <Compile Include="Entities\CharacterTest.cs" />
+    <Compile Include="Entities\EntityExceptionTest.cs" />
+    <Compile Include="Entities\EntityTest.cs" />
+    <Compile Include="Entities\EventTest.cs" />
+    <Compile Include="Entities\ExitTest.cs" />
+    <Compile Include="Entities\HandlerSetTest.cs" />
+    <Compile Include="Entities\ItemTest.cs" />
+    <Compile Include="Entities\MLFunctionTest.cs" />
+    <Compile Include="Entities\RoomTest.cs" />
+    <Compile Include="Entities\Room_ExitsTest.cs" />
+    <Compile Include="Entities\SpecializationTest.cs" />
+    <Compile Include="Entities\UserTest.cs" />
+    <Compile Include="Entities\WorldTest.cs" />
+    <Compile Include="ExtensionMethodsTest.cs" />
+    <Compile Include="MoqExtensions.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Python\StatsQueryTest.cs" />
+    <Compile Include="TelnetListenerTest.cs" />
+    <Compile Include="Telnet\ExtensionsTest.cs" />
+    <Compile Include="Telnet\Handlers\HandlerStateBaseTest.cs" />
+    <Compile Include="Telnet\Handlers\HandlerStateLocalNoTest.cs" />
+    <Compile Include="Telnet\Handlers\HandlerStateLocalWantNoEmptyTest.cs" />
+    <Compile Include="Telnet\Handlers\HandlerStateLocalWantNoOppositeTest.cs" />
+    <Compile Include="Telnet\Handlers\HandlerStateLocalWantYesEmptyTest.cs" />
+    <Compile Include="Telnet\Handlers\HandlerStateLocalWantYesOpposite.cs" />
+    <Compile Include="Telnet\Handlers\HandlerStateLocalYesTest.cs" />
+    <Compile Include="Telnet\Handlers\HandlerStateRemoteNoTest.cs" />
+    <Compile Include="Telnet\Handlers\HandlerStateRemoteWantNoEmptyTest.cs" />
+    <Compile Include="Telnet\Handlers\HandlerStateRemoteWantNoOppositeTest.cs" />
+    <Compile Include="Telnet\Handlers\HandlerStateRemoteWantYesEmptyTest.cs" />
+    <Compile Include="Telnet\Handlers\HandlerStateRemoteWantYesOppositeTest.cs" />
+    <Compile Include="Telnet\Handlers\HandlerStateRemoteYesTest.cs" />
+    <Compile Include="Telnet\Handlers\TelnetHandlerSetTest.cs" />
+    <Compile Include="Telnet\Handlers\TelnetHandlerTest.cs" />
+    <Compile Include="Telnet\TelnetConnectionTest.cs" />
+    <Compile Include="Telnet\Tokenizer\CommandTokenTest.cs" />
+    <Compile Include="Telnet\Tokenizer\ContentTokenTest.cs" />
+    <Compile Include="Telnet\TokenStreamTest.cs" />
+    <Compile Include="TestExtensions.cs" />
+    <Compile Include="Views\TelnetConnectionViewTest.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Telnet\Tokenizer\TokenParser\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Common\Common.csproj">
+      <Project>{8abb91bf-f3d0-49d5-97a9-d152e1eaba51}</Project>
+      <Name>Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Controllers\Controllers.csproj">
+      <Project>{d0804a5b-964d-4832-a810-8dc34d1924e3}</Project>
+      <Name>Controllers</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Entities\Entities.csproj">
+      <Project>{2762f311-30d2-4cb1-9233-50e10dc6a1b6}</Project>
+      <Name>Entities</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Server\Server.csproj">
+      <Project>{84a288fd-781a-4fff-90ca-89cb3cc0d508}</Project>
+      <Name>Server</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Telnet\Telnet.csproj">
+      <Project>{b891d947-fac3-471c-b409-6d7db824f7ea}</Project>
+      <Name>Telnet</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Views\Views.csproj">
+      <Project>{74df6476-d54c-4c7e-9dc2-4ebeafdfccf5}</Project>
+      <Name>Views</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
