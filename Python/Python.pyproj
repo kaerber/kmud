@@ -5,9 +5,9 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>d7588bbb-513d-49f4-b91c-c4bc426e6a1e</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>Python.py</StartupFile>
-    <SearchPath>
-    </SearchPath>
+    <StartupFile>
+    </StartupFile>
+    <SearchPath>..\Server\Lib\</SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
     <OutputPath>.</OutputPath>
     <Name>Python</Name>
@@ -22,8 +22,58 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="attack.py" />
-    <Compile Include="Python.py" />
+    <Compile Include="aspects\ai.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="aspects\aspect.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="aspects\combat.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="aspects\complex.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="aspects\currency.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="aspects\health.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="aspects\money.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="aspects\movement.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="aspects\patrol.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="aspects\stats.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="aspects\view.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="aspects\weapon.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="aspects\__init__.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="attack.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="game\stats.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="game\__init__.py">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="aspects\" />
+    <Folder Include="game\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
