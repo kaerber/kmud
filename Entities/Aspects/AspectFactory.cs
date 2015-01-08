@@ -12,10 +12,6 @@ namespace Kaerber.MUD.Entities.Aspects {
             return Aspect( "health" );
         }
 
-        public static dynamic Mana() {
-            return Aspect( "mana" );
-        }
-
         public static dynamic Combat() {
             return Aspect( "combat" );
         }
@@ -34,10 +30,6 @@ namespace Kaerber.MUD.Entities.Aspects {
 
         public static dynamic Money() {
             return Aspect( "money" );
-        }
-
-        public static dynamic Test() {
-            return Aspect( "test" );
         }
 
         public static dynamic Weapon() {

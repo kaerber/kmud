@@ -54,7 +54,6 @@ namespace Kaerber.MUD.Entities
 
             Aspects.stats = AspectFactory.Stats();
             Aspects.health = AspectFactory.Health();
-            Aspects.mana = AspectFactory.Mana();
             Aspects.combat = AspectFactory.Combat();
             Aspects.movement = AspectFactory.Movement();
         }
@@ -102,9 +101,11 @@ namespace Kaerber.MUD.Entities
         [MudEdit( "Flags" )]
         public MobFlags Flags { get; set; }
 
-        [Obsolete]public dynamic Health { get { return ( Aspects.health ); } }
-        [Obsolete]public dynamic Mana { get { return ( Aspects.mana ); } }
-        [Obsolete]public dynamic Movement { get { return ( Aspects.movement ); } }
+        [Obsolete]
+        public dynamic Health { get { return ( Aspects.health ); } }
+
+        [Obsolete]
+        public dynamic Movement { get { return ( Aspects.movement ); } }
 
         private dynamic Combat { get { return ( Aspects.combat ); } }
 
@@ -174,10 +175,8 @@ namespace Kaerber.MUD.Entities
 
         public override string ToString() { return( ShortDescr ); }
 
-        public void Restore()
-        {
+        public void Restore() {
             Health.Restore();
-            Mana.Restore();
         }
 
 

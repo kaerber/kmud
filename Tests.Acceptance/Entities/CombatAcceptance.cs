@@ -9,13 +9,9 @@ using NUnit.Framework;
 namespace Kaerber.MUD.Tests.Acceptance.Entities
 {
     [TestFixture]
-    public class CombatAcceptance : BaseAcceptanceTest
-    {
-        private Character _vch;
-
+    public class CombatAcceptance : BaseAcceptanceTest {
         [SetUp]
-        protected override void CreateTestEnvironment()
-        {
+        protected override void CreateTestEnvironment() {
  	         base.CreateTestEnvironment();
             _vch = CreateTestCharacter( "enemy", "enemy", Room, World ).Model;
         }
@@ -25,27 +21,23 @@ namespace Kaerber.MUD.Tests.Acceptance.Entities
         /// Characters targets enemy on Kill command
         /// </summary>
         [Test]
-        public void TargetOnKillTest()
-        {
+        public void TargetOnKillTest() {
             Controller.OnCommand( PlayerInput.Parse( "kill enem" ) );
             Assert.AreEqual( _vch, Model.Target );
         }
 
-
         [Test]
-        public void AutoAttackTriggeredTest()
-        {
+        public void AutoAttackTriggeredTest() {
             Model.Spec = SpecFactory.Warrior;
             Assert.IsNotNull( Model.Spec );
             
             Controller.OnCommand( PlayerInput.Parse( "kill enem" ) );
-           
+            Assert.Fail();
         }
 
         /// <summary>Character perform second auto-attack after the first</summary>
         [Test]
-        public void CharRepeatsAutoAttack()
-        {
+        public void CharRepeatsAutoAttack() {
             var logger = new EventLogger();
             Room.Aspects["logger"] = logger;
 
@@ -57,5 +49,7 @@ namespace Kaerber.MUD.Tests.Acceptance.Entities
             Room.Update();
             Assert.AreEqual( 2, logger.Log.Count( e => e.Name == "ch_attacks_ch1" && e["ch"] == Model ) );
         }
+
+        private Character _vch;
     }
 }

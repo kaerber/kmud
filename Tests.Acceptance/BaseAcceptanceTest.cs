@@ -1,11 +1,16 @@
-﻿using Kaerber.MUD.Controllers;
+﻿using Kaerber.MUD.Common;
+using Kaerber.MUD.Controllers;
+using Kaerber.MUD.Controllers.Commands;
 using Kaerber.MUD.Entities;
 using Kaerber.MUD.Entities.Aspects;
+using Kaerber.MUD.Server.Managers;
 using Kaerber.MUD.Telnet;
 using Kaerber.MUD.Tests.Entities;
 using Kaerber.MUD.Views;
+using Command = Kaerber.MUD.Controllers.Commands.Command;
 
 using Moq;
+
 
 namespace Kaerber.MUD.Tests.Acceptance
 {
@@ -15,6 +20,8 @@ namespace Kaerber.MUD.Tests.Acceptance
         protected CharacterController Controller;
         protected ICharacterView View;
         protected World World;
+
+        protected CommandManager CommandManager;
 
         protected virtual void CreateTestEnvironment() {
             World = new World();
@@ -30,9 +37,9 @@ namespace Kaerber.MUD.Tests.Acceptance
         }
 
         protected CharacterController CreateTestCharacter( string shortDescr, 
-                string names, 
-                Room room,
-                World world ) {
+                                                           string names, 
+                                                           Room room,
+                                                           World world ) {
             var model = new Character { ShortDescr = shortDescr, Names = names };
             model.SetRoom( room );
             model.World = world;
@@ -46,14 +53,15 @@ namespace Kaerber.MUD.Tests.Acceptance
             var view = new TelnetCharacterView( mockConnection.Object, model, mockRenderer.Object );
             model.ViewEvent += e => View.ReceiveEvent( e );
 
-            return new CharacterController( model, view );
+            CommandManager = new CommandManager();
+            //CommandManager.Load();
+ 
+            return new CharacterController( model, view, CommandManager );
         }
-
 
         protected void TestModelEvent( string name, params EventArg[] args ) {
             Model.ReceiveEvent( Event.Create( name, EventReturnMethod.None, args ) );
         }
-        
         
         protected Room AddTestRoom( string id, string shortDescription, World world ) {
             var room = new Room {

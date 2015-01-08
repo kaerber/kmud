@@ -9,8 +9,9 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Kaerber.MUD.Tests.Acceptance</RootNamespace>
     <AssemblyName>Kaerber.MUD.Tests.Acceptance</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -85,7 +86,6 @@
     <Compile Include="Entities\CharacterAcceptance.cs" />
     <Compile Include="Entities\CombatAcceptance.cs" />
     <Compile Include="Entities\MaxHealthAcceptance.cs" />
-    <Compile Include="Entities\MaxManaAcceptance.cs" />
     <Compile Include="EventLogger.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Telnet\TelnetConnectionAcceptance.cs" />
@@ -104,6 +104,10 @@
     <ProjectReference Include="..\Entities\Entities.csproj">
       <Project>{2762f311-30d2-4cb1-9233-50e10dc6a1b6}</Project>
       <Name>Entities</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Server\Server.csproj">
+      <Project>{84a288fd-781a-4fff-90ca-89cb3cc0d508}</Project>
+      <Name>Server</Name>
     </ProjectReference>
     <ProjectReference Include="..\Telnet\Telnet.csproj">
       <Project>{b891d947-fac3-471c-b409-6d7db824f7ea}</Project>
@@ -124,6 +128,9 @@
     <Folder Include="Telnet\Tokenizer\TokenParser\" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\Server\App.config">
+      <Link>App.config</Link>
+    </None>
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

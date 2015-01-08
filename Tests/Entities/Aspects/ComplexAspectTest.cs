@@ -15,7 +15,7 @@ namespace Kaerber.MUD.Tests.Entities.Aspects {
             var ch = new Character();
             var complex = AspectFactory.Complex();
             complex.Host = ch;
-            var test = AspectFactory.Test();
+            var test = AspectFactory.Complex();
             complex.test = test;
             Assert.IsNotNull( complex.test );
             Assert.IsNotNull( complex["test"] );
@@ -49,7 +49,7 @@ namespace Kaerber.MUD.Tests.Entities.Aspects {
             var ch = new Character { ShortDescr = "test" };
             var complex = AspectFactory.Complex();
             complex.Host = ch;
-            var test = AspectFactory.Test();
+            var test = AspectFactory.Complex();
             complex.Add("test", test);
 
             Assert.AreEqual( ch, complex.Host );
@@ -60,7 +60,7 @@ namespace Kaerber.MUD.Tests.Entities.Aspects {
         public void SetHostTest() {
             var ch = new Character { ShortDescr = "test" };
             var complex = AspectFactory.Complex();
-            var test = AspectFactory.Test();
+            var test = AspectFactory.Complex();
             complex.Add( "test", test );
 
             complex.Host = ch;
@@ -73,7 +73,7 @@ namespace Kaerber.MUD.Tests.Entities.Aspects {
             var ch = new Character();
             var complex = AspectFactory.Complex();
             complex.Host = ch;
-            var test = AspectFactory.Test();
+            var test = AspectFactory.Complex();
             complex.Add("test", test);
 
             var e = Event.Create( "test_completed", EventReturnMethod.And );

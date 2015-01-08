@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
@@ -14,7 +13,7 @@ namespace Kaerber.MUD.Controllers {
 
         public CharacterController( Character model, 
                                     ICharacterView view, 
-                                    IManager<Command> commandManager ) {
+                                    IManager<ICommand> commandManager ) {
             Model = model;
             View = view;
             _commandManager = commandManager;
@@ -23,11 +22,6 @@ namespace Kaerber.MUD.Controllers {
         public Character Model { get; private set; }
 
         public ICharacterView View { get; private set; }
-
-        public CharacterController( Character model, ICharacterView view ) {
-            View = view;
-            Model = model;
-        }
 
         public IController Start() {
             View.Start();
@@ -78,6 +72,6 @@ namespace Kaerber.MUD.Controllers {
             View.Quit();
         }
 
-        private readonly IManager<Command> _commandManager;
+        private readonly IManager<ICommand> _commandManager;
     }
 }

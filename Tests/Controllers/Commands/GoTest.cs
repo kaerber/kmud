@@ -1,4 +1,6 @@
-﻿using Kaerber.MUD.Tests.Entities;
+﻿using Kaerber.MUD.Common;
+using Kaerber.MUD.Controllers.Commands;
+using Kaerber.MUD.Tests.Entities;
 using Kaerber.MUD.Views;
 
 using Moq;
@@ -16,7 +18,8 @@ namespace Kaerber.MUD.Tests.Controllers.Commands {
         public void ExecuteTest() {
             var ch = new Character();
             var mockView = new Mock<ICharacterView>();
-            var pc = new CharacterController( ch, mockView.Object );
+            var mockCommandManager = new Mock<IManager<ICommand>>();
+            var pc = new CharacterController( ch, mockView.Object, mockCommandManager.Object );
             var command = new Go();
             command.Execute( pc, PlayerInput.Parse( "north" ) );
         }

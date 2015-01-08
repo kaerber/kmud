@@ -1,4 +1,6 @@
-﻿using Kaerber.MUD.Tests.Entities;
+﻿using Kaerber.MUD.Common;
+using Kaerber.MUD.Controllers.Commands;
+using Kaerber.MUD.Tests.Entities;
 using Kaerber.MUD.Views;
 
 using Moq;
@@ -23,10 +25,9 @@ namespace Kaerber.MUD.Tests.Controllers.Commands
             ch.SetRoom( room );
             var command = new Say();
 
-            command.Execute(
-                new CharacterController( ch, mockView.Object ),
-                PlayerInput.Parse( "say hey-hey-hey!" )
-            );
+            var mockManager = new Mock<IManager<ICommand>>(); 
+            command.Execute( new CharacterController( ch, mockView.Object, mockManager.Object ),
+                             PlayerInput.Parse( "say hey-hey-hey!" ) );
         }
     }
 }

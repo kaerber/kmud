@@ -65,27 +65,6 @@ namespace Kaerber.MUD.Tests.Acceptance.Entities
         }
 
         /// <summary>
-        /// Character should login with the same mana with which he logged out previously.
-        /// </summary>
-        [Test]
-        public void CharacterLoginsWithStoredCurrentMana()
-        {
-            Model.Restore();
-            var mana = Model.Mana.Value;
-            Assert.AreNotEqual( 0, mana );
-
-            var data = Model.Serialize();
-            var strdata = World.Serializer.Serialize( data );
-            data = World.Serializer.Deserialize<Dictionary<string, object>>( strdata );
-
-            Model.SetRoom( null );
-            Model = new Character { World = this.World };
-
-            Model.Deserialize( data );
-            Assert.AreEqual( mana, Model.Mana.Value );
-        }
-        
-        /// <summary>
         /// When character moves from room to room, event ch_went_from_room_to_room must be
         /// fired in both rooms.
         /// </summary>

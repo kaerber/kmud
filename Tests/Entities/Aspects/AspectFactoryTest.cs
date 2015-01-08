@@ -1,5 +1,4 @@
-﻿using Kaerber.MUD.Entities;
-using Kaerber.MUD.Entities.Aspects;
+﻿using Kaerber.MUD.Entities.Aspects;
 
 using NUnit.Framework;
 
@@ -8,13 +7,6 @@ namespace Kaerber.MUD.Tests.Entities.Aspects {
     [TestFixture]
     public class AspectFactoryTest : BaseEntityTest {
         [Test]
-        public void StaticCreate() {
-            Assert.IsTrue( 
-                AspectFactory.Test()
-                .ReceiveEvent( Event.Create( "test_complete", EventReturnMethod.And ) ) );
-        }
-
-        [Test]
         public void ComplexTest() {
             Assert.IsNotNull( AspectFactory.Complex() );
         }
@@ -22,11 +14,6 @@ namespace Kaerber.MUD.Tests.Entities.Aspects {
         [Test]
         public void HealthTest() {
             Assert.IsNotNull( AspectFactory.Health() );
-        }
-
-        [Test]
-        public void ManaTest() {
-            Assert.IsNotNull( AspectFactory.Mana() );
         }
 
         [Test]

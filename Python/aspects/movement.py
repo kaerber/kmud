@@ -1,4 +1,3 @@
-from locker import Locker
 import random
 
 from aspect import Aspect

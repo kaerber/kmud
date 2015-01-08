@@ -9,8 +9,9 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Kaerber.MUD.Tests</RootNamespace>
     <AssemblyName>Kaerber.MUD.Tests</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -109,7 +110,6 @@
     <Compile Include="Entities\Aspects\ExitSetTest.cs" />
     <Compile Include="Entities\Aspects\HealthTest.cs" />
     <Compile Include="Entities\Aspects\ItemSetTest.cs" />
-    <Compile Include="Entities\Aspects\ManaTest.cs" />
     <Compile Include="Entities\Aspects\MoneyTest.cs" />
     <Compile Include="Entities\Aspects\MovementTest.cs" />
     <Compile Include="Entities\Aspects\RaceFactoryTest.cs" />
@@ -168,6 +168,9 @@
     <Folder Include="Telnet\Tokenizer\TokenParser\" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\Server\App.config">
+      <Link>App.config</Link>
+    </None>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

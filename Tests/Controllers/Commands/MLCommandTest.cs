@@ -1,15 +1,15 @@
 ﻿using System;
 
-using Kaerber.MUD.Tests.Entities;
-using Kaerber.MUD.Views;
-
-using Moq;
-
-using NUnit.Framework;
-
+using Kaerber.MUD.Common;
 using Kaerber.MUD.Controllers;
 using Kaerber.MUD.Controllers.Commands;
 using Kaerber.MUD.Entities;
+using Kaerber.MUD.Views;
+
+using Kaerber.MUD.Tests.Entities;
+using Moq;
+using NUnit.Framework;
+
 
 namespace Kaerber.MUD.Tests.Controllers.Commands
 {
@@ -17,8 +17,12 @@ namespace Kaerber.MUD.Tests.Controllers.Commands
     public class MLCommandTest : BaseEntityTest {
         [Test]
         public void ExecuteTest() {
+            var mockCharacter = new Mock<Character>();
             var mockView = new Mock<ICharacterView>();
-            var pc = new CharacterController( new Character(), mockView.Object );
+            var mockManager = new Mock<IManager<ICommand>>();
+            var pc = new CharacterController( mockCharacter.Object, 
+                                              mockView.Object, 
+                                              mockManager.Object );
             var command = new MLCommand( "divideByZero", "10/0" );
             Assert.Throws<DivideByZeroException>( 
                 () => command.Execute( pc, PlayerInput.Parse( "test" ) )
