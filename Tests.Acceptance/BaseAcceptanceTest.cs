@@ -1,19 +1,15 @@
-﻿using Kaerber.MUD.Common;
-using Kaerber.MUD.Controllers;
-using Kaerber.MUD.Controllers.Commands;
+﻿using Kaerber.MUD.Controllers;
 using Kaerber.MUD.Entities;
 using Kaerber.MUD.Entities.Aspects;
 using Kaerber.MUD.Server.Managers;
 using Kaerber.MUD.Telnet;
 using Kaerber.MUD.Tests.Entities;
 using Kaerber.MUD.Views;
-using Command = Kaerber.MUD.Controllers.Commands.Command;
 
 using Moq;
 
 
-namespace Kaerber.MUD.Tests.Acceptance
-{
+namespace Kaerber.MUD.Tests.Acceptance {
     public class BaseAcceptanceTest : BaseEntityTest {
         protected Room Room;
         protected Character Model;

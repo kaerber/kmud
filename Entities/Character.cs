@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Diagnostics.Contracts;
 using System.Linq;
 
@@ -13,25 +12,20 @@ using Kaerber.MUD.Entities.Aspects;
 namespace Kaerber.MUD.Entities
 {
     [Flags]
-    public enum MobFlags
-    {
+    public enum MobFlags {
         Sentinel = 1,
         StayArea = 2
     }
 
-    public class Character : Entity
-    {
-        public Character()
-        {
+    public class Character : Entity {
+        public Character() {
             NaturalWeapon = AspectFactory.Weapon();
             NaturalWeapon.BaseDamage = 1;
 
             Setup();
         }
 
-        public Character( Character template ) 
-            : base( template.Id, template.Names, template.ShortDescr )
-        {
+        public Character( Character template ) : base( template.Id, template.Names, template.ShortDescr ) {
             NaturalWeapon = template.NaturalWeapon.Clone();
             Flags = template.Flags;
             Setup();
@@ -39,8 +33,7 @@ namespace Kaerber.MUD.Entities
                 Aspects = template.Aspects.Clone();
         }
 
-        private void Setup()
-        {
+        private void Setup() {
             Race = RaceFactory.Default;
             Spec = SpecFactory.Warrior;
 
@@ -80,16 +73,13 @@ namespace Kaerber.MUD.Entities
         public Action<Event> ViewEvent;
 
 
-        public Room Room
-        {
+        public Room Room {
             get { return ( _room ); }
         }
 
-        public Equipment Eq
-        {
+        public Equipment Eq {
             get { return ( _eq ); }
-            set
-            {
+            set {
                 _eq = value;
                 _eq.Host = this;
             }
@@ -102,23 +92,20 @@ namespace Kaerber.MUD.Entities
         public MobFlags Flags { get; set; }
 
         [Obsolete]
-        public dynamic Health { get { return ( Aspects.health ); } }
+        public dynamic Health { get { return Aspects.health; } }
 
         [Obsolete]
-        public dynamic Movement { get { return ( Aspects.movement ); } }
+        public dynamic Movement { get { return Aspects.movement; } }
 
-        private dynamic Combat { get { return ( Aspects.combat ); } }
+        private dynamic Combat { get { return Aspects.combat; } }
 
         [MudEdit( "Stats", CustomType = "PythonObject" )]
         public dynamic Stats { get { return Aspects.stats; } }
 
-
-
         public ActionQueueSet ActionQueueSet { get; set; }
 
         #region Save & Load
-        public override IDictionary<string, object> Serialize()
-        {
+        public override IDictionary<string, object> Serialize() {
             var data = base.Serialize()
                 .AddEx( "Flags", Flags )
                 .AddIf( "Inventory", Inventory, Inventory.Count > 0 )
@@ -137,8 +124,7 @@ namespace Kaerber.MUD.Entities
             return data;
         }
 
-        public override ISerialized Deserialize( IDictionary<string, object> data )
-        {
+        public override ISerialized Deserialize( IDictionary<string, object> data ) {
             Contract.Requires( World != null );
 
             base.Deserialize( data );
@@ -180,8 +166,7 @@ namespace Kaerber.MUD.Entities
         }
 
 
-        public void Die()
-        {
+        public void Die() {
             Contract.Requires( Room != null );
 
             if( !this.CanDo( "die" ) )
@@ -200,8 +185,7 @@ namespace Kaerber.MUD.Entities
         }
 
 
-        protected Item CreateCorpse()
-        {
+        protected Item CreateCorpse() {
             var corpse = Room.Items.Load( "ch_corpse" );
             corpse.Names = string.Format( corpse.Names, Names );
             corpse.ShortDescr = string.Format( corpse.ShortDescr, ShortDescr );
@@ -209,9 +193,7 @@ namespace Kaerber.MUD.Entities
             return ( corpse );
         }
 
-
-        public void Write( string message )
-        {
+        public void Write( string message ) {
             this.Did( "saw_something", new PythonDictionary { { "message", message } } );
         }
 
@@ -219,8 +201,7 @@ namespace Kaerber.MUD.Entities
         public override void ReceiveEvent( Event e )
         {
             foreach( var ex in e.Parameters.Where( p => p.Value == this )
-                .Select( e.ChangeToThis ) )
-            {
+                                           .Select( e.ChangeToThis ) ) {
                 HandleLocalEvent( ex );
                 e.ReturnValue = ex.ReturnValue;
             }
@@ -228,64 +209,48 @@ namespace Kaerber.MUD.Entities
             HandleLocalEvent( e );
         }
 
-        private void HandleLocalEvent( Event e )
-        {
+        private void HandleLocalEvent( Event e ) {
             Contract.Requires( e != null );
             Contract.Requires( Race != null );
             Contract.Requires( Eq != null );
 
-            Debug.Assert( Eq != null );
-
             base.ReceiveEvent( e );
-
             Race.ReceiveEvent( e );
+            Eq.ReceiveEvent( e );
 
             if( Spec != null )
                 Spec.ReceiveEvent( e );
-
-
-            Eq.ReceiveEvent( e );
 
             if( ViewEvent != null )
                 ViewEvent( e );
         }
 
 
-        public virtual void SendEvent( Event e )
-        {
+        public virtual void SendEvent( Event e ) {
             Contract.Requires( Room != null );
-
             Room.ReceiveEvent( e );
         }
 
-
-        public virtual bool CanDo( string action, PythonDictionary args = null )
-        {
+        public virtual bool CanDo( string action, PythonDictionary args = null ) {
             Contract.Requires( Room != null );
-
             var canEvent = DoEvent( "ch_can_" + action, EventReturnMethod.And, args );
             return canEvent.ReturnValue;
         }
 
 
-        public virtual void Does( string action, PythonDictionary args = null )
-        {
+        public virtual void Does( string action, PythonDictionary args = null ) {
             Contract.Requires( Room != null );
-
             DoEvent( "ch_" + action, EventReturnMethod.None, args );
         }
 
 
-        public virtual void Did( string action, PythonDictionary args = null )
-        {
+        public virtual void Did( string action, PythonDictionary args = null ) {
             Contract.Requires( Room != null );
-
             DoEvent( "ch_" + action, EventReturnMethod.None, args );
         }
 
 
-        private Event DoEvent( string name, EventReturnMethod returnMethod, PythonDictionary args = null )
-        {
+        private Event DoEvent( string name, EventReturnMethod returnMethod, PythonDictionary args = null ) {
             args = args ?? new PythonDictionary();
             args.Add( "ch", this );
             var doEvent = Entities.Event.Create( name,
@@ -298,12 +263,9 @@ namespace Kaerber.MUD.Entities
         #endregion
 
 
-        public void SetRoom( Room room )
-        {
-            if( _room != null )
-            {
-                lock( _room )
-                {
+        public void SetRoom( Room room ) {
+            if( _room != null ) {
+                lock( _room ) {
                     UpdateQueue.Detach();
                     _room.RemoveCharacter( this );
                 }
@@ -311,10 +273,8 @@ namespace Kaerber.MUD.Entities
 
             _room = room;
 
-            if( _room != null )
-            {
-                lock( _room )
-                {
+            if( _room != null ) {
+                lock( _room ) {
                     _room.AddCharacter( this );
                     UpdateQueue.Attach( _room.UpdateQueue );
                 }
@@ -322,8 +282,7 @@ namespace Kaerber.MUD.Entities
         }
 
 
-        public bool MoveToRoom( Room destination )
-        {
+        public bool MoveToRoom( Room destination ) {
             Contract.Requires( Room != null );
             Contract.Requires( destination != null );
 
@@ -342,39 +301,33 @@ namespace Kaerber.MUD.Entities
         }
 
 
-        public virtual CharacterSet GetFoes()
-        {
+        public virtual CharacterSet GetFoes() {
             return Room.SelectCharacters( vch => !vch.IsSafeFrom( this ) );
         }
 
-        public virtual bool IsSafeFrom( Character vch )
-        {
+        public virtual bool IsSafeFrom( Character vch ) {
             return this == vch;
         }
 
-        public virtual void Kill( Character vch )
-        {
+        public virtual void Kill( Character vch ) {
             Combat.UseAbility( new KillAbility( this, vch ) );
         }
 
-        public virtual void EnqueueAction( string queueName, CharacterAction action )
-        {
+        public virtual void EnqueueAction( string queueName, CharacterAction action ) {
             Contract.Requires( !string.IsNullOrWhiteSpace( queueName ) );
             Contract.Requires( action != null );
 
             ActionQueueSet.EnqueueAction( queueName, action );
         }
 
-        public virtual void SetTimedEvent( long relativeTime, Action eventAction )
-        {
+        public virtual void SetTimedEvent( long relativeTime, Action eventAction ) {
             Contract.Requires( relativeTime >= 0 );
             Contract.Requires( eventAction != null );
 
             UpdateQueue.AddRelative( relativeTime, eventAction );
         }
 
-        public virtual void MakeAttack( IAttack attack )
-        {
+        public virtual void MakeAttack( IAttack attack ) {
             Contract.Requires( attack != null );
             Contract.Requires( Target != null );
 
@@ -382,8 +335,7 @@ namespace Kaerber.MUD.Entities
             Combat.MakeAttack( attack );
         }
 
-        public bool Equip( Item item )
-        {
+        public bool Equip( Item item ) {
             Contract.Requires( Room != null );
             Contract.Requires( item.WearLoc != WearLocation.Inventory );
             Contract.Requires( Inventory.Contains( item ) );
@@ -391,8 +343,7 @@ namespace Kaerber.MUD.Entities
             if( !this.CanDo( "equip_item", new PythonDictionary{ { "item", item } } ) )
                 return false;
 
-            if( Eq.Have( item.WearLoc ) )
-            {
+            if( Eq.Have( item.WearLoc ) ) {
                 if( !Unequip( Eq.Get( item.WearLoc ) ) )
                     return false;
             }
@@ -406,8 +357,7 @@ namespace Kaerber.MUD.Entities
         }
 
 
-        public bool Unequip( Item item )
-        {
+        public bool Unequip( Item item ) {
             Contract.Requires( Room != null );
             Contract.Requires( Eq.Have( item ) );
 
@@ -439,8 +389,7 @@ namespace Kaerber.MUD.Entities
             return ch;
         }
 
-        public static Character Create( Character template, IEventHandler specialization )
-        {
+        public static Character Create( Character template, IEventHandler specialization ) {
             return new Character( template ) { Spec = specialization };
         }
     }

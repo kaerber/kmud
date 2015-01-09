@@ -2,12 +2,13 @@
 
 using Kaerber.MUD.Controllers;
 using Kaerber.MUD.Entities;
+using Kaerber.MUD.Entities.Actions;
 using Kaerber.MUD.Entities.Aspects;
 
 using NUnit.Framework;
+using Moq;
 
-namespace Kaerber.MUD.Tests.Acceptance.Entities
-{
+namespace Kaerber.MUD.Tests.Acceptance.Entities {
     [TestFixture]
     public class CombatAcceptance : BaseAcceptanceTest {
         [SetUp]
@@ -16,10 +17,7 @@ namespace Kaerber.MUD.Tests.Acceptance.Entities
             _vch = CreateTestCharacter( "enemy", "enemy", Room, World ).Model;
         }
 
-
-        /// <summary>
-        /// Characters targets enemy on Kill command
-        /// </summary>
+        /// <summary>Characters targets enemy on Kill command </summary>
         [Test]
         public void TargetOnKillTest() {
             Controller.OnCommand( PlayerInput.Parse( "kill enem" ) );
@@ -29,10 +27,15 @@ namespace Kaerber.MUD.Tests.Acceptance.Entities
         [Test]
         public void AutoAttackTriggeredTest() {
             Model.Spec = SpecFactory.Warrior;
-            Assert.IsNotNull( Model.Spec );
-            
+
+            var mockActionQueueSet = new Mock<ActionQueueSet>();
+            mockActionQueueSet.Setup( s => s.EnqueueAction( "autoattack", It.IsAny<AutoAttackAction>() ) );
+            Model.ActionQueueSet = mockActionQueueSet.Object;
+
             Controller.OnCommand( PlayerInput.Parse( "kill enem" ) );
-            Assert.Fail();
+
+            mockActionQueueSet.Verify( s => s.EnqueueAction( "autoattack", It.IsAny<AutoAttackAction>() ), 
+                                       Times.Once() );
         }
 
         /// <summary>Character perform second auto-attack after the first</summary>
