@@ -55,7 +55,10 @@ class ComplexAspect( Aspect ):
 
     def Deserialize( self, data ):
         for item in data:
-            self[item.Key] = self.Construct( item.Key ).Deserialize( item.Value ) 
+            try:
+                self[item.Key] = self.Construct( item.Key ).Deserialize( item.Value ) 
+            except ImportError:
+                self.log.Debug( "Aspect " + item.Key + " not found." )
 
         return self
 

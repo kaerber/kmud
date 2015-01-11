@@ -86,8 +86,10 @@
     <Compile Include="Entities\CharacterAcceptance.cs" />
     <Compile Include="Entities\CombatAcceptance.cs" />
     <Compile Include="Entities\MaxHealthAcceptance.cs" />
+    <Compile Include="Entities\WorldAcceptance.cs" />
     <Compile Include="EventLogger.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Server\Managers\CommandManagerAcceptance.cs" />
     <Compile Include="Telnet\TelnetConnectionAcceptance.cs" />
     <Compile Include="Telnet\TokenStreamAcceptance.cs" />
     <Compile Include="Views\ViewTest.cs" />

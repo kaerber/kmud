@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Diagnostics.Contracts;
 
+using log4net;
+
 namespace Kaerber.MUD.Entities.Aspects {
     public class AspectFactory {
         public static dynamic Complex() {
             Contract.Ensures( Contract.Result<object>() != null );
-            return Aspect( "complex" );
+            return Aspect( "complex", _complexLog );
         }
 
         public static dynamic Health() {
@@ -48,12 +50,11 @@ namespace Kaerber.MUD.Entities.Aspects {
             return _statQueryFactory.Execute();
         }
 
-        private static dynamic Aspect( string name ) {
+        private static dynamic Aspect( string name, ILog log = null ) {
             Contract.Ensures( Contract.Result<object>() != null );
 
             var aspect = CreateBuilder( name ).Execute();
-            if( aspect == null )
-                throw new InvalidOperationException( string.Format( "No such Aspect: {0}.", name ) );
+            aspect.log = log;
 
             return aspect;
         }
@@ -71,5 +72,7 @@ namespace Kaerber.MUD.Entities.Aspects {
             Code = "import game.stats \n" +
                    "ret_val = game.stats.Query() \n"
         };
+
+        private static ILog _complexLog = LogManager.GetLogger( "Kaerber.MUD.Entities.Aspects.ComplexAspect" );
     }
 }

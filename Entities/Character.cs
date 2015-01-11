@@ -73,9 +73,7 @@ namespace Kaerber.MUD.Entities
         public Action<Event> ViewEvent;
 
 
-        public Room Room {
-            get { return ( _room ); }
-        }
+        public Room Room { get { return ( _room ); } }
 
         public Equipment Eq {
             get { return ( _eq ); }
@@ -198,8 +196,7 @@ namespace Kaerber.MUD.Entities
         }
 
         #region Events
-        public override void ReceiveEvent( Event e )
-        {
+        public override void ReceiveEvent( Event e ) {
             foreach( var ex in e.Parameters.Where( p => p.Value == this )
                                            .Select( e.ChangeToThis ) ) {
                 HandleLocalEvent( ex );
@@ -382,8 +379,7 @@ namespace Kaerber.MUD.Entities
             return ch;
         }
 
-        public static Character Create()
-        {
+        public static Character Create() {
             var ch = new Character();
             ch.Initialize();
             return ch;

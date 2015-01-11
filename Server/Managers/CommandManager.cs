@@ -27,7 +27,7 @@ namespace Kaerber.MUD.Server.Managers {
         }
 
         public void Load() {
-            LoadCommands( World.CommandsPath );
+            LoadCommands( File.ReadAllText( World.CommandsPath ) );
         }
 
         public ICommand Get( string name ) {
