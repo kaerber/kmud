@@ -79,7 +79,7 @@ namespace Kaerber.MUD.Entities {
         }
 
         public virtual Entity Initialize() {
-            return ( this );
+            return this;
         }
 
 
@@ -98,7 +98,7 @@ namespace Kaerber.MUD.Entities {
 
             Handlers = World.ConvertToTypeEx( data, "Handlers", new HandlerSet() );
 
-            return ( this );
+            return this;
         }
 
         public virtual IDictionary<string, object> Serialize() {
@@ -113,7 +113,7 @@ namespace Kaerber.MUD.Entities {
 
             data.Add( "Aspects", Aspects.Serialize() );
 
-            return ( data );
+            return data;
         }
         #endregion
 
@@ -143,7 +143,7 @@ namespace Kaerber.MUD.Entities {
                 argIndices[argType]++;
             }
 
-            return ( result.ToArray() );
+            return result.ToArray();
         }
 
 
@@ -159,11 +159,11 @@ namespace Kaerber.MUD.Entities {
         }
 
         public dynamic Event( string name, EventReturnMethod returnMethod, PythonDictionary parameters ) {
-            return ( Event( Entities.Event.Create( name, returnMethod, parameters ) ) );
+            return Event( Entities.Event.Create( name, returnMethod, parameters ) );
         }
 
         public dynamic Event( string name, EventReturnMethod returnMethod, params EventArg[] parameters ) {
-            return ( Event( Entities.Event.Create( name, returnMethod, parameters ) ) );
+            return Event( Entities.Event.Create( name, returnMethod, parameters ) );
         }
         #endregion
 

@@ -3,12 +3,15 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
 
-using NUnit.Framework;
+using Microsoft.Practices.Unity;
 
 using Kaerber.MUD.Entities;
+using Kaerber.MUD.Server;
 
-namespace Kaerber.MUD.Tests.Entities
-{
+using NUnit.Framework;
+
+
+namespace Kaerber.MUD.Tests.Entities {
     [TestFixture]
     public class AffectSetTest : BaseEntityTest {
         private AffectInfo _hordeMode;
@@ -18,6 +21,7 @@ namespace Kaerber.MUD.Tests.Entities
         [TestFixtureSetUp]
         public void SetUp() {
             World.Instance = new World();
+            World.Instance.Initialize( UnityConfigurator.Configure() );
 
             _hordeMode = new AffectInfo {
                 Name = "horde_mode", 
@@ -115,25 +119,25 @@ namespace Kaerber.MUD.Tests.Entities
         public void CastTest() {
             var affectSet = new AffectSet();
             affectSet.SetHost( new Character() );
-            var affect = affectSet.Cast( "sanctuary", World.TimeHour );
+            var affect = affectSet.Cast( "sanctuary", Clock.TimeHour );
 
             Assert.AreEqual( affect, affectSet[0] );
             Assert.AreEqual( "sanctuary", affect.Name );
             Assert.AreEqual( AffectTarget.Character, affect.Target );
-            Assert.AreEqual( World.TimeHour, affect.Duration );
+            Assert.AreEqual( Clock.TimeHour, affect.Duration );
 
-            var affectSanc2 = affectSet.Cast( "sanctuary", World.TimeHour );
+            var affectSanc2 = affectSet.Cast( "sanctuary", Clock.TimeHour );
             Assert.AreEqual( affectSanc2, affectSet[ 1 ] );
             Assert.AreEqual( "sanctuary", affectSanc2.Name );
             Assert.AreEqual( AffectTarget.Character, affectSanc2.Target );
-            Assert.AreEqual( World.TimeHour, affectSanc2.Duration );
+            Assert.AreEqual( Clock.TimeHour, affectSanc2.Duration );
 
-            var affectHorde = affectSet.Cast( "horde_mode", World.TimeHour );
+            var affectHorde = affectSet.Cast( "horde_mode", Clock.TimeHour );
             Assert.AreEqual( 3, affectSet.Count );
             Assert.AreEqual( affectHorde, affectSet[ 2 ] );
             Assert.AreEqual( "horde_mode", affectHorde.Name );
 
-            var affectHorde2 = affectSet.Cast( "horde_mode", World.TimeHour );
+            var affectHorde2 = affectSet.Cast( "horde_mode", Clock.TimeHour );
             Assert.AreEqual( 3, affectSet.Count );
             Assert.AreEqual( null, affectHorde2 );
         }
@@ -142,10 +146,10 @@ namespace Kaerber.MUD.Tests.Entities
         public void ClearAffectTest() {
             var affectSet = new AffectSet();
             affectSet.SetHost( new Character() );
-            affectSet.Cast( "sanctuary", World.TimeHour );
-            affectSet.Cast( "sanctuary", World.TimeHour );
-            affectSet.Cast( "horde_mode", World.TimeHour );
-            affectSet.Cast( "horde_mode", World.TimeHour );
+            affectSet.Cast( "sanctuary", Clock.TimeHour );
+            affectSet.Cast( "sanctuary", Clock.TimeHour );
+            affectSet.Cast( "horde_mode", Clock.TimeHour );
+            affectSet.Cast( "horde_mode", Clock.TimeHour );
          
             Assert.AreEqual( 3, affectSet.Count );
 
@@ -153,7 +157,7 @@ namespace Kaerber.MUD.Tests.Entities
             Assert.AreEqual( 1, affectSet.Count );
             Assert.IsFalse( affectSet.Contains( "sanctuary" ) );
 
-            affectSet.Cast( "sanctuary", World.TimeHour );
+            affectSet.Cast( "sanctuary", Clock.TimeHour );
             affectSet.Clear( "horde_mode" );
             Assert.AreEqual( 1, affectSet.Count );
             Assert.IsFalse( affectSet.Contains( "horde_mode" ) );
@@ -270,7 +274,10 @@ namespace Kaerber.MUD.Tests.Entities
 
         [Test]
         public void UpdateTest() {
-            World.Instance = new World { Time = 0 };
+            World.Instance = new World();
+            var container = UnityConfigurator.Configure();
+            container.RegisterInstance( new Clock( 0 ) );
+            World.Instance.Initialize( container );
 
             var horde = new Affect( _hordeMode ) { Duration = 10 };
             var sanc = new Affect( _sanctuary ) { Duration = 20 };
@@ -284,12 +291,12 @@ namespace Kaerber.MUD.Tests.Entities
             set.Update();
             Assert.AreEqual( 2, set.Count );
 
-            World.Instance.Time = 15;
+            World.Instance.Pulse( 15*10000 );
             set.Update();
             Assert.AreEqual( 1, set.Count );
             Assert.AreEqual( sanc, set[0] );
 
-            World.Instance.Time = 25;
+            World.Instance.Pulse( 25*10000 );
             set.Update();
             Assert.AreEqual( 0, set.Count );
         }

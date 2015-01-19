@@ -2,19 +2,14 @@
 using System.Collections.Generic;
 using System.Configuration;
 using System.Web.Script.Serialization;
+using Microsoft.Practices.ObjectBuilder2;
+using Microsoft.Practices.Unity;
 
 using Kaerber.MUD.Common;
 using Kaerber.MUD.Entities.Aspects;
 
 namespace Kaerber.MUD.Entities {
     public class World : Area {
-        public const int TimeStep = 10;
-        public const int TimeBase = 1000;
-        public const int TimeRound = TimeBase*3;
-        public const int RoundsInHour = 6;
-        public const int TimeExtra = TimeBase*2;
-        public const int TimeHour = TimeRound*RoundsInHour + TimeExtra;
-
         public static readonly string RootPath;
         public static readonly string AssetsRootPath;
         public static readonly string PlayersRootPath;
@@ -44,7 +39,7 @@ namespace Kaerber.MUD.Entities {
             AffectsPath = ConfigurationManager.AppSettings.Get( "AffectsPath" ); 
         }
 
-        public long Time;
+        public long Time { get { return _clock.Time; } }
 
         public List<Area> Areas;
         public new Dictionary<string, Room> Rooms;
@@ -53,14 +48,6 @@ namespace Kaerber.MUD.Entities {
         public Dictionary<string, SkillData> Skills;
         public new Dictionary<string, AffectInfo> Affects;
         public new Dictionary<string, AspectInfo> Aspects;
-
-        public long NextTick {
-            get { return ( Time/TimeHour + 1 )*TimeHour; }
-        }
-
-        public long NextRound {
-            get { return ( Time/TimeRound + 1 )*TimeRound; }
-        }
 
         public World() {
             Areas = new List<Area>();
@@ -73,6 +60,13 @@ namespace Kaerber.MUD.Entities {
             UpdateQueue = new TimedEventQueue( null );
         }
 
+        public void Initialize( IUnityContainer container ) {
+            _container = container;
+            _clock = container.Resolve<Clock>();
+            _clock.Update += UpdateQueue.Run;
+            _clock.Round += () => Rooms.Values.ForEach( room => room.Round() );
+            _clock.Hour += () => Rooms.Values.ForEach( room => room.Tick() );
+        }
 
         public override ISerialized Deserialize( IDictionary<string, object> data ) {
             Areas = ConvertToType<List<string>>( data["Areas"] )
@@ -93,8 +87,8 @@ namespace Kaerber.MUD.Entities {
                 .AddIf( "AspectInfo", Aspects, Aspects != null && Aspects.Count > 0 );
         }
 
-        public void Update() {
-            UpdateQueue.Run();
+        public virtual void Pulse( long ticks ) {
+            _clock.Pulse( ticks );
         }
 
         public void LoadAreas() {
@@ -109,6 +103,9 @@ namespace Kaerber.MUD.Entities {
 
             return Rooms.ContainsKey( id ) ? Rooms[id] : null;
         }
+
+        private IUnityContainer _container;
+        private Clock _clock;
 
         #region Serialization
         // TODO: this responsibility does not belong to World

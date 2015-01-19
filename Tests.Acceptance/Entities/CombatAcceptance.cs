@@ -48,7 +48,7 @@ namespace Kaerber.MUD.Tests.Acceptance.Entities {
             Room.Update();
             Assert.AreEqual( 1, logger.Log.Count( e => e.Name == "ch_attacks_ch1" && e["ch"] == Model ) );
 
-            World.Time += 3000;
+            World.Pulse( ( World.Time + 3000 )*10000 );
             Room.Update();
             Assert.AreEqual( 2, logger.Log.Count( e => e.Name == "ch_attacks_ch1" && e["ch"] == Model ) );
         }

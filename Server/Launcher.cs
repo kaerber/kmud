@@ -19,19 +19,14 @@ namespace Kaerber.MUD.Server {
             var server = new Server();
             server.Initialize();
             
-            var ticks = DateTime.Now.Ticks;
-
             while( true ) {
-                var current = DateTime.Now.Ticks;
-                server.Update( ( current - ticks ) % 10000 );
-
-                Thread.Sleep( World.TimeStep );
+                server.Pulse( DateTime.Now.Ticks );
+                Thread.Sleep( Clock.TimeStep );
             }
         }
 
         public static void InitializeML() {
-            MLFunction.LoadAssemblies(
-                Assembly.GetAssembly( typeof( CharacterController ) ) );
+            MLFunction.LoadAssemblies( Assembly.GetAssembly( typeof( CharacterController ) ) );
         }
 
         public static JavaScriptSerializer InitializeSerializer() {

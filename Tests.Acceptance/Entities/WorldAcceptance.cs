@@ -1,12 +1,18 @@
 ﻿using System.IO;
 
 using Kaerber.MUD.Entities;
+using Kaerber.MUD.Server;
 
 using NUnit.Framework;
 
 namespace Kaerber.MUD.Tests.Acceptance.Entities {
     [TestFixture]
     public class WorldAcceptance : BaseAcceptanceTest {
+        [SetUp]
+        public void SetUp() {
+            CreateTestEnvironment();
+        }
+
         [Test]
         public void Deserialize_IsWorking() {
             var world = World.Serializer.Deserialize<World>(
@@ -19,6 +25,7 @@ namespace Kaerber.MUD.Tests.Acceptance.Entities {
         public void LoadAreas_IsWorking() {
             World.Instance = World.Serializer.Deserialize<World>(
                 File.ReadAllText( World.AssetsRootPath + "world.data" ) );
+            World.Instance.Initialize( UnityConfigurator.Configure() );
             World.Instance.LoadAreas();
 
             Assert.Greater( World.Instance.Areas.Count, 0 );

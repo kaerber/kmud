@@ -33,8 +33,8 @@ namespace Kaerber.MUD.Server {
 
         private readonly IUnityContainer _container;
 
-        public static UnityContainer TelnetContainer() {
-            var container = new UnityContainer();
+        public static IUnityContainer TelnetContainer( IUnityContainer parentContainer ) {
+            var container = parentContainer.CreateChildContainer();
             
             container.RegisterType<IConnectionController, ConnectionController>();
             container.RegisterType<IConnectionView, TelnetConnectionView>();

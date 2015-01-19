@@ -14,8 +14,7 @@ namespace Kaerber.MUD.Tests.Acceptance.Entities
     public class CharacterAcceptance : BaseAcceptanceTest
     {
         [SetUp]
-        protected override void CreateTestEnvironment()
-        {
+        protected override void CreateTestEnvironment() {
             base.CreateTestEnvironment();
         }
 

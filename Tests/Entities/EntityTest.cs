@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 
+using Kaerber.MUD.Server;
+
 using NUnit.Framework;
 
 using Kaerber.MUD.Entities;
@@ -11,6 +13,7 @@ namespace Kaerber.MUD.Tests.Entities
         [Test]
         public void SerializeTest() {
             World.Instance = new World();
+            World.Instance.Initialize( UnityConfigurator.Configure() );
 
             var entity = new Character {
                 Id = "test_entity",

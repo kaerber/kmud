@@ -1,8 +1,10 @@
 ﻿using System;
+using Microsoft.Practices.Unity;
+
+using Kaerber.MUD.Server;
+using Kaerber.MUD.Entities;
 
 using NUnit.Framework;
-
-using Kaerber.MUD.Entities;
 
 namespace Kaerber.MUD.Tests.Entities {
     [TestFixture]
@@ -16,11 +18,14 @@ namespace Kaerber.MUD.Tests.Entities {
 
         [Test]
         public void DurationTest() {
-            World.Instance = new World { Time = 0 };
+            World.Instance = new World();
+            var container = UnityConfigurator.Configure();
+            container.RegisterInstance( new Clock( 0 ) );
+            World.Instance.Initialize( container );
 
             var affect = new Affect { Duration = 20 };
             Assert.AreEqual( 20, affect.Duration );
-            World.Instance.Time = 10;
+            World.Instance.Pulse( 10*10000 );
             Assert.AreEqual( 10, affect.Duration );
         }
 

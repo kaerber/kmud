@@ -60,7 +60,7 @@ namespace Kaerber.MUD.Entities {
             Tick();
             Round();
             Update();
-            return ( this );
+            return this;
         }
 
         public override ISerialized Deserialize( IDictionary<string, object> data ) {
@@ -90,7 +90,7 @@ namespace Kaerber.MUD.Entities {
 
 
         public void Update() {
-            UpdateQueue.AddRelative( ( 200 + World.RndGen.Next( 200 ) )*World.TimeBase, Update );
+            UpdateQueue.AddRelative( ( 200 + World.RndGen.Next( 200 ) )*Clock.TimeBase, Update );
             UpdateQueue.Run();
 
             if( Resets != null )
@@ -134,6 +134,6 @@ namespace Kaerber.MUD.Entities {
             return string.Format( "[{0}] {1}", Id ?? "No-ID", ShortDescr ?? "No-Short-Descr" );
         }
 
-        private static ILog _log = LogManager.GetLogger( typeof( Room ) );
+        private static readonly ILog _log = LogManager.GetLogger( typeof( Room ) );
     }
 }

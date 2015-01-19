@@ -23,6 +23,8 @@ namespace Kaerber.MUD.Server {
             World.Instance = World.Serializer.Deserialize<World>(
                 File.ReadAllText( World.AssetsRootPath + "world.data" ) );
             World.Instance.LoadAreas();
+            World.Instance.Initialize( _container );
+            _container.RegisterInstance( World.Instance );
 
             var commandManager = new CommandManager();
             commandManager.Load();
@@ -39,26 +41,12 @@ namespace Kaerber.MUD.Server {
             listener.ConnectionReceived += AcceptConnection;
         }
 
-        public void Update( long time ) {
-            World.Instance.Time = time;
-
-            // tick
-            if( World.Instance.Time/World.TimeHour > _tick ) {
-                World.Instance.Rooms.Values.ToList().ForEach( room => room.Tick() );
-                _tick++;
-                _round = 0;
-            }
-
-            // round
-            if( ( World.Instance.Time % World.TimeHour ) / World.TimeRound > _round ) {
-                _round++;
-                World.Instance.Rooms.Values.ToList().ForEach( room => room.Round() );
-            }
-
+        public virtual void Pulse( long ticks ) {
+            World.Instance.Pulse( ticks );
         }
 
         private void AcceptConnection( TelnetConnection telnetConnection ) {
-            var container = TelnetSession.TelnetContainer();
+            var container = TelnetSession.TelnetContainer( _container );
             container.RegisterInstance( telnetConnection );
             
             var session = container.Resolve<TelnetSession>();

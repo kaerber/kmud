@@ -1,6 +1,7 @@
 ﻿using Kaerber.MUD.Entities.Aspects;
 
 using Kaerber.MUD.Entities;
+using Kaerber.MUD.Server;
 
 using NUnit.Framework;
 using Moq;
@@ -11,16 +12,14 @@ namespace Kaerber.MUD.Tests.Entities {
         [Test]
         public void CastAffectToRoomTest() {
             World.Instance = new World();
+            World.Instance.Initialize( UnityConfigurator.Configure() );
 
             var room = new Room();
-            room.Affects.Add( new Affect(
-                    new AffectInfo {
-                        Name = "horde_room",
-                        Target = AffectTarget.Room
-                    } 
-                )
-                { Duration = World.TimeHour }
-            );
+            room.Affects.Add( new Affect( new AffectInfo {
+                Name = "horde_room",
+                Target = AffectTarget.Room
+            } )
+            { Duration = Clock.TimeHour } );
 
             Assert.AreEqual( 1, room.Affects.Count );
             Assert.AreEqual( "horde_room", room.Affects[0].Name );

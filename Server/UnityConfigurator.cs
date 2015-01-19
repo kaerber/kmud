@@ -1,5 +1,8 @@
-﻿using Kaerber.MUD.Common;
+﻿using System;
+
+using Kaerber.MUD.Common;
 using Kaerber.MUD.Controllers.Commands;
+using Kaerber.MUD.Entities;
 using Kaerber.MUD.Server.Managers;
 
 using Microsoft.Practices.Unity;
@@ -9,6 +12,7 @@ namespace Kaerber.MUD.Server {
         public static UnityContainer Configure() {
             var container = new UnityContainer();
             container.RegisterInstance<IManager<ICommand>>( new CommandManager() );
+            container.RegisterInstance( new Clock( DateTime.Now.Ticks ) );
             return container;
         }
     }

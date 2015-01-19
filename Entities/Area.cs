@@ -6,10 +6,8 @@ using Kaerber.MUD.Common;
 using Kaerber.MUD.Entities.Aspects;
 
 
-namespace Kaerber.MUD.Entities
-{
-    public class Area : Entity
-    {
+namespace Kaerber.MUD.Entities {
+    public class Area : Entity {
         public List<Room> Rooms;    // TODO: hashtable
         public List<Item> Items;
         public List<Character> Mobs;
@@ -18,66 +16,57 @@ namespace Kaerber.MUD.Entities
         private int _roomId;
         private int _mobId;
 
-        public Area()
-        {
+        public Area() {
             Rooms = new List<Room>();
             Items = new List<Item>();
             Mobs = new List<Character>();
         }
 
-        public Area( string vnum, string names, string shortDescr )
-            : base( vnum, names, shortDescr )
-        {
+        public Area( string vnum, string names, string shortDescr ) : base( vnum, names, shortDescr ) {
             Rooms = new List<Room>();
             Items = new List<Item>();
             Mobs = new List<Character>();
         }
 
-        public override Entity Initialize()
-        {
+        public override Entity Initialize() {
             base.Initialize();
             UpdateQueue = new TimedEventQueue( World.Instance.UpdateQueue );
             ClearDirty();
             Rooms.ForEach( room => room.Initialize() );
 
-            return ( this );
+            return this;
         }
 
-        public override ISerialized Deserialize( IDictionary<string, object> data )
-        {
+        public override ISerialized Deserialize( IDictionary<string, object> data ) {
             Items = World.ConvertToType<List<Item>>( data["Items"] );
-            if (World.Instance != null)
-                Items.ForEach(item =>
-                {
+            if( World.Instance != null )
+                Items.ForEach( item => {
                     item.Dirty += OnDirty;
-                    World.Instance.Items.Add(item.Id, item);
-                });
-            _itemId = World.ConvertToTypeExs<int>(data, "itemId");
+                    World.Instance.Items.Add( item.Id, item );
+                } );
+            _itemId = World.ConvertToTypeExs<int>( data, "itemId" );
 
-            Mobs = World.ConvertToType<List<Character>>(data["Mobs"]);
-            if (World.Instance != null)
-                Mobs.ForEach(mob =>
-                {
+            Mobs = World.ConvertToType<List<Character>>( data["Mobs"] );
+            if( World.Instance != null )
+                Mobs.ForEach( mob => {
                     mob.Dirty += OnDirty;
-                    World.Instance.Mobs.Add(mob.Id, mob);
-                });
-            _mobId = World.ConvertToTypeExs<int>(data, "mobId");
+                    World.Instance.Mobs.Add( mob.Id, mob );
+                } );
+            _mobId = World.ConvertToTypeExs<int>( data, "mobId" );
 
             Rooms = World.ConvertToType<List<Room>>( data["Rooms"] );
             if( World.Instance != null )
-                Rooms.ForEach( room =>
-                    {
-                        room.Dirty += OnDirty;
-                        room.Area = this;
-                        World.Instance.Rooms.Add( room.Id, room );
-                    } );
+                Rooms.ForEach( room => {
+                    room.Dirty += OnDirty;
+                    room.Area = this;
+                    World.Instance.Rooms.Add( room.Id, room );
+                } );
             _roomId = World.ConvertToTypeExs<int>( data, "roomId" );
 
-            return ( base.Deserialize( data ) );
+            return base.Deserialize( data );
         }
 
-        public override IDictionary<string, object> Serialize()
-        {
+        public override IDictionary<string, object> Serialize() {
             return ( base.Serialize()
                 .AddEx( "Rooms", Rooms )
                 .AddEx( "roomId", _roomId )
@@ -87,10 +76,8 @@ namespace Kaerber.MUD.Entities
                 .AddEx( "mobId", _mobId ) );
         }
 
-        public virtual void Save()
-        {
-            if( dirty )
-            {
+        public virtual void Save() {
+            if( dirty ) {
                 lock( this )
                     File.WriteAllText( World.AssetsRootPath + Id + ".data", World.Serializer.Serialize( this ) );
                 Console.WriteLine( World.Instance.Time/1000 + ": log area_save: Area " + Id + ": saved" );
@@ -101,22 +88,19 @@ namespace Kaerber.MUD.Entities
             ClearDirty();
         }
 
-        public void SetDirty()
-        {
+        public void SetDirty() {
             dirty = true;
         }
 
-        public Area ClearDirty()
-        {
-            var nextTime = World.Instance.Time + World.TimeHour*24*7 + World.RndGen.Next( World.TimeHour*24*7 );
+        public Area ClearDirty() {
+            var nextTime = World.Instance.Time + Clock.TimeHour*24*7 + World.RndGen.Next( Clock.TimeHour*24*7 );
             UpdateQueue.Add( nextTime, Save );
             dirty = false;
-            return( this );
+            return this;
         }
 
 
-        public Room AddRoom( Room room )
-        {
+        public Room AddRoom( Room room ) {
             if( string.IsNullOrWhiteSpace( room.Id ) )
                 room.Id = string.Format( "{0}_{1:00}", Id, _roomId++ );
 
@@ -125,12 +109,11 @@ namespace Kaerber.MUD.Entities
             room.Dirty += OnDirty;
             World.Instance.Rooms.Add( room.Id, room );
 
-            return ( room );
+            return room;
         }
 
 
-        public Character AddMob( Character mob )
-        {
+        public Character AddMob( Character mob ) {
             if( string.IsNullOrWhiteSpace( mob.Id ) )
                 mob.Id = string.Format( "{0}_{1:00}", Id, _mobId++ );
             if( !mob.Id.StartsWith( Id.ToLower() + "_" ) )
@@ -140,12 +123,11 @@ namespace Kaerber.MUD.Entities
             mob.Dirty += OnDirty;
             World.Instance.Mobs.Add( mob.Id, mob );
 
-            return ( mob );
+            return mob;
         }
 
 
-        public Item AddItem( Item item )
-        {
+        public Item AddItem( Item item ) {
             if( string.IsNullOrWhiteSpace( item.Id ) )
                 item.Id = string.Format( "{0}_{1:00}", Id, _itemId++ );
             if( !item.Id.StartsWith( Id.ToLower() + "_" ) )
@@ -155,19 +137,17 @@ namespace Kaerber.MUD.Entities
             item.Dirty += OnDirty;
             World.Instance.Items.Add( item.Id, item );
 
-            return ( item );
+            return item;
         }
 
 
-        public virtual Room GetRoom( string vnum )
-        {
-            return ( Rooms.Find( room => room.Id == vnum ) );
+        public virtual Room GetRoom( string vnum ) {
+            return Rooms.Find( room => room.Id == vnum );
         }
 
 
-        public static Area Load( string vnum )
-        {
-            return ( World.Serializer.Deserialize<Area>( File.ReadAllText( World.AssetsRootPath + vnum + ".data" ) ) );
+        public static Area Load( string vnum ) {
+            return World.Serializer.Deserialize<Area>( File.ReadAllText( World.AssetsRootPath + vnum + ".data" ) );
         }
     }
 }

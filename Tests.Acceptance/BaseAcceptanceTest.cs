@@ -1,13 +1,15 @@
-﻿using Kaerber.MUD.Controllers;
+﻿using Microsoft.Practices.Unity;
+
+using Kaerber.MUD.Controllers;
 using Kaerber.MUD.Entities;
 using Kaerber.MUD.Entities.Aspects;
+using Kaerber.MUD.Server;
 using Kaerber.MUD.Server.Managers;
 using Kaerber.MUD.Telnet;
 using Kaerber.MUD.Tests.Entities;
 using Kaerber.MUD.Views;
 
 using Moq;
-
 
 namespace Kaerber.MUD.Tests.Acceptance {
     public class BaseAcceptanceTest : BaseEntityTest {
@@ -22,6 +24,9 @@ namespace Kaerber.MUD.Tests.Acceptance {
         protected virtual void CreateTestEnvironment() {
             World = new World();
             World.Instance = World;
+            var configurator = UnityConfigurator.Configure();
+            configurator.RegisterInstance( new Clock( 0 ) );
+            World.Initialize( configurator );
 
             Room = AddTestRoom( "test", "Test", World );
 
