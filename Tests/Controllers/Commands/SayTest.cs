@@ -26,7 +26,7 @@ namespace Kaerber.MUD.Tests.Controllers.Commands
             var command = new Say();
 
             var mockManager = new Mock<IManager<ICommand>>(); 
-            command.Execute( new CharacterController( ch, mockView.Object, mockManager.Object ),
+            command.Execute( new CharacterController( ch, mockView.Object, mockManager.Object, null ),
                              PlayerInput.Parse( "say hey-hey-hey!" ) );
         }
     }

@@ -167,7 +167,7 @@ namespace Kaerber.MUD.Entities
         public void Die() {
             Contract.Requires( Room != null );
 
-            if( !this.CanDo( "die" ) )
+            if( !this.Can( "die" ) )
                 return;
             
             var corpse = CreateCorpse();
@@ -176,7 +176,7 @@ namespace Kaerber.MUD.Entities
             corpse.Container.Items.AddRange( Eq.Items );
             Eq.Clear();
 
-            this.Did( "died" );
+            this.Has( "died" );
             SetRoom( RespawnAt );
             if( RespawnAt != null )
                 Restore();
@@ -191,11 +191,6 @@ namespace Kaerber.MUD.Entities
             return ( corpse );
         }
 
-        public void Write( string message ) {
-            this.Did( "saw_something", new PythonDictionary { { "message", message } } );
-        }
-
-        #region Events
         public override void ReceiveEvent( Event e ) {
             foreach( var ex in e.Parameters.Where( p => p.Value == this )
                                            .Select( e.ChangeToThis ) ) {
@@ -228,20 +223,20 @@ namespace Kaerber.MUD.Entities
             Room.ReceiveEvent( e );
         }
 
-        public virtual bool CanDo( string action, PythonDictionary args = null ) {
+        public virtual bool Can( string action, PythonDictionary args = null ) {
             Contract.Requires( Room != null );
             var canEvent = DoEvent( "ch_can_" + action, EventReturnMethod.And, args );
             return canEvent.ReturnValue;
         }
 
 
-        public virtual void Does( string action, PythonDictionary args = null ) {
+        public virtual void Is( string action, PythonDictionary args = null ) {
             Contract.Requires( Room != null );
             DoEvent( "ch_" + action, EventReturnMethod.None, args );
         }
 
 
-        public virtual void Did( string action, PythonDictionary args = null ) {
+        public virtual void Has( string action, PythonDictionary args = null ) {
             Contract.Requires( Room != null );
             DoEvent( "ch_" + action, EventReturnMethod.None, args );
         }
@@ -257,7 +252,6 @@ namespace Kaerber.MUD.Entities
 
             return doEvent;
         }
-        #endregion
 
 
         public void SetRoom( Room room ) {
@@ -328,7 +322,7 @@ namespace Kaerber.MUD.Entities
             Contract.Requires( attack != null );
             Contract.Requires( Target != null );
 
-            this.Does( "attacks_ch1", new PythonDictionary { { "ch1", Target }, { "attack", attack } } );
+            this.Is( "attacks_ch1", new PythonDictionary { { "ch1", Target }, { "attack", attack } } );
             Combat.MakeAttack( attack );
         }
 
@@ -337,7 +331,7 @@ namespace Kaerber.MUD.Entities
             Contract.Requires( item.WearLoc != WearLocation.Inventory );
             Contract.Requires( Inventory.Contains( item ) );
 
-            if( !this.CanDo( "equip_item", new PythonDictionary{ { "item", item } } ) )
+            if( !this.Can( "equip_item", new PythonDictionary{ { "item", item } } ) )
                 return false;
 
             if( Eq.Have( item.WearLoc ) ) {
@@ -348,7 +342,7 @@ namespace Kaerber.MUD.Entities
             Inventory.Remove( item );
             Eq.Equip( item );
 
-            this.Did( "equipped_item", new PythonDictionary { { "item", item } } );
+            this.Has( "equipped_item", new PythonDictionary { { "item", item } } );
 
             return true;
         }
@@ -358,13 +352,13 @@ namespace Kaerber.MUD.Entities
             Contract.Requires( Room != null );
             Contract.Requires( Eq.Have( item ) );
 
-            if( !this.CanDo( "remove_item", new PythonDictionary { { "item", item } } ) )
+            if( !this.Can( "remove_item", new PythonDictionary { { "item", item } } ) )
                 return false;
 
             Eq.Remove( item );
             Inventory.Add( item );
 
-            this.Did( "removed_item", new PythonDictionary { { "item", item } } );
+            this.Has( "removed_item", new PythonDictionary { { "item", item } } );
             return true;
         }
 

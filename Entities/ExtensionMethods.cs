@@ -14,12 +14,6 @@ namespace Kaerber.MUD.Entities
                 : src );
         }
 
-        // void IEnumerable<Character>.Broadcast( string message )
-        public static void Broadcast( this IEnumerable<Character> lch, string message )
-        {
-            lch.ToList().ForEach( ch => ch.Write( message ) );
-        }
-
         // Dictionary<T1, T2> Dictionary<T1, T2>.AddIf( T1 key, T2 value, bool condition )
         public static IDictionary<T1, T2> AddIf<T1, T2>( this IDictionary<T1, T2> store, T1 key, T2 value, bool condition )
         {

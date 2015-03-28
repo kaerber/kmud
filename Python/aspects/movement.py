@@ -30,20 +30,23 @@ class MovementAspect( Aspect ):
         return self
 
     def CanLeaveRoom( self, room ):
-        return( self.Host.CanDo( 'leave_room', { 'room': room } ) )
+        return self.Host.Can( 'leave_room', { 'room': room } )
 
     def CanEnterRoom( self, room ):
         event = Event.Create( 'ch_can_enter_room', EventReturnMethod.And, { 'ch': self.Host, 'room': room } )
         room.ReceiveEvent( event )
         self.Host.ReceiveEvent( event )
-        return( event.ReturnValue )
+        return event.ReturnValue
 
     
     def WentFromRoom( self, fromroom, toroom ):
-        event = Event.Create( 'ch_went_from_room_to_room', EventReturnMethod.None,
-            { 'ch': self.Host,
-                'room_from': fromroom, 'room_to': toroom,
-                'exit': fromroom.Exits[toroom], 'entrance': toroom.Exits[fromroom] } )
+        event = Event.Create( 'ch_went_from_room_to_room', 
+                              EventReturnMethod.None,
+                              { 'ch': self.Host,
+                                'room_from': fromroom, 
+                                'room_to': toroom,
+                                'exit': fromroom.Exits[toroom], 
+                                'entrance': toroom.Exits[fromroom] } )
         fromroom.ReceiveEvent( event )
         toroom.ReceiveEvent( event )
 
@@ -53,4 +56,4 @@ class MovementAspect( Aspect ):
         self.Host.ReceiveEvent( event )
 
     def EnteredRoom( self, room ):
-        self.Host.Did( "entered_room", { 'room': room } )
+        self.Host.Has( "entered_room", { 'room': room } )

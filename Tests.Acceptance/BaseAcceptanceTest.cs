@@ -21,6 +21,10 @@ namespace Kaerber.MUD.Tests.Acceptance {
 
         protected CommandManager CommandManager;
 
+        protected Mock<TelnetConnection> MockConnection;
+        protected Mock<TelnetRenderer> MockRenderer;
+        protected Mock<ITelnetInputParser> MockParser;
+
         protected virtual void CreateTestEnvironment() {
             World = new World();
             World.Instance = World;
@@ -31,33 +35,33 @@ namespace Kaerber.MUD.Tests.Acceptance {
             Room = AddTestRoom( "test", "Test", World );
 
             Controller = CreateTestCharacter( "test char", "test char", Room, World );
-
-            Model = Controller.Model;
-
-            View = Controller.View;
         }
 
         protected CharacterController CreateTestCharacter( string shortDescr, 
                                                            string names, 
                                                            Room room,
                                                            World world ) {
-            var model = new Character { ShortDescr = shortDescr, Names = names };
-            model.SetRoom( room );
-            model.World = world;
-            model.Restore();
+            Model = new Character { ShortDescr = shortDescr, Names = names };
+            Model.SetRoom( room );
+            Model.World = world;
+            Model.Restore();
 
-            var mockConnection = new Mock<TelnetConnection>( null, null );
-            mockConnection.Setup( c => c.Write( It.IsAny<string>() ) );
+            MockConnection = new Mock<TelnetConnection>( null, null );
+            MockConnection.Setup( c => c.Write( It.IsAny<string>() ) );
 
-            var mockRenderer = new Mock<TelnetRenderer>( model );
+            MockRenderer = new Mock<TelnetRenderer>( Model );
 
-            var view = new TelnetCharacterView( mockConnection.Object, model, mockRenderer.Object );
-            model.ViewEvent += e => View.ReceiveEvent( e );
+            MockParser = new Mock<ITelnetInputParser>();
+
+            View = new TelnetCharacterView( MockConnection.Object,
+                                            Model,
+                                            MockRenderer.Object,
+                                            MockParser.Object );
+            Model.ViewEvent += e => View.ReceiveEvent( e );
 
             CommandManager = new CommandManager();
-            //CommandManager.Load();
  
-            return new CharacterController( model, view, CommandManager );
+            return new CharacterController( Model, View, CommandManager, null );
         }
 
         protected void TestModelEvent( string name, params EventArg[] args ) {

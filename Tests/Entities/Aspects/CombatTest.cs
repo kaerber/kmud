@@ -49,7 +49,7 @@ namespace Kaerber.MUD.Tests.Entities.Aspects {
                 .Returns( mockTarget.Object );
             mockAbility.Setup( c => c.Activate() );
 
-            mockSelf.Setup( self => self.Did( "targeted_ch1", It.IsAny<PythonDictionary>() ) );
+            mockSelf.Setup( self => self.Has( "targeted_ch1", It.IsAny<PythonDictionary>() ) );
 
             var combat = AspectFactory.Combat();
             combat.Host = mockSelf.Object;
@@ -95,7 +95,7 @@ namespace Kaerber.MUD.Tests.Entities.Aspects {
         [Test]
         public void EventRaisedOnMiss() {
             var mockChar = new Mock<Character>();
-            mockChar.Setup( ch => ch.Did( "missed_ch1", It.IsAny<PythonDictionary>() ) );
+            mockChar.Setup( ch => ch.Has( "missed_ch1", It.IsAny<PythonDictionary>() ) );
 
             var mockAttack = new Mock<IMockAttack>();
             mockAttack.Setup( attack => attack.Hit() ).Returns( false );

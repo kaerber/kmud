@@ -22,9 +22,10 @@ namespace Kaerber.MUD.Server {
         public void Initialize() {
             World.Instance = World.Serializer.Deserialize<World>(
                 File.ReadAllText( World.AssetsRootPath + "world.data" ) );
-            World.Instance.LoadAreas();
             World.Instance.Initialize( _container );
             _container.RegisterInstance( World.Instance );
+
+            World.Instance.LoadAreas();
 
             var commandManager = new CommandManager();
             commandManager.Load();
@@ -53,9 +54,6 @@ namespace Kaerber.MUD.Server {
             session.Start();
             _sessions.Add( session );
         }
-
-        private long _round;
-        private long _tick;
 
         private readonly UnityContainer _container;
         private readonly IList<TelnetListener> _listeners;

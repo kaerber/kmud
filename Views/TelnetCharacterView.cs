@@ -10,7 +10,8 @@ namespace Kaerber.MUD.Views {
     public class TelnetCharacterView : ICharacterView {
         public TelnetCharacterView( TelnetConnection connection, 
                                     Character model,
-                                    ITelnetRenderer renderer ) {
+                                    ITelnetRenderer renderer,
+                                    ITelnetInputParser parser ) {
             _model = model;
             _model.ViewEvent += ReceiveEvent;
 
@@ -20,6 +21,7 @@ namespace Kaerber.MUD.Views {
 
             _connection = connection;
             _renderer = renderer;
+            _parser = parser;
         }
 
         public bool Command { get; set; }
@@ -28,7 +30,8 @@ namespace Kaerber.MUD.Views {
         /// A blocking sequence of commands received from Telnet connection and pre-parsed.
         /// </summary>
         public IEnumerable<string> Commands() {
-            return _connection.ReadLines( Encoding.ASCII );
+            return _connection.ReadLines( Encoding.ASCII )
+                              .Select( cmd => _parser.Parse( cmd, _model ) );
         }
 
         public void Start() {
@@ -152,5 +155,6 @@ namespace Kaerber.MUD.Views {
         private readonly dynamic _view;
         private readonly TelnetConnection _connection;
         private readonly ITelnetRenderer _renderer;
+        private readonly ITelnetInputParser _parser;
     }
 }

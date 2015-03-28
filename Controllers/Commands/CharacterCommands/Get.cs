@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Linq;
 
+using IronPython.Runtime;
+
 using Kaerber.MUD.Entities;
 
 namespace Kaerber.MUD.Controllers.Commands.CharacterCommands {
@@ -49,36 +51,39 @@ namespace Kaerber.MUD.Controllers.Commands.CharacterCommands {
             }
         }
 
+        public string ToString( string format, IFormatProvider formatProvider ) {
+            return Name;
+        }
 
         private static void CharacterGetsItemFromContainer( Character ch, Item container, Item containerItem ) {
-            if( !ch.Room.Event( "ch_can_get_item_from_container", EventReturnMethod.And,
-                                new EventArg( "ch", ch ),
-                                new EventArg( "item", containerItem ), new EventArg( "container", container ) ) )
+            if( !ch.Can( "get_item_from_container", 
+                         new PythonDictionary {
+                                { "ch", ch },
+                                { "item", containerItem }, 
+                                { "container", container }
+                         } ) )
                 return;
 
             container.Container.Items.Remove( containerItem );
             ch.Inventory.Add( containerItem );
 
-            ch.Room.Event( "ch_got_item_from_container", EventReturnMethod.None,
-                           new EventArg( "ch", ch ),
-                           new EventArg( "item", containerItem ), new EventArg( "container", container ) );
+            ch.Has( "got_item_from_container",
+                    new PythonDictionary { 
+                        { "ch", ch },
+                        { "item", containerItem },
+                        { "container", container }
+                    } );
         }
 
 
         private static void CharacterGetsItem( Character ch, Item item ) {
-            if( !ch.Room.Event( "ch_can_get_item", EventReturnMethod.And,
-                                new EventArg( "ch", ch ), new EventArg( "item", item ) ) )
+            if( !ch.Can( "get_item", new PythonDictionary { { "ch", ch }, { "item", item } } ) )
                 return;
 
             ch.Room.Items.Remove( item );
             ch.Inventory.Add( item );
 
-            ch.Room.Event( "ch_got_item", EventReturnMethod.None,
-                           new EventArg( "ch", ch ), new EventArg( "item", item ) );
-        }
-
-        public string ToString( string format, IFormatProvider formatProvider ) {
-            return Name;
+            ch.Has( "got_item", new PythonDictionary { { "ch", ch }, { "item", item } } );
         }
     }
 }

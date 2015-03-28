@@ -31,18 +31,18 @@ class CombatAspect( Aspect ):
         if target == None: return
 
         # event triggers auto-attack ability
-        self.Host.Did( 'targeted_ch1', { 'ch1': target } )
+        self.Host.Has( 'targeted_ch1', { 'ch1': target } )
 
     
     def MakeAttack( self, attack ):
         if not attack.Hit():
-            self.Host.Did( 'missed_ch1', { 'ch1' : self.Fighting } )
+            self.Host.Has( 'missed_ch1', { 'ch1' : self.Fighting } )
             return
         
-        self.Host.Did( 'hit_ch1', { 'ch1' : self.Fighting } )
+        self.Host.Has( 'hit_ch1', { 'ch1' : self.Fighting } )
 
         damage = attack.Damage()
-        self.Host.Did( 'dealt_damage_to_ch1', { 'damage': damage, 'ch1': self.Fighting } )
+        self.Host.Has( 'dealt_damage_to_ch1', { 'damage': damage, 'ch1': self.Fighting } )
 
         
     @property
@@ -52,7 +52,7 @@ class CombatAspect( Aspect ):
     @Fighting.setter
     def Fighting( self, value ):
         if self._target != None and value == None:
-            self.Host.Did( 'stopped_target_ch1', { 'ch1': self._target } )
+            self.Host.Has( 'stopped_target_ch1', { 'ch1': self._target } )
         self._target = value
     
     @property

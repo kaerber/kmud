@@ -12,7 +12,10 @@ namespace Kaerber.MUD.Server {
         public static UnityContainer Configure() {
             var container = new UnityContainer();
             container.RegisterInstance<IManager<ICommand>>( new CommandManager() );
+            container.RegisterInstance<IManager<Character>>( new CharacterManager() );
+
             container.RegisterInstance( new Clock( DateTime.Now.Ticks ) );
+
             return container;
         }
     }

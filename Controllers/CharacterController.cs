@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.IO;
-using System.Linq;
+﻿using System.Linq;
 
 using Kaerber.MUD.Common;
 using Kaerber.MUD.Controllers.Commands;
@@ -9,14 +7,14 @@ using Kaerber.MUD.Views;
 
 namespace Kaerber.MUD.Controllers {
     public class CharacterController : ICharacterController {
-        public delegate void CharacterCommandHandler( Character character, IEnumerable<string> args );
-
         public CharacterController( Character model, 
                                     ICharacterView view, 
-                                    IManager<ICommand> commandManager ) {
+                                    IManager<ICommand> commandManager,
+                                    IManager<Character> characterManager ) {
             Model = model;
             View = view;
             _commandManager = commandManager;
+            _characterManager = characterManager;
         }
 
         public Character Model { get; private set; }
@@ -54,9 +52,8 @@ namespace Kaerber.MUD.Controllers {
             }
         }
 
-        public void SaveCharacter()
-        {
-            File.WriteAllText( World.PlayersRootPath + Model.ShortDescr + ".data", World.Serializer.Serialize( Model ) );
+        public void SaveCharacter() {
+            _characterManager.Save( Model );
         }
 
         public void Quit() {
@@ -73,5 +70,6 @@ namespace Kaerber.MUD.Controllers {
         }
 
         private readonly IManager<ICommand> _commandManager;
+        private readonly IManager<Character> _characterManager;
     }
 }

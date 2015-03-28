@@ -24,10 +24,6 @@ namespace Kaerber.MUD.Entities {
 
         public static Random RndGen = new Random();
 
-        //public static List<User> ActiveUsers =  new List<User>();
-        //public static List<ISession> ActiveConnections = new List<ISession>();
-        //public static List<IPlayerController> ActivePlayers = new List<IPlayerController>();
-
         static World() {
             RootPath = ConfigurationManager.AppSettings.Get( "RootPath" );
             AssetsRootPath = ConfigurationManager.AppSettings.Get( "AssetsRootPath" );

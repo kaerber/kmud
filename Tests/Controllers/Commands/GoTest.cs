@@ -19,7 +19,7 @@ namespace Kaerber.MUD.Tests.Controllers.Commands {
             var ch = new Character();
             var mockView = new Mock<ICharacterView>();
             var mockCommandManager = new Mock<IManager<ICommand>>();
-            var pc = new CharacterController( ch, mockView.Object, mockCommandManager.Object );
+            var pc = new CharacterController( ch, mockView.Object, mockCommandManager.Object, null );
             var command = new Go();
             command.Execute( pc, PlayerInput.Parse( "north" ) );
         }

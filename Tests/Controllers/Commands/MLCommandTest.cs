@@ -22,7 +22,8 @@ namespace Kaerber.MUD.Tests.Controllers.Commands
             var mockManager = new Mock<IManager<ICommand>>();
             var pc = new CharacterController( mockCharacter.Object, 
                                               mockView.Object, 
-                                              mockManager.Object );
+                                              mockManager.Object,
+                                              null );
             var command = new MLCommand( "divideByZero", "10/0" );
             Assert.Throws<DivideByZeroException>( 
                 () => command.Execute( pc, PlayerInput.Parse( "test" ) )
