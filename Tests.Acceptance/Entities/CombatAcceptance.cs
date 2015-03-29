@@ -14,25 +14,25 @@ namespace Kaerber.MUD.Tests.Acceptance.Entities {
         [SetUp]
         protected override void CreateTestEnvironment() {
  	         base.CreateTestEnvironment();
-            _vch = CreateTestCharacter( "enemy", "enemy", Room, World ).Model;
+            _vch = CreateTestCharacter( "enemy", "enemy", TestRoom, World );
         }
 
         /// <summary>Characters targets enemy on Kill command </summary>
         [Test]
         public void TargetOnKillTest() {
-            Controller.OnCommand( PlayerInput.Parse( "kill enem" ) );
-            Assert.AreEqual( _vch, Model.Target );
+            TestChar.Controller.OnCommand( PlayerInput.Parse( "kill enem" ) );
+            Assert.AreEqual( _vch.Model, TestChar.Model.Target );
         }
 
         [Test]
         public void AutoAttackTriggeredTest() {
-            Model.Spec = SpecFactory.Warrior;
+            TestChar.Model.Spec = SpecFactory.Warrior;
 
             var mockActionQueueSet = new Mock<ActionQueueSet>();
             mockActionQueueSet.Setup( s => s.EnqueueAction( "autoattack", It.IsAny<AutoAttackAction>() ) );
-            Model.ActionQueueSet = mockActionQueueSet.Object;
+            TestChar.Model.ActionQueueSet = mockActionQueueSet.Object;
 
-            Controller.OnCommand( PlayerInput.Parse( "kill enem" ) );
+            TestChar.Controller.OnCommand( PlayerInput.Parse( "kill enem" ) );
 
             mockActionQueueSet.Verify( s => s.EnqueueAction( "autoattack", It.IsAny<AutoAttackAction>() ), 
                                        Times.Once() );
@@ -42,17 +42,17 @@ namespace Kaerber.MUD.Tests.Acceptance.Entities {
         [Test]
         public void CharRepeatsAutoAttack() {
             var logger = new EventLogger();
-            Room.Aspects["logger"] = logger;
+            TestRoom.Aspects["logger"] = logger;
 
-            Model.Kill( _vch );
-            Room.Update();
-            Assert.AreEqual( 1, logger.Log.Count( e => e.Name == "ch_attacks_ch1" && e["ch"] == Model ) );
+            TestChar.Model.Kill( _vch.Model );
+            TestRoom.Update();
+            Assert.AreEqual( 1, logger.Log.Count( e => e.Name == "ch_attacks_ch1" && e["ch"] == TestChar.Model ) );
 
             World.Pulse( ( World.Time + 3000 )*10000 );
-            Room.Update();
-            Assert.AreEqual( 2, logger.Log.Count( e => e.Name == "ch_attacks_ch1" && e["ch"] == Model ) );
+            TestRoom.Update();
+            Assert.AreEqual( 2, logger.Log.Count( e => e.Name == "ch_attacks_ch1" && e["ch"] == TestChar.Model ) );
         }
 
-        private Character _vch;
+        private TestCharacter _vch;
     }
 }

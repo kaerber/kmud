@@ -26,20 +26,20 @@ namespace Kaerber.MUD.Tests.Acceptance.Entities
         [Test]
         public void CharIsDeserializedIntoRoom()
         {
-            Model.SetRoom( null );
+            TestChar.Model.SetRoom( null );
 
             var serialized = new Dictionary<string, object>
             {
                 { "Vnum", "test-char" },
                 { "Names", "test char" },
                 { "ShortDescr", "test char" },
-                { "LoginAt", Room.Id }
+                { "LoginAt", TestRoom.Id }
             };
-            Model.Deserialize( serialized );
+            TestChar.Model.Deserialize( serialized );
 
-            Assert.AreEqual( Room, Model.Room );
-            Assert.IsTrue( Room.Characters.Contains( Model ) );
-            Assert.IsTrue( Model.UpdateQueue.IsAttached );
+            Assert.AreEqual( TestRoom, TestChar.Model.Room );
+            Assert.IsTrue( TestRoom.Characters.Contains( TestChar.Model ) );
+            Assert.IsTrue( TestChar.Model.UpdateQueue.IsAttached );
         }
 
         /// <summary>
@@ -48,19 +48,19 @@ namespace Kaerber.MUD.Tests.Acceptance.Entities
         [Test]
         public void CharacterLoginsWithStoredCurrentHealth()
         {
-            Model.Restore();
-            var wounds = Model.Health.Wounds;
+            TestChar.Model.Restore();
+            var wounds = TestChar.Model.Health.Wounds;
             Assert.AreEqual( 0, wounds );
 
-            var data = Model.Serialize();
+            var data = TestChar.Model.Serialize();
             var strdata = World.Serializer.Serialize( data );
             data = World.Serializer.Deserialize<Dictionary<string, object>>( strdata );
 
-            Model.SetRoom( null );
-            Model = new Character { World = this.World };
+            TestChar.Model.SetRoom( null );
+            TestChar.Model = new Character { World = this.World };
 
-            Model.Deserialize( data );
-            Assert.AreEqual( wounds, Model.Health.Wounds );
+            TestChar.Model.Deserialize( data );
+            Assert.AreEqual( wounds, TestChar.Model.Health.Wounds );
         }
 
         /// <summary>
@@ -71,16 +71,16 @@ namespace Kaerber.MUD.Tests.Acceptance.Entities
         public void MoveEventIsFiredWhenCharacterMoves()
         {
             var logFrom = new EventLogger();
-            Room.Aspects["logger"] = logFrom;
+            TestRoom.Aspects["logger"] = logFrom;
 
             var roomTo = AddTestRoom( "room_to", "Room To", World );
-            Dig.Connect( Room, roomTo, "south" );
+            Dig.Connect( TestRoom, roomTo, "south" );
 
             var logTo = new EventLogger();
             roomTo.Aspects["logger"] = logTo;
 
             var command = new Go();
-            command.Execute( Controller, PlayerInput.Parse( "go south" ) );
+            command.Execute( TestChar.Controller, PlayerInput.Parse( "go south" ) );
 
             Assert.IsTrue( logFrom.Log.Count( e => e.Name == "ch_went_from_room_to_room") == 1 );
             Assert.IsTrue( logTo.Log.Count( e => e.Name == "ch_went_from_room_to_room") == 1 );

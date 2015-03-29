@@ -10,8 +10,8 @@ namespace Kaerber.MUD.Tests.Acceptance.Views
         private Character AddChar( string name )
         {
             var ch = new Character { ShortDescr = name, Names = name };
-            ch.SetRoom( Room );
-            Room.Characters.Add( ch );
+            ch.SetRoom( TestRoom );
+            TestRoom.Characters.Add( ch );
 
             return ch;
         }
@@ -29,7 +29,7 @@ namespace Kaerber.MUD.Tests.Acceptance.Views
         [TestCase( "this_has_quit" )]
         public void TestBasicThisEvent( string ename )
         {
-            TestModelEvent( ename, new EventArg( "this", Model ) );
+            TestModelEvent( ename, new EventArg( "this", TestChar.Model ) );
         }
 
         [TestCase( "ch_died" )]
@@ -55,7 +55,7 @@ namespace Kaerber.MUD.Tests.Acceptance.Views
         {
             var ch1 = AddChar( "ch1" );
             TestModelEvent( "this_stopped_fighting_ch1", 
-                new EventArg( "this", Model ), new EventArg( "ch1", ch1 ) );
+                new EventArg( "this", TestChar.Model ), new EventArg( "ch1", ch1 ) );
         }
 
         [Test]
@@ -86,14 +86,14 @@ namespace Kaerber.MUD.Tests.Acceptance.Views
             var ch = AddChar( "ch" );
 
             var room2 = new Room { Id = "test2", ShortDescr = "Test2" };
-            Room.Exits.Add( new Exit { Name = "west", To = room2 } );
-            room2.Exits.Add( new Exit { Name = "east", To = Room } );
+            TestRoom.Exits.Add( new Exit { Name = "west", To = room2 } );
+            room2.Exits.Add( new Exit { Name = "east", To = TestRoom } );
 
             TestModelEvent( "ch_went_from_room_to_room", 
                 new EventArg( "ch", ch ),
-                new EventArg( "room_from", Room ), new EventArg( "room_to", room2 ),
-                new EventArg( "exit", Room.Exits[room2] ), 
-                new EventArg( "entrance", room2.Exits[Room] ) );
+                new EventArg( "room_from", TestRoom ), new EventArg( "room_to", room2 ),
+                new EventArg( "exit", TestRoom.Exits[room2] ), 
+                new EventArg( "entrance", room2.Exits[TestRoom] ) );
         }
 
         [Test]

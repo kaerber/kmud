@@ -20,16 +20,16 @@ namespace Kaerber.MUD.Tests.Acceptance.Views {
 
             MockConnection.Setup( c => c.ReadLines( It.IsAny<Encoding>() ) )
                           .Returns( new[] { command } );
-            MockParser.Setup( p => p.Parse( command, Model ) );
+            MockParser.Setup( p => p.Parse( command, TestChar.Model ) );
 
             var view = new TelnetCharacterView( MockConnection.Object,
-                                                Model,
+                                                TestChar.Model,
                                                 MockRenderer.Object,
                                                 MockParser.Object );
 
             var commands = view.Commands().ToList();
 
-            MockParser.Verify( p => p.Parse( command, Model ), Times.Once() );
+            MockParser.Verify( p => p.Parse( command, TestChar.Model ), Times.Once() );
         }
 
         [Test]

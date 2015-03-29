@@ -13,11 +13,15 @@ using Moq;
 
 namespace Kaerber.MUD.Tests.Acceptance {
     public class BaseAcceptanceTest : BaseEntityTest {
-        protected Room Room;
-        protected Character Model;
-        protected CharacterController Controller;
-        protected ICharacterView View;
+        public class TestCharacter {
+            public Character Model;
+            public CharacterController Controller;
+            public ICharacterView View;
+        }
+
         protected World World;
+        protected Room TestRoom;
+        protected TestCharacter TestChar;
 
         protected CommandManager CommandManager;
 
@@ -32,40 +36,47 @@ namespace Kaerber.MUD.Tests.Acceptance {
             configurator.RegisterInstance( new Clock( 0 ) );
             World.Initialize( configurator );
 
-            Room = AddTestRoom( "test", "Test", World );
+            CommandManager = new CommandManager();
+            CommandManager.Load();
+ 
+            TestRoom = AddTestRoom( "test", "Test", World );
 
-            Controller = CreateTestCharacter( "test char", "test char", Room, World );
+            TestChar = CreateTestCharacter( "test char", "test char", TestRoom, World );
         }
 
-        protected CharacterController CreateTestCharacter( string shortDescr, 
-                                                           string names, 
-                                                           Room room,
-                                                           World world ) {
-            Model = new Character { ShortDescr = shortDescr, Names = names };
-            Model.SetRoom( room );
-            Model.World = world;
-            Model.Restore();
+        protected TestCharacter CreateTestCharacter( string shortDescr, 
+                                                string names, 
+                                                Room room,
+                                                World world ) {
+            var model = new Character { ShortDescr = shortDescr, Names = names };
+            model.SetRoom( room );
+            model.World = world;
+            model.Restore();
 
             MockConnection = new Mock<TelnetConnection>( null, null );
             MockConnection.Setup( c => c.Write( It.IsAny<string>() ) );
 
-            MockRenderer = new Mock<TelnetRenderer>( Model );
+            MockRenderer = new Mock<TelnetRenderer>( model );
 
             MockParser = new Mock<ITelnetInputParser>();
 
-            View = new TelnetCharacterView( MockConnection.Object,
-                                            Model,
+            var view = new TelnetCharacterView( MockConnection.Object,
+                                            model,
                                             MockRenderer.Object,
                                             MockParser.Object );
-            Model.ViewEvent += e => View.ReceiveEvent( e );
+            model.ViewEvent += e => view.ReceiveEvent( e );
 
-            CommandManager = new CommandManager();
- 
-            return new CharacterController( Model, View, CommandManager, null );
+            var controller = new CharacterController( model, view, CommandManager, null );
+
+            return new TestCharacter {
+                Model = model,
+                View = view,
+                Controller = controller
+            };
         }
 
         protected void TestModelEvent( string name, params EventArg[] args ) {
-            Model.ReceiveEvent( Event.Create( name, EventReturnMethod.None, args ) );
+            TestChar.Model.ReceiveEvent( Event.Create( name, EventReturnMethod.None, args ) );
         }
         
         protected Room AddTestRoom( string id, string shortDescription, World world ) {
