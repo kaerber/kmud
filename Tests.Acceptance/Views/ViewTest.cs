@@ -2,24 +2,14 @@
 
 using NUnit.Framework;
 
-namespace Kaerber.MUD.Tests.Acceptance.Views
-{
+using Exit = Kaerber.MUD.Entities.Exit;
+
+namespace Kaerber.MUD.Tests.Acceptance.Views {
     [TestFixture]
-    public class ViewTest : BaseAcceptanceTest
-    {
-        private Character AddChar( string name )
-        {
-            var ch = new Character { ShortDescr = name, Names = name };
-            ch.SetRoom( TestRoom );
-            TestRoom.Characters.Add( ch );
-
-            return ch;
-        }
-
+    public class ViewTest : BaseAcceptanceTest {
         [SetUp]
-        public void Setup()
-        {
-            CreateTestEnvironment();
+        public void Setup() {
+            ConfigureTelnetEnvironment();
         }
 
 
@@ -29,7 +19,7 @@ namespace Kaerber.MUD.Tests.Acceptance.Views
         [TestCase( "this_has_quit" )]
         public void TestBasicThisEvent( string ename )
         {
-            TestModelEvent( ename, new EventArg( "this", TestChar.Model ) );
+            TestModelEvent( ename, new EventArg( "this", PlayerModel ) );
         }
 
         [TestCase( "ch_died" )]
@@ -38,7 +28,7 @@ namespace Kaerber.MUD.Tests.Acceptance.Views
         [TestCase( "ch_has_quit" )]
         public void TestBasicChEvent( string ename )
         {
-            var ch = AddChar( "ch" );
+            var ch = CreateTestCharacter( "ch", "ch", TestRoom, World );
             TestModelEvent( ename, new EventArg( "ch", ch ) );
         }
 
@@ -53,16 +43,16 @@ namespace Kaerber.MUD.Tests.Acceptance.Views
         [Test]
         public void ThisStoppedFightingCh1()
         {
-            var ch1 = AddChar( "ch1" );
+            var ch1 = CreateTestCharacter( "ch1", "ch1", TestRoom, World );
             TestModelEvent( "this_stopped_fighting_ch1", 
-                new EventArg( "this", TestChar.Model ), new EventArg( "ch1", ch1 ) );
+                new EventArg( "this", PlayerModel ), new EventArg( "ch1", ch1 ) );
         }
 
         [Test]
         public void ChMissedCh1()
         {
-            var ch = AddChar( "ch" );
-            var ch1 = AddChar( "ch1" );
+            var ch = CreateTestCharacter( "ch", "ch", TestRoom, World );
+            var ch1 = CreateTestCharacter( "ch1", "ch1", TestRoom, World );
 
             TestModelEvent( "ch_missed_ch1", 
                 new EventArg( "ch", ch ), new EventArg( "ch1", ch1 ) );
@@ -71,8 +61,8 @@ namespace Kaerber.MUD.Tests.Acceptance.Views
         [Test]
         public void ChTookDamageFromCh1()
         {
-            var ch = AddChar( "ch" );
-            var ch1 = AddChar( "ch1" );
+            var ch = CreateTestCharacter( "ch", "ch", TestRoom, World );
+            var ch1 = CreateTestCharacter( "ch1", "ch1", TestRoom, World );
 
             TestModelEvent( "ch_took_damage_from_ch1", 
                 new EventArg( "ch", ch ), 
@@ -83,7 +73,7 @@ namespace Kaerber.MUD.Tests.Acceptance.Views
         [Test]
         public void ChWentFromRoomToRoom()
         {
-            var ch = AddChar( "ch" );
+            var ch = CreateTestCharacter( "ch", "ch", TestRoom, World );
 
             var room2 = new Room { Id = "test2", ShortDescr = "Test2" };
             TestRoom.Exits.Add( new Exit { Name = "west", To = room2 } );
@@ -99,7 +89,7 @@ namespace Kaerber.MUD.Tests.Acceptance.Views
         [Test]
         public void ChGotItem()
         {
-            var ch = AddChar( "ch" );
+            var ch = CreateTestCharacter( "ch", "ch", TestRoom, World );
             var item = new Item { ShortDescr = "item", Names = "item" };
 
             TestModelEvent( "ch_got_item", 
@@ -109,7 +99,7 @@ namespace Kaerber.MUD.Tests.Acceptance.Views
         [Test]
         public void ChGotItemFromContainer()
         {
-            var ch = AddChar( "ch" );
+            var ch = CreateTestCharacter( "ch", "ch", TestRoom, World );
             var item = new Item { ShortDescr = "item", Names = "item" };
             var container = new Item { ShortDescr = "container", Names = "container" };
 
@@ -122,7 +112,7 @@ namespace Kaerber.MUD.Tests.Acceptance.Views
         [Test]
         public void ChRemovedItem()
         {
-            var ch = AddChar( "ch" );
+            var ch = CreateTestCharacter( "ch", "ch", TestRoom, World );
             var item = new Item { ShortDescr = "item", Names = "item" };
 
             TestModelEvent( "ch_removed_item", 
@@ -132,7 +122,7 @@ namespace Kaerber.MUD.Tests.Acceptance.Views
         [Test]
         public void ChEquippedItem()
         {
-            var ch = AddChar( "ch" );
+            var ch = CreateTestCharacter( "ch", "ch", TestRoom, World );
             var item = new Item { ShortDescr = "item", Names = "item" };
 
             TestModelEvent( "ch_equipped_item", 
@@ -142,7 +132,7 @@ namespace Kaerber.MUD.Tests.Acceptance.Views
         [Test]
         public void ChDroppedItem()
         {
-            var ch = AddChar( "ch" );
+            var ch = CreateTestCharacter( "ch", "ch", TestRoom, World );
             var item = new Item { ShortDescr = "item", Names = "item" };
 
             TestModelEvent( "ch_dropped_item", 
@@ -152,7 +142,7 @@ namespace Kaerber.MUD.Tests.Acceptance.Views
         [Test]
         public void ChPutItemIntoContainer()
         {
-            var ch = AddChar( "ch" );
+            var ch = CreateTestCharacter( "ch", "ch", TestRoom, World );
             var item = new Item { ShortDescr = "item", Names = "item" };
             var container = new Item { ShortDescr = "container", Names = "container" };
 
@@ -164,7 +154,7 @@ namespace Kaerber.MUD.Tests.Acceptance.Views
         [Test]
         public void ChBoughtItem()
         {
-            var ch = AddChar( "ch" );
+            var ch = CreateTestCharacter( "ch", "ch", TestRoom, World );
             var item = new Item { ShortDescr = "item", Names = "item" };
             var money = new ItemSet
             {
@@ -190,7 +180,7 @@ namespace Kaerber.MUD.Tests.Acceptance.Views
         [Test]
         public void ChSaidText()
         {
-            var ch = AddChar( "ch" );
+            var ch = CreateTestCharacter( "ch", "ch", TestRoom, World );
             TestModelEvent( "ch_said_text",
                 new EventArg( "ch", ch ), new EventArg( "text", "test" ) );
         }

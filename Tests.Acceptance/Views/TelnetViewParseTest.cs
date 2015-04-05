@@ -1,6 +1,8 @@
 ﻿using System.Linq;
 using System.Text;
 
+using Microsoft.Practices.Unity;
+
 using Kaerber.MUD.Views;
 
 using NUnit.Framework;
@@ -11,25 +13,32 @@ namespace Kaerber.MUD.Tests.Acceptance.Views {
     public class TelnetViewParseTest : BaseAcceptanceTest {
         [SetUp]
         public void SetUp() {
-            CreateTestEnvironment();
+            ConfigureTelnetContainer();
         }
 
         [Test]
         public void TelnetView_ParsesUserInputWithTelnetUserInputParser() {
+            var mockParser = new Mock<ITelnetInputParser>();
+            Container.RegisterInstance( mockParser.Object );
+            CreateTestEnvironment();
+
             const string command = "get 2*2.'swo'";
 
             MockConnection.Setup( c => c.ReadLines( It.IsAny<Encoding>() ) )
                           .Returns( new[] { command } );
-            MockParser.Setup( p => p.Parse( command, TestChar.Model ) );
+            mockParser.Setup( p => p.Parse( command, PlayerModel ) );
 
-            var view = new TelnetCharacterView( MockConnection.Object,
-                                                TestChar.Model,
-                                                MockRenderer.Object,
-                                                MockParser.Object );
+            var view = Container.Resolve<ICharacterView>();
 
             var commands = view.Commands().ToList();
 
-            MockParser.Verify( p => p.Parse( command, TestChar.Model ), Times.Once() );
+            mockParser.Verify( p => p.Parse( command, PlayerModel ), Times.Once() );
+        }
+
+        [Test]
+        public void GetSword_ReturnsFirstSwordInRoom() {
+            MockConnection.Setup( c => c.ReadLines( It.IsAny<Encoding>() ) )
+                          .Returns( new[] { "get sword" } );
         }
 
         [Test]

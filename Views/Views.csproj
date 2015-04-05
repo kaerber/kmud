@@ -82,6 +82,7 @@
     <Compile Include="TelnetCharacterView.cs" />
     <Compile Include="TelnetConnectionView.cs" />
     <Compile Include="TelnetEditorView.cs" />
+    <Compile Include="TelnetInputParser.cs" />
     <Compile Include="TelnetRenderer.cs" />
     <Compile Include="TelnetUserView.cs" />
   </ItemGroup>

@@ -13,70 +13,71 @@ using Moq;
 
 namespace Kaerber.MUD.Tests.Acceptance {
     public class BaseAcceptanceTest : BaseEntityTest {
-        public class TestCharacter {
-            public Character Model;
-            public CharacterController Controller;
-            public ICharacterView View;
-        }
+        public Character PlayerModel;
+        public ICharacterController PlayerController;
+        public ICharacterView PlayerView;
+
+        protected IUnityContainer Container;
 
         protected World World;
         protected Room TestRoom;
-        protected TestCharacter TestChar;
 
         protected CommandManager CommandManager;
 
         protected Mock<TelnetConnection> MockConnection;
-        protected Mock<TelnetRenderer> MockRenderer;
-        protected Mock<ITelnetInputParser> MockParser;
+        protected ITelnetRenderer Renderer;
+        protected ITelnetInputParser Parser;
 
-        protected virtual void CreateTestEnvironment() {
+        protected void ConfigureTelnetEnvironment() {
+            ConfigureTelnetContainer();
+            CreateTestEnvironment();
+        }
+
+        protected void ConfigureTelnetContainer() {
+            Container = TelnetSession.TelnetContainer( 
+                UnityConfigurator.Configure() );
+            Container.RegisterInstance( new Clock( 0 ) );
+
+            MockConnection = new Mock<TelnetConnection>( null, null );
+            Container.RegisterInstance( MockConnection.Object );
+
+        }
+
+        protected void CreateTestEnvironment() {
             World = new World();
             World.Instance = World;
-            var configurator = UnityConfigurator.Configure();
-            configurator.RegisterInstance( new Clock( 0 ) );
-            World.Initialize( configurator );
+            World.Initialize( Container );
 
-            CommandManager = new CommandManager();
-            CommandManager.Load();
+            MUD.Server.Server.InitializeCommandManager( Container );
  
             TestRoom = AddTestRoom( "test", "Test", World );
 
-            TestChar = CreateTestCharacter( "test char", "test char", TestRoom, World );
+            CreateTestPlayer();
         }
 
-        protected TestCharacter CreateTestCharacter( string shortDescr, 
-                                                string names, 
-                                                Room room,
-                                                World world ) {
-            var model = new Character { ShortDescr = shortDescr, Names = names };
+        protected void CreateTestPlayer() {
+            PlayerModel = CreateTestCharacter( "test char", "test char", TestRoom, World );
+            Container.RegisterInstance( PlayerModel );
+
+            PlayerView = Container.Resolve<ICharacterView>();
+            PlayerModel.ViewEvent += e => PlayerView.ReceiveEvent( e );
+
+            PlayerController = Container.Resolve<ICharacterController>();
+        }
+
+        protected Character CreateTestCharacter( string shortDesc,
+                                            string names,
+                                            Room room,
+                                            World world ) {
+            var model = new Character { ShortDescr = shortDesc, Names = names };
             model.SetRoom( room );
             model.World = world;
             model.Restore();
-
-            MockConnection = new Mock<TelnetConnection>( null, null );
-            MockConnection.Setup( c => c.Write( It.IsAny<string>() ) );
-
-            MockRenderer = new Mock<TelnetRenderer>( model );
-
-            MockParser = new Mock<ITelnetInputParser>();
-
-            var view = new TelnetCharacterView( MockConnection.Object,
-                                            model,
-                                            MockRenderer.Object,
-                                            MockParser.Object );
-            model.ViewEvent += e => view.ReceiveEvent( e );
-
-            var controller = new CharacterController( model, view, CommandManager, null );
-
-            return new TestCharacter {
-                Model = model,
-                View = view,
-                Controller = controller
-            };
+            return model;
         }
 
         protected void TestModelEvent( string name, params EventArg[] args ) {
-            TestChar.Model.ReceiveEvent( Event.Create( name, EventReturnMethod.None, args ) );
+            PlayerModel.ReceiveEvent( Event.Create( name, EventReturnMethod.None, args ) );
         }
         
         protected Room AddTestRoom( string id, string shortDescription, World world ) {

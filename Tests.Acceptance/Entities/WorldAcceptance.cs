@@ -10,7 +10,7 @@ namespace Kaerber.MUD.Tests.Acceptance.Entities {
     public class WorldAcceptance : BaseAcceptanceTest {
         [SetUp]
         public void SetUp() {
-            CreateTestEnvironment();
+            ConfigureTelnetEnvironment();
         }
 
         [Test]

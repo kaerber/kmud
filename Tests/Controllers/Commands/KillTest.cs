@@ -1,10 +1,8 @@
-﻿using System;
-
-using Kaerber.MUD.Common;
-using Kaerber.MUD.Controllers;
+﻿using Kaerber.MUD.Controllers;
 using Kaerber.MUD.Controllers.Commands.CharacterCommands;
 using Kaerber.MUD.Entities;
-using Kaerber.MUD.Views;
+
+using Moq;
 
 using NUnit.Framework;
 
@@ -12,55 +10,6 @@ using NUnit.Framework;
 namespace Kaerber.MUD.Tests.Controllers.Commands {
     [TestFixture]
     public class KillTest {
-        public class ControllerMock : ICharacterController {
-            public Character Model {
-                get { throw new NotImplementedException(); }
-                set { throw new NotImplementedException(); }
-            }
-
-            public ICharacterView View {
-                get { throw new NotImplementedException(); }
-            }
-
-            public User User {
-                get { throw new NotImplementedException(); }
-                set { throw new NotImplementedException(); }
-            }
-
-            public ISession Session {
-                get { throw new NotImplementedException(); }
-                set { throw new NotImplementedException(); }
-            }
-
-            public void InputReceived( string line ) {
-                throw new NotImplementedException();
-            }
-
-            public void SetDefaultCommandSet() {
-                throw new NotImplementedException();
-            }
-
-            public void SetCommandSet( string name ) {
-                throw new NotImplementedException();
-            }
-
-            public void Quit() {
-                throw new NotImplementedException();
-            }
-
-            public IController Start() {
-                throw new NotImplementedException();
-            }
-
-            public IController Run() {
-                throw new NotImplementedException();
-            }
-
-            public IController Stop() {
-                throw new NotImplementedException();
-            }
-        }
-
         public class CharacterMock : Character {
             private int _killCallCount;
 
@@ -93,11 +42,11 @@ namespace Kaerber.MUD.Tests.Controllers.Commands {
 
         [Test]
         public void PayloadTest() {
-            var controller = new ControllerMock();
+            var controller = new Mock<ICharacterController>();
             var ch = new CharacterMock();
             var command = new ShimKillCommand( ch, new CharacterMock() );
 
-            command.Execute( controller, PlayerInput.Parse( "kill enemy" ) );
+            command.Execute( controller.Object, PlayerInput.Parse( "kill enemy" ) );
 
             ch.Verify( 1 );
         }

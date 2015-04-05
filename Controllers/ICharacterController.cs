@@ -6,6 +6,8 @@ namespace Kaerber.MUD.Controllers {
         Character Model { get; }
         ICharacterView View { get; }
 
+        void OnCommand( PlayerInput input );
+
         void Quit();
     }
 }

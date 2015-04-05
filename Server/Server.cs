@@ -27,9 +27,7 @@ namespace Kaerber.MUD.Server {
 
             World.Instance.LoadAreas();
 
-            var commandManager = new CommandManager();
-            commandManager.Load();
-            _container.RegisterInstance<IManager<ICommand>>( commandManager );
+            InitializeCommandManager( _container );
 
             var portNumber = int.Parse( ConfigurationManager.AppSettings.Get( "PortNumber" ) );
             var listener = new TelnetListener();
@@ -53,6 +51,12 @@ namespace Kaerber.MUD.Server {
             var session = container.Resolve<TelnetSession>();
             session.Start();
             _sessions.Add( session );
+        }
+
+        public static void InitializeCommandManager( IUnityContainer container ) {
+            var commandManager = new CommandManager();
+            commandManager.Load();
+            container.RegisterInstance<IManager<ICommand>>( commandManager );
         }
 
         private readonly UnityContainer _container;

@@ -47,6 +47,7 @@ namespace Kaerber.MUD.Server {
             container.RegisterType<ITelnetRenderer, TelnetRenderer>();
 
             container.RegisterType<TelnetSession, TelnetSession>();
+            container.RegisterType<ITelnetInputParser, TelnetInputParser>();
 
             container.RegisterInstance<IUserManager>( UserManager.Instance );
             return container;
