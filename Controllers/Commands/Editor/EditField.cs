@@ -34,21 +34,21 @@ namespace Kaerber.MUD.Controllers.Commands.Editor {
                 result.Node = node;
                 result.Command = CommandType.Look;
                 result.Argument = string.Empty;
-                return ( result );
+                return result;
             }
 
             if( IsCommand( input.Command ) ) {
                 result.Node = node;
                 result.Command = ParseCommand( input.Command );
                 result.Argument = input.RawArguments;
-                return ( result );
+                return result;
             }
 
             var path = input.Command.Split( '.' );
 
-            for( int i = 0; i < path.Length; i++ ) {
-                var currentPath = node.Path + "." + path[i];
-                node = node[path[i]];
+            foreach( var t in path ) {
+                var currentPath = node.Path + "." + t;
+                node = node[t];
                 if( node == null ) {
                     result.Node = null;
                     result.Command = CommandType.InvalidCommand;
@@ -89,8 +89,7 @@ namespace Kaerber.MUD.Controllers.Commands.Editor {
         }
 
         public static CommandType ParseCommand( string command ) {
-            switch( command )
-            {
+            switch( command ) {
                 case Command_Look:
                     return CommandType.Look;
 
@@ -111,7 +110,7 @@ namespace Kaerber.MUD.Controllers.Commands.Editor {
             }
         }
 
-        public string Name { get { return "editfield"; } }
+        public string Name => "editfield";
 
         public string Code {
             get { throw new NotSupportedException(); }

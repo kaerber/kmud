@@ -7,7 +7,7 @@ namespace Kaerber.MUD.Controllers.Commands.CharacterCommands {
     public class Go : Command {
         private readonly string _direction;
 
-        public override string Name { get { return ( "go" ); } }
+        public override string Name => "go";
 
         public Go() {
             _cmdForms = new List<Tuple<List<ArgType>, CommandHandler>> {

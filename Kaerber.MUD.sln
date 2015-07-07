@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.31101.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.22823.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Server", "Server\Server.csproj", "{84A288FD-781A-4FFF-90CA-89CB3CC0D508}"
 EndProject
@@ -20,6 +20,12 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Telnet", "Telnet\Telnet.csproj", "{B891D947-FAC3-471C-B409-6D7DB824F7EA}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests\Tests.csproj", "{91B38300-C8D7-4DB3-A599-6B2B3B84EE5A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebAdmin", "WebAdmin\WebAdmin.csproj", "{E3F556D2-2A9C-4569-9F79-0419A869AA8C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests.WebAdmin", "Tests.WebAdmin\Tests.WebAdmin.csproj", "{29DCE9D8-B8EF-40D1-949E-B176C14BCF71}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Platform", "Platform\Platform.csproj", "{B129C779-48AF-43B6-B599-22BDFE6CF996}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -61,6 +67,18 @@ Global
 		{91B38300-C8D7-4DB3-A599-6B2B3B84EE5A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{91B38300-C8D7-4DB3-A599-6B2B3B84EE5A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{91B38300-C8D7-4DB3-A599-6B2B3B84EE5A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E3F556D2-2A9C-4569-9F79-0419A869AA8C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E3F556D2-2A9C-4569-9F79-0419A869AA8C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E3F556D2-2A9C-4569-9F79-0419A869AA8C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E3F556D2-2A9C-4569-9F79-0419A869AA8C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{29DCE9D8-B8EF-40D1-949E-B176C14BCF71}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{29DCE9D8-B8EF-40D1-949E-B176C14BCF71}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{29DCE9D8-B8EF-40D1-949E-B176C14BCF71}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{29DCE9D8-B8EF-40D1-949E-B176C14BCF71}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B129C779-48AF-43B6-B599-22BDFE6CF996}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B129C779-48AF-43B6-B599-22BDFE6CF996}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B129C779-48AF-43B6-B599-22BDFE6CF996}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B129C779-48AF-43B6-B599-22BDFE6CF996}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

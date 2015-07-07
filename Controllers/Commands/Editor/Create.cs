@@ -2,10 +2,7 @@
 
 namespace Kaerber.MUD.Controllers.Commands.Editor {
     public class Create : ICommand {
-        public string Name {
-            get { return "Create"; }
-            set { throw new NotSupportedException(); }
-        }
+        public string Name => "create";
 
         public string Code {
             get { throw new NotSupportedException(); }

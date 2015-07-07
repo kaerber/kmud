@@ -1,4 +1,4 @@
-﻿using Microsoft.Practices.Unity;
+﻿using System;
 
 using Kaerber.MUD.Controllers;
 using Kaerber.MUD.Entities;
@@ -9,24 +9,27 @@ using Kaerber.MUD.Telnet;
 using Kaerber.MUD.Tests.Entities;
 using Kaerber.MUD.Views;
 
+using Microsoft.Practices.Unity;
+using Microsoft.Practices.ObjectBuilder2;
+
+using NUnit.Framework;
 using Moq;
 
 namespace Kaerber.MUD.Tests.Acceptance {
     public class BaseAcceptanceTest : BaseEntityTest {
-        public Character PlayerModel;
-        public ICharacterController PlayerController;
-        public ICharacterView PlayerView;
+        public void Test<T>( Action with, Func<T> on, IAssertConstructor<T> assertConstructor ) {
+            with();
+            assertConstructor.ConstructAssert()( on() );
+        }
 
-        protected IUnityContainer Container;
+        public Action With( params Action[] actions ) {
+            return () => actions.ForEach( action => action() );
+        }
 
-        protected World World;
-        protected Room TestRoom;
+        public Func<T> On<T>( Func<T> action ) {
+            return action;
+        }
 
-        protected CommandManager CommandManager;
-
-        protected Mock<TelnetConnection> MockConnection;
-        protected ITelnetRenderer Renderer;
-        protected ITelnetInputParser Parser;
 
         protected void ConfigureTelnetEnvironment() {
             ConfigureTelnetContainer();
@@ -66,14 +69,21 @@ namespace Kaerber.MUD.Tests.Acceptance {
         }
 
         protected Character CreateTestCharacter( string shortDesc,
-                                            string names,
-                                            Room room,
-                                            World world ) {
+                                                 string names,
+                                                 Room room,
+                                                 World world ) {
             var model = new Character { ShortDescr = shortDesc, Names = names };
             model.SetRoom( room );
             model.World = world;
             model.Restore();
             return model;
+        }
+
+        protected Item CreateItem( string shortDescr, string names ) {
+            return new Item {
+                ShortDescr = shortDescr,
+                Names = names
+            };
         }
 
         protected void TestModelEvent( string name, params EventArg[] args ) {
@@ -90,5 +100,24 @@ namespace Kaerber.MUD.Tests.Acceptance {
             world.Rooms.Add( id, room );
             return room;
         }
+
+        protected void ItemsInRoom( params Item[] items ) {
+            items.ForEach( item => TestRoom.Items.Add( item ) );
+        }
+
+        public Character PlayerModel;
+        public ICharacterController PlayerController;
+        public ICharacterView PlayerView;
+
+        protected IUnityContainer Container;
+
+        protected World World;
+        protected Room TestRoom;
+
+        protected CommandManager CommandManager;
+
+        protected Mock<TelnetConnection> MockConnection;
+        protected ITelnetRenderer Renderer;
+        protected ITelnetInputParser Parser;
     }
 }

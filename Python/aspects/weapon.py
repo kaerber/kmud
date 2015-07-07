@@ -37,7 +37,6 @@ class WeaponAspect( Aspect ):
     def this_attacks_ch1( self, event ):
         event["attack"].SetAssaulterWeaponBaseDamage( self.BaseDamage )
 
-
     # editor support
     def DefaultValue( self ):
         return None

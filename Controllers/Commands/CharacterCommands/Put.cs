@@ -5,10 +5,7 @@ using Kaerber.MUD.Entities;
 
 namespace Kaerber.MUD.Controllers.Commands.CharacterCommands {
     public class Put : ICommand {
-        public string Name {
-            get { return "Put"; }
-            set { throw new NotSupportedException(); }
-        }
+        public string Name => "put";
 
         public string Code {
             get { throw new NotSupportedException(); }

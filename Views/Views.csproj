@@ -74,6 +74,7 @@
     <Compile Include="ICharacterView.cs" />
     <Compile Include="IConnectionView.cs" />
     <Compile Include="IEditorView.cs" />
+    <Compile Include="IPlayerCommand.cs" />
     <Compile Include="ITelnetInputParser.cs" />
     <Compile Include="ITelnetRenderer.cs" />
     <Compile Include="IUserView.cs" />

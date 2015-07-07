@@ -7,10 +7,7 @@ using Kaerber.MUD.Entities;
 
 namespace Kaerber.MUD.Controllers.Commands.CharacterCommands {
     public class Get : ICommand {
-        public string Name {
-            get { return "Name"; }
-            set { throw new NotSupportedException(); }
-        }
+        public string Name => "get";
 
         public string Code {
             get { throw new NotSupportedException(); }
@@ -38,7 +35,7 @@ namespace Kaerber.MUD.Controllers.Commands.CharacterCommands {
                     }
                     var containerItem = container.Container.FindItem( input.Arguments.ElementAt( 0 ) );
                     if( containerItem == null ) {
-                        pc.View.WriteFormat( "{0} does not contain it!\n", container.ShortDescr );
+                        pc.View.Write( $"{container.ShortDescr} does not contain it!\n" );
                         return;
                     }
                     CharacterGetsItemFromContainer( pc.Model, container, containerItem );

@@ -2,10 +2,7 @@
 
 namespace Kaerber.MUD.Controllers.Commands.CharacterCommands {
     public class UnknownCommand : ICommand {
-        public string Name {
-            get { return "default"; }
-            set { throw new NotImplementedException(); }
-        }
+        public string Name => "default";
 
         public string Code {
             get { throw new NotSupportedException(); }

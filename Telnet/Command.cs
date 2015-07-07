@@ -27,17 +27,11 @@ namespace Kaerber.MUD.Telnet
         public static readonly Command Dont = new Command( "DONT", 254 );
         public static readonly Command Iac = new Command( "IAC", 255 );
 
-        public bool Negotiation {
-            get { return this == Do || this == Dont || this == Will || this == Wont; }
-        }
+        public bool Negotiation => this == Do || this == Dont || this == Will || this == Wont;
 
-        public bool Remote {
-            get { return this == Do || this == Dont; }
-        }
+        public bool Remote => this == Do || this == Dont;
 
-        public bool Local {
-            get { return this == Will || this == Wont; }
-        }
+        public bool Local => this == Will || this == Wont;
 
         public Command Peer() {
             return _peer[this];

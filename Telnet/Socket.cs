@@ -7,17 +7,15 @@ namespace Kaerber.MUD.Telnet {
     public class Socket {
         public Socket( SysSocket socket ) {
             _socket = socket;
-            _connected = true;
+            Connected = true;
         }
 
-        public bool Connected { get { return _connected; } }
+        public bool Connected { get; private set; }
 
         public virtual IEnumerable<byte> Read() {
             _receivedIndex = -1;
-            while( Connected ) {
+            while( Connected )
                 yield return GetByte();
-                
-            }
         }
 
         public virtual void Write( IEnumerable<byte> content ) {
@@ -26,7 +24,7 @@ namespace Kaerber.MUD.Telnet {
 
         public void Close() {
             _socket.Close();
-            _connected = false;
+            Connected = false;
         }
 
         private byte GetByte() {
@@ -54,6 +52,5 @@ namespace Kaerber.MUD.Telnet {
 
         private byte[] _received;
         private int _receivedIndex;
-        private bool _connected;
     }
 }

@@ -2,10 +2,7 @@
 
 namespace Kaerber.MUD.Controllers.Commands.CharacterCommands {
     public class Who : ICommand {
-        public string Name {
-            get { return "Who"; }
-            set { throw new NotImplementedException(); }
-        }
+        public string Name => "who";
 
         public string Code {
             get { throw new NotImplementedException(); }

@@ -5,7 +5,7 @@ using Kaerber.MUD.Entities;
 
 namespace Kaerber.MUD.Controllers.Commands.CharacterCommands {
     public class Kill : Command {
-        public override string Name { get { return( "kill" ); } }
+        public override string Name => "kill";
 
         public Kill() {
             _cmdForms = new List<Tuple<List<ArgType>, CommandHandler>> {

@@ -2,10 +2,7 @@
 
 namespace Kaerber.MUD.Controllers.Commands.CharacterCommands {
     public class Quit : ICommand {
-        public string Name {
-            get { return "Quit"; }
-            set { throw new NotImplementedException(); }
-        }
+        public string Name => "quit";
 
         public string Code {
             get { throw new NotImplementedException(); }

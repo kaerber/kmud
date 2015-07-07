@@ -14,27 +14,21 @@ namespace Kaerber.MUD.Entities {
 
     public class Item : Entity {
         private Stack _stack;
-        private WearLocation _wearLocation;
 
-        public int Count {
-            get { return ( _stack != null ? _stack.Count : 1 ); }
-        }
+        public int Count => _stack?.Count ?? 1;
 
         [MudEdit( "Max number of items in a stack, 0 is infinite, 1 is no stacking, X is max stack of X" )]
         public int MaxCount {
-            get { return ( _stack != null ? _stack.MaxCount : 1 ); }
+            get { return _stack?.MaxCount ?? 1; }
             set { _stack = value != 1 ? new Stack( value ) : null; }
         }
 
-        public bool CanStack { get { return ( _stack != null ); } }
-        public bool HasSpaceInStack { get { return ( Count < MaxCount || MaxCount == 0 ); } }
-        public int TotalValue { get { return ( Count*Cost ); } }
+        public bool CanStack => _stack != null;
+        public bool HasSpaceInStack => Count < MaxCount || MaxCount == 0;
+        public int TotalValue => Count*Cost;
 
         [MudEdit( "Where this item is worn" )]
-        public virtual WearLocation WearLoc {
-            get { return _wearLocation; }
-            set { _wearLocation = value; }
-        }
+        public virtual WearLocation WearLoc { get; set; }
 
         [MudEdit( "Container properties of an item" )]
         public Container Container { get; set; }
@@ -54,7 +48,7 @@ namespace Kaerber.MUD.Entities {
         public Item() {}
 
         public Item( Item template ) : base( template.Id, template.Names, template.ShortDescr ) {
-            _wearLocation = template.WearLoc;
+            WearLoc = template.WearLoc;
             Flags = template.Flags;
 
             if( template.Stats != null )
@@ -107,18 +101,16 @@ namespace Kaerber.MUD.Entities {
         public override void ReceiveEvent( Event e ) {
             base.ReceiveEvent( e );
 
-            if( Stats != null )
-                Stats.ReceiveEvent( e );
-            if( Weapon != null )
-                Weapon.ReceiveEvent( e );
+            Stats?.ReceiveEvent( e );
+            Weapon?.ReceiveEvent( e );
         }
 
         public int AddQuantity( int quantity ) {
-            return( _stack == null ? 0 : _stack.Add( quantity ) );
+            return _stack?.Add( quantity ) ?? 0;
         }
 
         public int RemoveQuantity( int quantity ) {
-            return ( _stack == null ? 0 : _stack.Remove( quantity ) );
+            return _stack?.Remove( quantity ) ?? 0;
         }
         
         public static Item Create( string vnum ) {

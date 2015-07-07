@@ -116,12 +116,14 @@
     <Compile Include="Entities\MaxHealthAcceptance.cs" />
     <Compile Include="Entities\WorldAcceptance.cs" />
     <Compile Include="EventLogger.cs" />
+    <Compile Include="IAssertConstructor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Server\Managers\CommandManagerAcceptance.cs" />
     <Compile Include="Server\ServerAcceptance.cs" />
     <Compile Include="Telnet\TelnetConnectionAcceptance.cs" />
     <Compile Include="Telnet\TokenStreamAcceptance.cs" />
-    <Compile Include="Views\TelnetViewParseTest.cs" />
+    <Compile Include="Views\CommandAssertConstrutor.cs" />
+    <Compile Include="Views\TelnetViewParseAcceptance.cs" />
     <Compile Include="Views\ViewTest.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -164,6 +166,9 @@
       <Link>App.config</Link>
     </None>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

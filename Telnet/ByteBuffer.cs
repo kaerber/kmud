@@ -22,7 +22,7 @@ namespace Kaerber.MUD.Telnet {
 
         public byte[] EscapeIac() {
             return _buffer.SelectMany( b => b != 0xff ? new[] { b } : new[] { b, b } )
-                .ToArray();
+                          .ToArray();
         }
 
         public string ToString( Encoding encoding ) {
@@ -45,8 +45,7 @@ namespace Kaerber.MUD.Telnet {
         }
 
         public override string ToString() {
-            return string.Format( "[{0}]", 
-                string.Join( ", ", _buffer.Select( b => string.Format( "{0:x}", b ) ) ) );
+            return $"[{string.Join( ", ", _buffer.Select( b => $"{b:x}" ) )}]";
         }
 
         public static bool operator ==( ByteBuffer self, ByteBuffer other ) {

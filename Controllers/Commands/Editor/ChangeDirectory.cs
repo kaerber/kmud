@@ -3,10 +3,7 @@ using System.Linq;
 
 namespace Kaerber.MUD.Controllers.Commands.Editor {
     public class ChangeDirectory : ICommand {
-        public string Name {
-            get { return "ChangeDirectory"; }
-            set { throw new NotSupportedException(); }
-        }
+        public string Name => "changedirectory";
 
         public string Code {
             get { throw new NotSupportedException(); }

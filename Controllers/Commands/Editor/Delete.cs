@@ -2,10 +2,7 @@
 
 namespace Kaerber.MUD.Controllers.Commands.Editor {
     public class Delete : ICommand {
-        public string Name {
-            get { return "Delete"; }
-            set { throw new NotSupportedException(); }
-        }
+        public string Name => "Delete";
 
         public string Code {
             get { throw new NotSupportedException(); }

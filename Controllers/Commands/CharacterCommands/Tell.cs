@@ -2,7 +2,7 @@
 
 namespace Kaerber.MUD.Controllers.Commands.CharacterCommands {
     public class Tell : ICommand {
-        public string Name { get { return "Tell"; } }
+        public string Name => "tell";
 
         public string Code {
             get { throw new NotSupportedException(); }

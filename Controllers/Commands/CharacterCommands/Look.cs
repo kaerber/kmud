@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Kaerber.MUD.Controllers.Commands.CharacterCommands {
     public class Look : Command {
-        public override string Name { get { return ( "look" ); } }
+        public override string Name => "look";
 
         public Look() {
             _cmdForms = new List<Tuple<List<ArgType>, CommandHandler>> {

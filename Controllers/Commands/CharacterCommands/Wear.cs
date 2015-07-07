@@ -5,7 +5,7 @@ using Kaerber.MUD.Entities;
 
 namespace Kaerber.MUD.Controllers.Commands.CharacterCommands {
     public class Wear : Command {
-        public override string Name { get { return( "wear" ); } }
+        public override string Name => "wear";
 
         public Wear() {
             _cmdForms = new List<Tuple<List<ArgType>, CommandHandler>>() {

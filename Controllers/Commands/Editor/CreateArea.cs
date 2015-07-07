@@ -4,10 +4,7 @@ using Kaerber.MUD.Entities;
 
 namespace Kaerber.MUD.Controllers.Commands.Editor {
     public class CreateArea : ICommand {
-        public string Name {
-            get { return "CreateArea"; }
-            set { throw new NotSupportedException(); }
-        }
+        public string Name => "createarea";
 
         public string Code {
             get { throw new NotSupportedException(); }

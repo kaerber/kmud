@@ -3,10 +3,7 @@ using System.Linq;
 
 namespace Kaerber.MUD.Controllers.Commands.CharacterCommands {
     public class Save : ICommand {
-        public string Name {
-            get { return "Save"; }
-            set { throw new NotSupportedException(); }
-        }
+        public string Name => "save";
 
         public string Code {
             get { throw new NotSupportedException(); }

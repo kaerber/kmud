@@ -55,11 +55,8 @@ namespace Kaerber.MUD.Entities
         public IEventHandler Race { get; set; }
         public IEventHandler Spec;
 
-        public bool IsInCombat { get { return Target != null; } }
-        public virtual Character Target { get { return Combat.Target; } }
-
-
-        private Room _room;
+        public bool IsInCombat => Target != null;
+        public virtual Character Target => Combat.Target;
 
         private Equipment _eq;
 
@@ -73,10 +70,10 @@ namespace Kaerber.MUD.Entities
         public Action<Event> ViewEvent;
 
 
-        public Room Room { get { return ( _room ); } }
+        public Room Room { get; private set; }
 
         public Equipment Eq {
-            get { return ( _eq ); }
+            get { return _eq; }
             set {
                 _eq = value;
                 _eq.Host = this;
@@ -90,15 +87,15 @@ namespace Kaerber.MUD.Entities
         public MobFlags Flags { get; set; }
 
         [Obsolete]
-        public dynamic Health { get { return Aspects.health; } }
+        public dynamic Health => Aspects.health;
 
         [Obsolete]
-        public dynamic Movement { get { return Aspects.movement; } }
+        public dynamic Movement => Aspects.movement;
 
-        private dynamic Combat { get { return Aspects.combat; } }
+        private dynamic Combat => Aspects.combat;
 
         [MudEdit( "Stats", CustomType = "PythonObject" )]
-        public dynamic Stats { get { return Aspects.stats; } }
+        public dynamic Stats => Aspects.stats;
 
         public ActionQueueSet ActionQueueSet { get; set; }
 
@@ -144,7 +141,7 @@ namespace Kaerber.MUD.Entities
 
             var loginAt = World.ConvertToTypeEx<string>( data, "LoginAt" );
             SetRoom( World.GetRoom( loginAt ) );
-            if( _room == null )
+            if( Room == null )
                 SetRoom( RespawnAt );
 
 
@@ -153,11 +150,11 @@ namespace Kaerber.MUD.Entities
 
             Data = World.ConvertToTypeEx( data, "Data", new Dictionary<string, string>() );
 
-            return ( this );
+            return this;
         }
         #endregion
 
-        public override string ToString() { return( ShortDescr ); }
+        public override string ToString() { return ShortDescr; }
 
         public void Restore() {
             Health.Restore();
@@ -188,7 +185,7 @@ namespace Kaerber.MUD.Entities
             corpse.Names = string.Format( corpse.Names, Names );
             corpse.ShortDescr = string.Format( corpse.ShortDescr, ShortDescr );
 
-            return ( corpse );
+            return corpse;
         }
 
         public override void ReceiveEvent( Event e ) {
@@ -203,18 +200,16 @@ namespace Kaerber.MUD.Entities
 
         private void HandleLocalEvent( Event e ) {
             Contract.Requires( e != null );
-            Contract.Requires( Race != null );
-            Contract.Requires( Eq != null );
 
             base.ReceiveEvent( e );
-            Race.ReceiveEvent( e );
-            Eq.ReceiveEvent( e );
 
-            if( Spec != null )
-                Spec.ReceiveEvent( e );
+            Race?.ReceiveEvent( e );
+            Spec?.ReceiveEvent(e);
 
-            if( ViewEvent != null )
-                ViewEvent( e );
+            Eq?.ReceiveEvent( e );
+            NaturalWeapon?.ReceiveEvent( e );
+
+            ViewEvent?.Invoke( e );
         }
 
 
@@ -245,9 +240,7 @@ namespace Kaerber.MUD.Entities
         private Event DoEvent( string name, EventReturnMethod returnMethod, PythonDictionary args = null ) {
             args = args ?? new PythonDictionary();
             args.Add( "ch", this );
-            var doEvent = Entities.Event.Create( name,
-                returnMethod,
-                args );
+            var doEvent = Entities.Event.Create( name, returnMethod, args );
             SendEvent( doEvent );
 
             return doEvent;
@@ -255,19 +248,19 @@ namespace Kaerber.MUD.Entities
 
 
         public void SetRoom( Room room ) {
-            if( _room != null ) {
-                lock( _room ) {
+            if( Room != null ) {
+                lock( Room ) {
                     UpdateQueue.Detach();
-                    _room.RemoveCharacter( this );
+                    Room.RemoveCharacter( this );
                 }
             }
 
-            _room = room;
+            Room = room;
 
-            if( _room != null ) {
-                lock( _room ) {
-                    _room.AddCharacter( this );
-                    UpdateQueue.Attach( _room.UpdateQueue );
+            if( Room != null ) {
+                lock( Room ) {
+                    Room.AddCharacter( this );
+                    UpdateQueue.Attach( Room.UpdateQueue );
                 }
             }
         }
@@ -277,12 +270,12 @@ namespace Kaerber.MUD.Entities
             Contract.Requires( Room != null );
             Contract.Requires( destination != null );
 
-            if( !Movement.CanLeaveRoom( _room ) )
+            if( !Movement.CanLeaveRoom( Room ) )
                 return false;
             if( !Movement.CanEnterRoom( destination ) )
                 return false;
 
-            var source = _room;
+            var source = Room;
             SetRoom( destination );
 
             Movement.LeftRoom( source );

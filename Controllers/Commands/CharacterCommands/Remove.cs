@@ -5,7 +5,7 @@ using Kaerber.MUD.Entities;
 
 namespace Kaerber.MUD.Controllers.Commands.CharacterCommands {
     public class Remove : Command {
-        public override string Name { get { return ( "remove" ); } }
+        public override string Name => "remove";
 
         public Remove() {
             _cmdForms = new List<Tuple<List<ArgType>, CommandHandler>> {

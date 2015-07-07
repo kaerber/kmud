@@ -2,10 +2,7 @@
 
 namespace Kaerber.MUD.Controllers.Commands.CharacterCommands {
     public class Sockets : ICommand {
-        public string Name {
-            get { return "Name"; }
-            set { throw new NotSupportedException(); }
-        }
+        public string Name => "sockets";
 
         public string Code {
             get { throw new NotSupportedException(); }

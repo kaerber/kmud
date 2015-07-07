@@ -8,7 +8,7 @@ namespace Kaerber.MUD.Entities.Aspects {
     public class TimedEventQueue : IntervalHeap<TimedEvent> {
         private TimedEventQueue _parent;
 
-        public bool IsAttached { get { return _parent != null; } }
+        public bool IsAttached => _parent != null;
 
         public TimedEventQueue( TimedEventQueue parent ) {
             _parent = parent;
@@ -75,7 +75,9 @@ namespace Kaerber.MUD.Entities.Aspects {
                 if( _parent == null )
                     return;
 
-                var list = _parent.Where( e => e.Callback == Run ).Select( e => e.Handle );
+                var list = _parent.Where( e => e.Callback == Run )
+                                  .Select( e => e.Handle )
+                                  .ToList();
                 foreach( var eHandle in list )
                     _parent.Delete( eHandle );
 

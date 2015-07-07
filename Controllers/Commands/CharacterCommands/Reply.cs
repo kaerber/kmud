@@ -2,10 +2,7 @@
 
 namespace Kaerber.MUD.Controllers.Commands.CharacterCommands {
     public class Reply : ICommand {
-        public string Name {
-            get { return "Reply"; }
-            set { throw new NotSupportedException(); }
-        }
+        public string Name => "Reply";
 
         public string Code {
             get { throw new NotSupportedException(); }

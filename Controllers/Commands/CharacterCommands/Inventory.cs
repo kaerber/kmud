@@ -2,10 +2,7 @@
 
 namespace Kaerber.MUD.Controllers.Commands.CharacterCommands {
     public class Inventory : ICommand {
-        public string Name {
-            get { return "Inventory"; }
-            set { throw new NotSupportedException(); }
-        }
+        public string Name => "Inventory";
 
         public string Code {
             get { throw new NotSupportedException(); }

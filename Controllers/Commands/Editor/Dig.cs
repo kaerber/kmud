@@ -7,7 +7,7 @@ using Kaerber.MUD.Entities;
 namespace Kaerber.MUD.Controllers.Commands.Editor {
     public class Dig : ICommand {
         // Usage: dig <direction> <room_vnum>
-        public string Name { get { return "Dig"; } }
+        public string Name => "dig";
 
         public string Code {
             get { throw new NotSupportedException(); }

@@ -28,7 +28,7 @@ class Attack( IAttack ):
 
 
     def SetAssaulterWeaponBaseDamage( self, value ):
-        self.assaulterWeaponBaseDamage = value
+        self.assaulterWeaponBaseDamage = max( self.assaulterWeaponBaseDamage, value )
 
     def AddAssaulterStrength( self, value ):
         self.assaulterStrength += value

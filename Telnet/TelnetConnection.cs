@@ -14,9 +14,7 @@ namespace Kaerber.MUD.Telnet {
 
         public virtual IEnumerable<string> ReadLines( Encoding encoding ) {
             var builder = new StringBuilder();
-            foreach( var token in _stream.Read() ) {
-                if( token.Handle( this ) )
-                    continue;
+            foreach( var token in _stream.Read().Where( token => !token.Handle( this ) ) ) {
                 builder.Append( token.Content( encoding ) );
                 var line = builder.GetLine();
                 if( line != null )

@@ -5,7 +5,7 @@ using Kaerber.MUD.Entities;
 
 namespace Kaerber.MUD.Controllers.Commands.CharacterCommands {
     public class Drop : Command {
-        public override string Name { get { return( "drop" ); } }
+        public override string Name => "drop";
 
         public Drop() {
             _cmdForms = new List<Tuple<List<ArgType>, CommandHandler>> {

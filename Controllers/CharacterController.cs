@@ -17,9 +17,9 @@ namespace Kaerber.MUD.Controllers {
             _characterManager = characterManager;
         }
 
-        public Character Model { get; private set; }
+        public Character Model { get; }
 
-        public ICharacterView View { get; private set; }
+        public ICharacterView View { get; }
 
         public IController Start() {
             View.Start();
