@@ -2,9 +2,9 @@
 
 namespace Kaerber.MUD.Common {
     public interface IManager<T> {
-        T Get( string name );
+        IList<string> List( string path );
 
-        IEnumerable<T> List();
-        void Save( T entity );
+        T Load( string path, string name );
+        void Save( string path, T entity );
     }
 }

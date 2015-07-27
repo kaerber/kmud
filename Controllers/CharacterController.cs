@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.IO;
+using System.Linq;
 
 using Kaerber.MUD.Common;
 using Kaerber.MUD.Controllers.Commands;
@@ -10,11 +11,14 @@ namespace Kaerber.MUD.Controllers {
         public CharacterController( Character model, 
                                     ICharacterView view, 
                                     IManager<ICommand> commandManager,
-                                    IManager<Character> characterManager ) {
+                                    IManager<Character> characterManager,
+                                    IUser user ) {
             Model = model;
             View = view;
+            _user = user;
             _commandManager = commandManager;
             _characterManager = characterManager;
+
         }
 
         public Character Model { get; }
@@ -43,7 +47,7 @@ namespace Kaerber.MUD.Controllers {
         }
 
         public void OnCommand( PlayerInput input ) {
-            var cmd = _commandManager.Get( input.Command );
+            var cmd = _commandManager.Load( string.Empty, input.Command );
 
             lock( View ) {
                 View.Command = true;
@@ -53,7 +57,7 @@ namespace Kaerber.MUD.Controllers {
         }
 
         public void SaveCharacter() {
-            _characterManager.Save( Model );
+            _characterManager.Save( Path.Combine( "players", _user.Username ), Model );
         }
 
         public void Quit() {
@@ -71,5 +75,6 @@ namespace Kaerber.MUD.Controllers {
 
         private readonly IManager<ICommand> _commandManager;
         private readonly IManager<Character> _characterManager;
+        private readonly IUser _user;
     }
 }

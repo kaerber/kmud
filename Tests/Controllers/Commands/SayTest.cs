@@ -20,13 +20,13 @@ namespace Kaerber.MUD.Tests.Controllers.Commands
             var mockView = new Mock<ICharacterView>();
 
             var room = new Room();
-            var ch = new Character();
+            var ch = new Character( new CharacterCore() );
 
             ch.SetRoom( room );
             var command = new Say();
 
             var mockManager = new Mock<IManager<ICommand>>(); 
-            command.Execute( new CharacterController( ch, mockView.Object, mockManager.Object, null ),
+            command.Execute( new CharacterController( ch, mockView.Object, mockManager.Object, null, null ),
                              PlayerInput.Parse( "say hey-hey-hey!" ) );
         }
     }

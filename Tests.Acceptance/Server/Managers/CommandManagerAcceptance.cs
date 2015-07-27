@@ -1,4 +1,4 @@
-﻿using Kaerber.MUD.Server.Managers;
+﻿using Kaerber.MUD.Platform.Managers;
 
 using NUnit.Framework;
 
@@ -7,10 +7,10 @@ namespace Kaerber.MUD.Tests.Acceptance.Server.Managers {
     public class CommandManagerAcceptance : BaseAcceptanceTest {
         [Test]
         public void Load_ReadsCommands() {
-            var commandManager = new CommandManager();
-            commandManager.Load();
+            var commandManager = new CommandManager( MUD.Entities.World.CommandsPath );
+            var command = commandManager.Load( string.Empty, "kill" );
 
-            Assert.IsNotNull( commandManager.Get( "kill" ) );
+            Assert.IsNotNull( command );
         }
     }
 }

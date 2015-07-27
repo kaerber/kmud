@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.IO;
+using System.Linq;
 
 using Kaerber.MUD.Common;
 using Kaerber.MUD.Entities;
@@ -8,10 +9,13 @@ using Microsoft.Practices.Unity;
 
 namespace Kaerber.MUD.Controllers {
     public class UserController : IUserController {
-        public UserController( IUser model, IUserView view, IUserManager userManager, IUnityContainer container ) {
+        public UserController( IUser model, 
+                               IUserView view, 
+                               IManager<Character> characterManager,
+                               IUnityContainer container ) {
             _model = model;
             _view = view;
-            _userManager = userManager;
+            _characterManager = characterManager;
             _container = container;
             _machine = new UserControllerStateMachine( this );
         }
@@ -29,7 +33,7 @@ namespace Kaerber.MUD.Controllers {
         }
 
         public IController GotCharacterName( string name ) {
-            var character = _userManager.LoadCharacter( name );
+            var character = _characterManager.Load( Path.Combine( "players", _model.Username ), name );
             return NextController( character );
         }
 
@@ -46,7 +50,7 @@ namespace Kaerber.MUD.Controllers {
 
         private readonly IUser _model;
         private readonly IUserView _view;
-        private readonly IUserManager _userManager;
+        private readonly IManager<Character> _characterManager;
 
         private readonly IUnityContainer _container;
 

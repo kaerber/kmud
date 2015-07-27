@@ -18,14 +18,19 @@ namespace Kaerber.MUD.Entities
     }
 
     public class Character : Entity {
-        public Character() {
+        public Character() : this( new CharacterCore() ) {}
+
+        public Character( CharacterCore core ) {
+            _core = core;
+
             NaturalWeapon = AspectFactory.Weapon();
             NaturalWeapon.BaseDamage = 1;
 
             Setup();
         }
 
-        public Character( Character template ) : base( template.Id, template.Names, template.ShortDescr ) {
+        public Character( Character template, CharacterCore core ) : base( template.Id, template.Names, template.ShortDescr ) {
+            _core = core;
             NaturalWeapon = template.NaturalWeapon.Clone();
             Flags = template.Flags;
             Setup();
@@ -39,7 +44,6 @@ namespace Kaerber.MUD.Entities
 
             Inventory = new ItemSet();
             Eq = new Equipment();
-            Skills = new SkillSet { Host = this };
             Data = new Dictionary<string, string>();
 
             ActionQueueSet = new ActionQueueSet( this );
@@ -64,7 +68,6 @@ namespace Kaerber.MUD.Entities
 
         public ItemSet Inventory;
 
-        public SkillSet Skills;
         public Dictionary<string, string> Data;
 
         public Action<Event> ViewEvent;
@@ -109,8 +112,6 @@ namespace Kaerber.MUD.Entities
                 .AddIf( "LoginAt", Room != null ? Room.Id : string.Empty, Room != null )
                 .AddIf( "RespawnAt", RespawnAt != null ? RespawnAt.Id : string.Empty, RespawnAt != null )
 
-                .AddIf( "Skills", Skills, Skills != null && Skills.Count > 0 )
-
                 .AddIf( "Data", Data, Data != null && Data.Keys.Count > 0 );
 
             data.Add( "Stats", Stats.Serialize() );
@@ -143,10 +144,6 @@ namespace Kaerber.MUD.Entities
             SetRoom( World.GetRoom( loginAt ) );
             if( Room == null )
                 SetRoom( RespawnAt );
-
-
-            Skills = World.ConvertToTypeEx( data, "Skills", new SkillSet() );
-            Skills.Host = this;
 
             Data = World.ConvertToTypeEx( data, "Data", new Dictionary<string, string>() );
 
@@ -355,25 +352,15 @@ namespace Kaerber.MUD.Entities
             return true;
         }
 
-
         public static Character CreateMob( string vnum ) {
-            Contract.Requires( World.Instance.Mobs[vnum] != null );
-
-            var ch = new Character( World.Instance.Mobs[vnum] );
+            var ch = new Character( World.Instance.Mobs[vnum], new CharacterCore() );
             ch.Initialize();
             ch.Aspects.ai = AspectFactory.AI();
             ch.Restore();
             return ch;
         }
 
-        public static Character Create() {
-            var ch = new Character();
-            ch.Initialize();
-            return ch;
-        }
 
-        public static Character Create( Character template, IEventHandler specialization ) {
-            return new Character( template ) { Spec = specialization };
-        }
+        private readonly CharacterCore _core;
     }
 }

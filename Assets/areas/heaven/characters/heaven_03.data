@@ -1,0 +1,33 @@
+{
+  "Vnum": "heaven_03",
+  "Names": "angel greater",
+  "ShortDescr": "a greater angel",
+  "Aspects": {
+    "health": {
+      "Value": 0
+    },
+    "mana": {
+      "Value": 0
+    }
+  },
+  "Flags": 2,
+  "Stats": {
+    "mana": 0,
+    "attack": 0,
+    "strength": 30,
+    "constitution": 30,
+    "wisdom": 30,
+    "mattack": 0,
+    "dexterety": 30,
+    "critchance": 0,
+    "armor": 0,
+    "marmor": 0,
+    "hp": 0,
+    "accuracy": 0,
+    "evasion": 0,
+    "intellect": 30
+  },
+  "NaturalWeapon": {
+    "BaseDamage": 30
+  }
+}

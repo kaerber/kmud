@@ -1,0 +1,33 @@
+{
+  "Vnum": "heaven_04",
+  "Names": "angel archangel",
+  "ShortDescr": "an archangel",
+  "Aspects": {
+    "health": {
+      "Value": 0
+    },
+    "mana": {
+      "Value": 0
+    }
+  },
+  "Flags": 2,
+  "Stats": {
+    "mana": 0,
+    "attack": 0,
+    "strength": 40,
+    "constitution": 40,
+    "wisdom": 40,
+    "mattack": 0,
+    "dexterety": 40,
+    "critchance": 0,
+    "armor": 0,
+    "marmor": 0,
+    "hp": 0,
+    "accuracy": 0,
+    "evasion": 0,
+    "intellect": 40
+  },
+  "NaturalWeapon": {
+    "BaseDamage": 40
+  }
+}

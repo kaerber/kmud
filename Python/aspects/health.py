@@ -56,8 +56,9 @@ class HealthAspect( Aspect ):
 
         
     def ch_dealt_damage_to_this( self, e ):
-        print e["this"].ShortDescr, "damage", e["damage"]
         self.Wounds += e["damage"]
-        print e["this"].ShortDescr, "wounds", self.Wounds
         if self.Wounds > self.Max:
             self.Host.SetTimedEvent( 0, lambda: self.Host.Die() )
+
+    def query_stats( self, e ):
+        e["stats"].Wounds += self.Wounds

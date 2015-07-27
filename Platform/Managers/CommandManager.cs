@@ -12,30 +12,35 @@ using Microsoft.Practices.ObjectBuilder2;
 using CommandSet = System.Collections.Generic.Dictionary<string, Kaerber.MUD.Controllers.Commands.ICommand>;
 using Data = System.Collections.Generic.Dictionary<string, dynamic>;
 
-namespace Kaerber.MUD.Server.Managers {
+namespace Kaerber.MUD.Platform.Managers {
     public class CommandManager : IManager<ICommand> {
         private const string DefaultCommandName = "default";
 
-        public void Save( ICommand command ) {
-            _commands[command.Name] = command;
-            Save();
-
+        public CommandManager( string root ) {
+            _root = root;
+            _loaded = false;
         }
 
-        public void Save() {
-            File.WriteAllText( World.CommandsPath, SaveCommandSets() );
+        public IList<string> List( string path ) {
+            LoadAll();
+            return _commands.Keys.ToList();
         }
 
-        public void Load() {
-            LoadCommands( File.ReadAllText( World.CommandsPath ) );
-        }
-
-        public ICommand Get( string name ) {
+        public ICommand Load( string path, string name ) {
+            LoadAll();
             return _commands[_commands.Keys.Match( name, DefaultCommandName )];
         }
 
-        public IEnumerable<ICommand> List() {
-            return _commands.Values;
+        public void Save( string path, ICommand entity ) {
+            _commands[entity.Name] = entity;
+            File.WriteAllText( World.CommandsPath, SaveCommands() );
+        }
+
+        private void LoadAll() {
+            if( _loaded ) return;
+
+            LoadCommands( File.ReadAllText( _root ) );
+            _loaded = true;
         }
 
         private void LoadCommands( string data ) {
@@ -44,24 +49,14 @@ namespace Kaerber.MUD.Server.Managers {
                  .ForEach( command => _commands.Add( command.Name, command ) );
         }
 
-        private string SaveCommandSets() {
+        private string SaveCommands() {
             return World.Serializer.Serialize(
-                _commands.Values.OfType<MLCommand>()
-                         .Select( Serialize )
-            );
+                _commands.Values.OfType<MLCommand>().Select( Serialize ) );
         }
 
-        private static object Serialize( ICommand command ) {
-            return new Data {
-                { "name", command.Name },
-                { "code", command.Code }
-            };
-        }
 
-        private static ICommand Deserialize( Data data ) {
-            return new MLCommand( data["name"], data["code"] );
-        }
-
+        private bool _loaded;
+        private readonly string _root;
         private readonly CommandSet _commands = new CommandSet {
             { "go", new Go() },
             { "north", new Go( "north" ) },
@@ -92,5 +87,17 @@ namespace Kaerber.MUD.Server.Managers {
 
             { "edit", new Edit() }
         };
+
+
+        private static object Serialize( ICommand command ) {
+            return new Data {
+                { "name", command.Name },
+                { "code", command.Code }
+            };
+        }
+
+        private static ICommand Deserialize( Data data ) {
+            return new MLCommand( data["name"], data["code"] );
+        }
     }
 }

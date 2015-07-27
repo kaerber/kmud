@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 
 using Kaerber.MUD.Common;
 using Kaerber.MUD.Telnet;
@@ -11,8 +12,9 @@ namespace Kaerber.MUD.Views {
         }
 
         public void List() {
-            foreach( var name in _manager.List() )
-                _connection.Write( string.Format( "{0:name}\n", name ) );
+            foreach( var entity in _manager.List( string.Empty )
+                                           .Select( id => _manager.Load( string.Empty, id ) ) )
+                _connection.Write( $"{entity:name}\n" );
         }
 
         private readonly IManager<T> _manager;

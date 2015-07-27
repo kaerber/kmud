@@ -12,7 +12,6 @@ namespace Kaerber.MUD.Entities {
     public class World : Area {
         public static readonly string RootPath;
         public static readonly string AssetsRootPath;
-        public static readonly string PlayersRootPath;
         public static readonly string UsersRootPath;
         public static readonly string LibPath;
         public static readonly string MlLibPath;
@@ -27,7 +26,6 @@ namespace Kaerber.MUD.Entities {
         static World() {
             RootPath = ConfigurationManager.AppSettings.Get( "RootPath" );
             AssetsRootPath = ConfigurationManager.AppSettings.Get( "AssetsRootPath" );
-            PlayersRootPath = ConfigurationManager.AppSettings.Get( "PlayersRootPath" );
             UsersRootPath = ConfigurationManager.AppSettings.Get( "UsersRootPath" );
             LibPath = ConfigurationManager.AppSettings.Get( "LibPath" );
             MlLibPath = ConfigurationManager.AppSettings.Get( "MlLibPath" );

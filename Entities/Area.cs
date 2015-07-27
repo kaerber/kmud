@@ -12,9 +12,9 @@ namespace Kaerber.MUD.Entities {
         public List<Item> Items;
         public List<Character> Mobs;
 
-        private int _itemId;
-        private int _roomId;
-        private int _mobId;
+        public int ItemId;
+        public int RoomId;
+        public int MobId;
 
         public Area() {
             Rooms = new List<Room>();
@@ -44,7 +44,7 @@ namespace Kaerber.MUD.Entities {
                     item.Dirty += OnDirty;
                     World.Instance.Items.Add( item.Id, item );
                 } );
-            _itemId = World.ConvertToTypeExs<int>( data, "itemId" );
+            ItemId = World.ConvertToTypeExs<int>( data, "itemId" );
 
             Mobs = World.ConvertToType<List<Character>>( data["Mobs"] );
             if( World.Instance != null )
@@ -52,7 +52,7 @@ namespace Kaerber.MUD.Entities {
                     mob.Dirty += OnDirty;
                     World.Instance.Mobs.Add( mob.Id, mob );
                 } );
-            _mobId = World.ConvertToTypeExs<int>( data, "mobId" );
+            MobId = World.ConvertToTypeExs<int>( data, "mobId" );
 
             Rooms = World.ConvertToType<List<Room>>( data["Rooms"] );
             if( World.Instance != null )
@@ -61,7 +61,7 @@ namespace Kaerber.MUD.Entities {
                     room.Area = this;
                     World.Instance.Rooms.Add( room.Id, room );
                 } );
-            _roomId = World.ConvertToTypeExs<int>( data, "roomId" );
+            RoomId = World.ConvertToTypeExs<int>( data, "roomId" );
 
             return base.Deserialize( data );
         }
@@ -69,11 +69,11 @@ namespace Kaerber.MUD.Entities {
         public override IDictionary<string, object> Serialize() {
             return ( base.Serialize()
                 .AddEx( "Rooms", Rooms )
-                .AddEx( "roomId", _roomId )
+                .AddEx( "roomId", RoomId )
                 .AddEx( "Items", Items )
-                .AddEx( "itemId", _itemId )
+                .AddEx( "itemId", ItemId )
                 .AddEx( "Mobs", Mobs )
-                .AddEx( "mobId", _mobId ) );
+                .AddEx( "mobId", MobId ) );
         }
 
         public virtual void Save() {
@@ -102,7 +102,7 @@ namespace Kaerber.MUD.Entities {
 
         public Room AddRoom( Room room ) {
             if( string.IsNullOrWhiteSpace( room.Id ) )
-                room.Id = string.Format( "{0}_{1:00}", Id, _roomId++ );
+                room.Id = string.Format( "{0}_{1:00}", Id, RoomId++ );
 
             Rooms.Add( room );
             room.Area = this;
@@ -115,7 +115,7 @@ namespace Kaerber.MUD.Entities {
 
         public Character AddMob( Character mob ) {
             if( string.IsNullOrWhiteSpace( mob.Id ) )
-                mob.Id = string.Format( "{0}_{1:00}", Id, _mobId++ );
+                mob.Id = string.Format( "{0}_{1:00}", Id, MobId++ );
             if( !mob.Id.StartsWith( Id.ToLower() + "_" ) )
                 mob.Id = Id.ToLower() + "_" + mob.Id;
 
@@ -129,7 +129,7 @@ namespace Kaerber.MUD.Entities {
 
         public Item AddItem( Item item ) {
             if( string.IsNullOrWhiteSpace( item.Id ) )
-                item.Id = string.Format( "{0}_{1:00}", Id, _itemId++ );
+                item.Id = $"{Id}_{ItemId++:00}";
             if( !item.Id.StartsWith( Id.ToLower() + "_" ) )
                 item.Id = Id.ToLower() + "_" + item.Id;
 

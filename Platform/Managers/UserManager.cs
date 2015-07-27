@@ -1,37 +1,42 @@
-﻿using System.IO;
+﻿using System.Collections.Generic;
+using System.IO;
 
 using Kaerber.MUD.Common;
 using Kaerber.MUD.Controllers;
 using Kaerber.MUD.Entities;
 
-namespace Kaerber.MUD.Server.Managers {
+namespace Kaerber.MUD.Platform.Managers {
     public class UserManager : IUserManager {
-        public bool UserExists( string username ) {
-            return File.Exists( World.UsersRootPath + username + ".data" );
+        public UserManager( string root ) {
+            _root = root;
         }
 
-        public IUser CreateUser( string username, string password, string email ) {
+        public bool Exists( string path, string username ) {
+            return File.Exists( FormPath( path, username ) );
+        }
+
+        public IList<string> List( string path ) {
+            throw new System.NotImplementedException();
+        }
+
+        public IUser Create( string username, string password, string email ) {
             return new User( username, password, email );
         }
 
-        public IUser LoadUser( string username ) {
-            return World.Serializer.Deserialize<User>( 
-                File.ReadAllText( World.UsersRootPath + username + ".data" ) );
+        public IUser Load( string path, string username ) {
+            return World.Serializer.Deserialize<User>(
+                File.ReadAllText( FormPath( path, username ) ) );
         }
 
-        public void SaveUser( IUser user ) {
-            File.WriteAllText( World.UsersRootPath + user.Username + ".data", 
-                World.Serializer.Serialize( this ) );
+        public void Save( string path, IUser user ) {
+            File.WriteAllText( FormPath( path, user.Username ),
+                               World.Serializer.Serialize( this ) );
         }
 
-        public Character LoadCharacter( string name ) {
-            return World.Serializer.Deserialize<Character>( File.ReadAllText( World.PlayersRootPath + name + ".data" ) );
+        private string FormPath( string path, string name ) {
+            return Path.Combine( _root, path, name, "user.data" );
         }
 
-        public void SaveCharacter( Character character ) {
-            File.WriteAllText( World.PlayersRootPath + character.ShortDescr + ".data", World.Serializer.Serialize( character ) );
-        }
-
-        public static readonly UserManager Instance = new UserManager();
+        private readonly string _root;
     }
 }

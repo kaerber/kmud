@@ -178,13 +178,12 @@ namespace Kaerber.MUD.Entities {
         }
 
 
-        protected virtual void OnDirty() {
+        public virtual void OnDirty() {
             if( !dirty )
                 lock( this )
                     dirty = true;
 
-            if( Dirty != null )
-                Dirty();
+            Dirty?.Invoke();
         }
     }
 }

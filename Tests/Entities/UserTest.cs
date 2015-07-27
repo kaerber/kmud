@@ -1,6 +1,6 @@
 ﻿using Kaerber.MUD.Entities;
+using Kaerber.MUD.Platform.Managers;
 using Kaerber.MUD.Server;
-using Kaerber.MUD.Server.Managers;
 
 using NUnit.Framework;
 
@@ -14,7 +14,7 @@ namespace Kaerber.MUD.Tests.Entities {
 
             const string userName = "Luch1";
 
-            var user = UserManager.Instance.LoadUser( userName );
+            var user = new UserManager( World.UsersRootPath ).Load( string.Empty, userName );
             Assert.NotNull( user );
             Assert.AreEqual( user.Username, userName );
         }

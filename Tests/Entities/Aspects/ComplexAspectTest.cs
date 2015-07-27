@@ -12,7 +12,7 @@ namespace Kaerber.MUD.Tests.Entities.Aspects {
     public class ComplexAspectTest : BaseEntityTest {
         [Test]
         public void AddRemoveTest() {
-            var ch = new Character();
+            var ch = new Character( new CharacterCore() );
             var complex = AspectFactory.Complex();
             complex.Host = ch;
             var test = AspectFactory.Complex();
@@ -46,7 +46,7 @@ namespace Kaerber.MUD.Tests.Entities.Aspects {
 
         [Test]
         public void AddWithSetHostTest() {
-            var ch = new Character { ShortDescr = "test" };
+            var ch = new Character( new CharacterCore() ) { ShortDescr = "test" };
             var complex = AspectFactory.Complex();
             complex.Host = ch;
             var test = AspectFactory.Complex();
@@ -58,7 +58,7 @@ namespace Kaerber.MUD.Tests.Entities.Aspects {
 
         [Test]
         public void SetHostTest() {
-            var ch = new Character { ShortDescr = "test" };
+            var ch = new Character( new CharacterCore() ) { ShortDescr = "test" };
             var complex = AspectFactory.Complex();
             var test = AspectFactory.Complex();
             complex.Add( "test", test );
@@ -70,7 +70,7 @@ namespace Kaerber.MUD.Tests.Entities.Aspects {
 
         [Test]
         public void ReceiveEventTest() {
-            var ch = new Character();
+            var ch = new Character( new CharacterCore() );
             var complex = AspectFactory.Complex();
             complex.Host = ch;
             var test = AspectFactory.Complex();

@@ -19,7 +19,7 @@ namespace Kaerber.MUD.Tests.Controllers {
 
         [Test]
         public void IndexerTest() {
-            var ch = new Character();
+            var ch = new Character( new CharacterCore() );
 
             var node = HierarchyNode.CreateNode( null, ch, null );
 

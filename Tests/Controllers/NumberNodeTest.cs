@@ -39,7 +39,7 @@ namespace Kaerber.MUD.Tests.Controllers {
 
         [Test]
         public void SetTest() {
-            var ch = new Character();
+            var ch = new Character( new CharacterCore() );
 
             var root = HierarchyNode.CreateNode( null, ch, null );
             Assert.IsInstanceOf<ComplexNode>( root );

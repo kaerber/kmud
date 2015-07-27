@@ -1,0 +1,33 @@
+{
+  "Vnum": "heaven_02",
+  "Names": "angel lesser",
+  "ShortDescr": "a lesser angel",
+  "Aspects": {
+    "health": {
+      "Value": 0
+    },
+    "mana": {
+      "Value": 0
+    }
+  },
+  "Flags": 2,
+  "Stats": {
+    "mana": 0,
+    "attack": 0,
+    "strength": 10,
+    "constitution": 10,
+    "wisdom": 10,
+    "mattack": 0,
+    "dexterety": 10,
+    "critchance": 0,
+    "armor": 0,
+    "marmor": 0,
+    "hp": 0,
+    "accuracy": 0,
+    "evasion": 0,
+    "intellect": 10
+  },
+  "NaturalWeapon": {
+    "BaseDamage": 10
+  }
+}

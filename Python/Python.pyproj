@@ -7,16 +7,17 @@
     <ProjectHome>.</ProjectHome>
     <StartupFile>
     </StartupFile>
-    <SearchPath>..\Server\Lib\</SearchPath>
+    <SearchPath>..\Server\Lib\;.</SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
     <OutputPath>.</OutputPath>
     <Name>Python</Name>
     <RootNamespace>Python</RootNamespace>
-    <LaunchProvider>Standard Python launcher</LaunchProvider>
+    <LaunchProvider>IronPython (.NET) launcher</LaunchProvider>
     <EnableNativeCodeDebugging>False</EnableNativeCodeDebugging>
     <IsWindowsApplication>False</IsWindowsApplication>
     <InterpreterId>{fcc291aa-427c-498c-a4d7-4502d6449b8c}</InterpreterId>
     <InterpreterVersion>2.7</InterpreterVersion>
+    <DebugStdLib>True</DebugStdLib>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DebugSymbols>true</DebugSymbols>
@@ -27,6 +28,15 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="abilities\ability.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="abilities\movement.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="abilities\__init__.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="aspects\ai.py">
       <SubType>Code</SubType>
     </Compile>
@@ -77,6 +87,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="abilities\" />
     <Folder Include="aspects\" />
     <Folder Include="game\" />
   </ItemGroup>

@@ -1,0 +1,30 @@
+{
+  "Vnum": "heaven_01",
+  "Names": "warrior angel",
+  "ShortDescr": "a warrior angel",
+  "Aspects": {
+    "health": {
+      "Value": 0
+    }
+  },
+  "Flags": 2,
+  "Stats": {
+    "mana": 0,
+    "attack": 0,
+    "strength": 20,
+    "constitution": 20,
+    "wisdom": 20,
+    "mattack": 0,
+    "dexterety": 20,
+    "critchance": 0,
+    "armor": 0,
+    "marmor": 0,
+    "hp": 0,
+    "accuracy": 0,
+    "evasion": 0,
+    "intellect": 20
+  },
+  "NaturalWeapon": {
+    "BaseDamage": 20
+  }
+}

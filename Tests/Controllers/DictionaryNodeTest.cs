@@ -46,7 +46,7 @@ namespace Kaerber.MUD.Tests.Controllers {
             node.Add( "test", _mockView.Object );
             Assert.AreEqual( 1, dictionary.Count );
 
-            node.SetMember( "test", new Character() { ShortDescr = "test char" } );
+            node.SetMember( "test", new Character( new CharacterCore() ) { ShortDescr = "test char" } );
             Assert.AreEqual( "test char", ( string )node["test"]["short"].Value );
         }
 
@@ -62,7 +62,7 @@ namespace Kaerber.MUD.Tests.Controllers {
 
         [Test]
         public void RemoveTest() {
-            var dictionary = new Dictionary<string, Character> { { "test", new Character() } };
+            var dictionary = new Dictionary<string, Character> { { "test", new Character( new CharacterCore() ) } };
             var node = HierarchyNode.CreateNode( null, dictionary, null );
             Assert.IsInstanceOf<DictionaryNode>( node );
 

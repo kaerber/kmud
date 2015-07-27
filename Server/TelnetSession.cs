@@ -2,7 +2,8 @@
 
 using Kaerber.MUD.Common;
 using Kaerber.MUD.Controllers;
-using Kaerber.MUD.Server.Managers;
+using Kaerber.MUD.Entities;
+using Kaerber.MUD.Platform.Managers;
 using Kaerber.MUD.Views;
 
 using Microsoft.Practices.Unity;
@@ -49,7 +50,7 @@ namespace Kaerber.MUD.Server {
             container.RegisterType<TelnetSession, TelnetSession>();
             container.RegisterType<ITelnetInputParser, TelnetInputParser>();
 
-            container.RegisterInstance<IUserManager>( UserManager.Instance );
+            container.RegisterInstance<IUserManager>( new UserManager( World.UsersRootPath ) );
             return container;
         }
    }

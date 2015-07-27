@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Kaerber.MUD.Tests</RootNamespace>
     <AssemblyName>Kaerber.MUD.Tests</AssemblyName>
-    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
   </PropertyGroup>
@@ -149,6 +149,7 @@
     <Compile Include="Entities\Aspects\WeaponTest.cs" />
     <Compile Include="Entities\AttackTest.cs" />
     <Compile Include="Entities\BaseEntityTest.cs" />
+    <Compile Include="Entities\CharacterCoreTest.cs" />
     <Compile Include="Entities\CharacterEquipmentTest.cs" />
     <Compile Include="Entities\CharacterRaceTest.cs" />
     <Compile Include="Entities\CharacterTest.cs" />
@@ -167,7 +168,10 @@
     <Compile Include="Entities\WorldTest.cs" />
     <Compile Include="ExtensionMethodsTest.cs" />
     <Compile Include="MoqExtensions.cs" />
+    <Compile Include="Platform\Managers\AbilityManagerTest.cs" />
+    <Compile Include="Platform\Managers\AreaManagerTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Python\abilities\AbilityTest.cs" />
     <Compile Include="Python\aspects\HealthTest.cs" />
     <Compile Include="Python\StatsQueryTest.cs" />
     <Compile Include="Server\ServerTest.cs" />
@@ -216,6 +220,10 @@
     <ProjectReference Include="..\Entities\Entities.csproj">
       <Project>{2762f311-30d2-4cb1-9233-50e10dc6a1b6}</Project>
       <Name>Entities</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Platform\Platform.csproj">
+      <Project>{b129c779-48af-43b6-b599-22bdfe6cf996}</Project>
+      <Name>Platform</Name>
     </ProjectReference>
     <ProjectReference Include="..\Server\Server.csproj">
       <Project>{84a288fd-781a-4fff-90ca-89cb3cc0d508}</Project>

@@ -1,0 +1,317 @@
+{
+  "Vnum": "heaven",
+  "Names": "heaven",
+  "ShortDescr": "Heaven",
+  "Aspects": {},
+  "Rooms": [
+    {
+      "Vnum": "heaven_01",
+      "Names": "somewhere heaven",
+      "ShortDescr": "Somewhere in heaven.",
+      "Aspects": {},
+      "Description": "You are standing on a soft white cloud, surrounded by a warm glow.",
+      "Exits": [
+        {
+          "Name": "north",
+          "To": "heaven_02"
+        },
+        {
+          "Name": "west",
+          "To": "heaven_04"
+        }
+      ],
+      "Resets": {
+        "MobResets": [
+          {
+            "Vnum": "heaven_01",
+            "Eq": null
+          }
+        ]
+      }
+    },
+    {
+      "Vnum": "heaven_02",
+      "Names": "",
+      "ShortDescr": "Another place in heaven.",
+      "Aspects": {},
+      "Exits": [
+        {
+          "Name": "south",
+          "To": "heaven_01"
+        },
+        {
+          "Name": "west",
+          "To": "heaven_03"
+        }
+      ],
+      "Resets": {
+        "MobResets": [
+          {
+            "Vnum": "heaven_02",
+            "Eq": null
+          }
+        ]
+      }
+    },
+    {
+      "Vnum": "heaven_03",
+      "Names": "",
+      "ShortDescr": "A road to heaven.",
+      "Aspects": {},
+      "Exits": [
+        {
+          "Name": "east",
+          "To": "heaven_02"
+        },
+        {
+          "Name": "south",
+          "To": "heaven_04"
+        }
+      ],
+      "Resets": {
+        "MobResets": [
+          {
+            "Vnum": "heaven_03",
+            "Eq": null
+          }
+        ]
+      }
+    },
+    {
+      "Vnum": "heaven_04",
+      "Names": "",
+      "ShortDescr": "Heaven's Door.",
+      "Aspects": {},
+      "Exits": [
+        {
+          "Name": "north",
+          "To": "heaven_03"
+        },
+        {
+          "Name": "east",
+          "To": "heaven_01"
+        },
+        {
+          "Name": "down",
+          "To": "kesh_tog"
+        }
+      ],
+      "Resets": {
+        "MobResets": [
+          {
+            "Vnum": "heaven_04",
+            "Eq": [
+              {
+                "Vnum": "heaven_angel_tunic",
+                "Location": 20
+              }
+            ]
+          }
+        ],
+        "ObjectResets": [
+          {
+            "Vnum": "heaven_angel_feather"
+          },
+          {
+            "Vnum": "heaven_angel_tunic"
+          }
+        ]
+      }
+    }
+  ],
+  "roomId": 0,
+  "Items": [
+    {
+      "Vnum": "heaven_angel_feather",
+      "Names": "angel feather",
+      "ShortDescr": "angel's feather",
+      "Aspects": {},
+      "WearLoc": 0,
+      "Flags": 0,
+      "Cost": 0
+    },
+    {
+      "Vnum": "heaven_angel_tunic",
+      "Names": "angel tunic",
+      "ShortDescr": "tunic of an angel",
+      "Aspects": {},
+      "WearLoc": 20,
+      "Flags": 0,
+      "Cost": 0
+    },
+    {
+      "Vnum": "ch_corpse",
+      "Names": "corpse {0}",
+      "ShortDescr": "corpse of {0}",
+      "Aspects": {},
+      "WearLoc": 0,
+      "Container": {
+        "Items": []
+      },
+      "Flags": 0,
+      "Cost": 0
+    },
+    {
+      "Vnum": "heaven_silver",
+      "Names": "silver coin",
+      "ShortDescr": "silver coin",
+      "Aspects": {},
+      "WearLoc": 0,
+      "Flags": 2,
+      "Stack": {
+        "MaxCount": 0,
+        "Count": 0
+      },
+      "Cost": 1
+    },
+    {
+      "Vnum": "heaven_gold",
+      "Names": "gold coin",
+      "ShortDescr": "gold coin",
+      "Aspects": {},
+      "WearLoc": 0,
+      "Flags": 2,
+      "Stack": {
+        "MaxCount": 0,
+        "Count": 0
+      },
+      "Cost": 100
+    }
+  ],
+  "itemId": 0,
+  "Mobs": [
+    {
+      "Vnum": "heaven_01",
+      "Names": "warrior angel",
+      "ShortDescr": "a warrior angel",
+      "Aspects": {
+        "health": {
+          "Value": 0
+        },
+        "mana": {
+          "Value": 0
+        }
+      },
+      "Flags": 2,
+      "Stats": {
+        "mana": 0,
+        "attack": 0,
+        "strength": 20,
+        "constitution": 20,
+        "wisdom": 20,
+        "mattack": 0,
+        "dexterety": 20,
+        "critchance": 0,
+        "armor": 0,
+        "marmor": 0,
+        "hp": 0,
+        "accuracy": 0,
+        "evasion": 0,
+        "intellect": 20
+      },
+      "NaturalWeapon": {
+        "BaseDamage": 20
+      }
+    },
+    {
+      "Vnum": "heaven_02",
+      "Names": "angel lesser",
+      "ShortDescr": "a lesser angel",
+      "Aspects": {
+        "health": {
+          "Value": 0
+        },
+        "mana": {
+          "Value": 0
+        }
+      },
+      "Flags": 2,
+      "Stats": {
+        "mana": 0,
+        "attack": 0,
+        "strength": 10,
+        "constitution": 10,
+        "wisdom": 10,
+        "mattack": 0,
+        "dexterety": 10,
+        "critchance": 0,
+        "armor": 0,
+        "marmor": 0,
+        "hp": 0,
+        "accuracy": 0,
+        "evasion": 0,
+        "intellect": 10
+      },
+      "NaturalWeapon": {
+        "BaseDamage": 10
+      }
+    },
+    {
+      "Vnum": "heaven_03",
+      "Names": "angel greater",
+      "ShortDescr": "a greater angel",
+      "Aspects": {
+        "health": {
+          "Value": 0
+        },
+        "mana": {
+          "Value": 0
+        }
+      },
+      "Flags": 2,
+      "Stats": {
+        "mana": 0,
+        "attack": 0,
+        "strength": 30,
+        "constitution": 30,
+        "wisdom": 30,
+        "mattack": 0,
+        "dexterety": 30,
+        "critchance": 0,
+        "armor": 0,
+        "marmor": 0,
+        "hp": 0,
+        "accuracy": 0,
+        "evasion": 0,
+        "intellect": 30
+      },
+      "NaturalWeapon": {
+        "BaseDamage": 30
+      }
+    },
+    {
+      "Vnum": "heaven_04",
+      "Names": "angel archangel",
+      "ShortDescr": "an archangel",
+      "Aspects": {
+        "health": {
+          "Value": 0
+        },
+        "mana": {
+          "Value": 0
+        }
+      },
+      "Flags": 2,
+      "Stats": {
+        "mana": 0,
+        "attack": 0,
+        "strength": 40,
+        "constitution": 40,
+        "wisdom": 40,
+        "mattack": 0,
+        "dexterety": 40,
+        "critchance": 0,
+        "armor": 0,
+        "marmor": 0,
+        "hp": 0,
+        "accuracy": 0,
+        "evasion": 0,
+        "intellect": 40
+      },
+      "NaturalWeapon": {
+        "BaseDamage": 40
+      }
+    }
+  ],
+  "mobId": 0
+}

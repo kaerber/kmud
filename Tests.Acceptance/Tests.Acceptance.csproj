@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Kaerber.MUD.Tests.Acceptance</RootNamespace>
     <AssemblyName>Kaerber.MUD.Tests.Acceptance</AssemblyName>
-    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
   </PropertyGroup>
@@ -138,6 +138,10 @@
     <ProjectReference Include="..\Entities\Entities.csproj">
       <Project>{2762f311-30d2-4cb1-9233-50e10dc6a1b6}</Project>
       <Name>Entities</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Platform\Platform.csproj">
+      <Project>{b129c779-48af-43b6-b599-22bdfe6cf996}</Project>
+      <Name>Platform</Name>
     </ProjectReference>
     <ProjectReference Include="..\Server\Server.csproj">
       <Project>{84a288fd-781a-4fff-90ca-89cb3cc0d508}</Project>

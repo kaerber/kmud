@@ -37,7 +37,7 @@ namespace Kaerber.MUD.Tests.Controllers {
             Assert.IsNotInstanceOf<FlagsNode>( node );
 
             // ComplexNode
-            node = HierarchyNode.CreateNode( null, new Character(), null );
+            node = HierarchyNode.CreateNode( null, new Character( new CharacterCore() ), null );
             Assert.IsInstanceOf<ComplexNode>( node );
 
             Assert.IsNotInstanceOf<DictionaryNode>( node );
@@ -151,7 +151,7 @@ namespace Kaerber.MUD.Tests.Controllers {
 
         [Test]
         public void PathTest() {
-            var ch = new Character();
+            var ch = new Character( new CharacterCore() );
 
             var node = HierarchyNode.CreateNode( null, ch, null );
             Assert.AreEqual( "Stats.Armor", node["stat"]["arm"].Path );

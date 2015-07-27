@@ -1,12 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
-using System.Linq;
 
 using Kaerber.MUD.Common;
 using Kaerber.MUD.Controllers.Commands;
 using Kaerber.MUD.Entities;
-using Kaerber.MUD.Server.Managers;
+using Kaerber.MUD.Platform.Managers;
 using Kaerber.MUD.Telnet;
 
 using Microsoft.Practices.Unity;
@@ -54,8 +53,7 @@ namespace Kaerber.MUD.Server {
         }
 
         public static void InitializeCommandManager( IUnityContainer container ) {
-            var commandManager = new CommandManager();
-            commandManager.Load();
+            var commandManager = new CommandManager( World.CommandsPath );
             container.RegisterInstance<IManager<ICommand>>( commandManager );
         }
 

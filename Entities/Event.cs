@@ -18,20 +18,17 @@ namespace Kaerber.MUD.Entities {
     }
 
     public class Event {
-        private readonly string _name;
         private readonly EventReturnMethod _returnMethod;
         private dynamic _returnValue;
 
-        public virtual string Name { get { return _name; } }
+        public virtual string Name { get; }
 
-        public List<EventArg> Parameters { get; private set; }
+        public List<EventArg> Parameters { get; }
 
         public virtual dynamic this[string parameter] {
             get {
                 Contract.Requires( this.Parameters != null );
-
-                var param = Parameters.Find( p => p.Name == parameter );
-                return ( param != null ? param.Value : null );
+                return Parameters.Find( p => p.Name == parameter )?.Value;
             }
             set {
                 var param = Parameters.FirstOrDefault( p => p.Name == parameter );
@@ -81,7 +78,7 @@ namespace Kaerber.MUD.Entities {
         private Event( string name, EventReturnMethod returnMethod, IEnumerable<EventArg> parameters ) {
             Contract.Requires( parameters != null );
 
-            _name = name;
+            Name = name;
             _returnMethod = returnMethod;
             Parameters = new List<EventArg>( parameters );
 

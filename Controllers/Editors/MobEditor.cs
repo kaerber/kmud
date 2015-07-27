@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
+using Kaerber.MUD.Common;
 using Kaerber.MUD.Entities;
 
 namespace Kaerber.MUD.Controllers.Editors
@@ -11,7 +12,7 @@ namespace Kaerber.MUD.Controllers.Editors
 
         public MobEditor( CharacterController pc ) : base( pc ) {}
        
-        public override string Name { get { return ( "mob" ); } }
+        public override string Name => "mob";
 
         public override Character Current
         {
@@ -25,7 +26,7 @@ namespace Kaerber.MUD.Controllers.Editors
             }
         }
 
-        public override Character Value { get { return ( Current ); } }
+        public override Character Value => Current;
 
         protected override Character LastEdited {
             get {
@@ -42,16 +43,16 @@ namespace Kaerber.MUD.Controllers.Editors
             }
         }
 
-        protected override IEnumerable<Character> List { get { return ( World.Instance.Mobs.Values ); } }
+        protected override IEnumerable<Character> List => World.Instance.Mobs.Values;
 
         public override void PrintList() {
             foreach( var entity in List )
-                pc.View.Write( string.Format( "{0:-30} {1}\n", "[" + entity.Id + "]", entity.ShortDescr ) );
+                pc.View.Write( $"{"[" + entity.Id + "]":-30} {entity.ShortDescr}\n" );
         }
 
 
         public override Character Create( string vnum ) {
-            var ch = pc.Model.Room.Area.AddMob( Character.Create() );
+            var ch = pc.Model.Room.Area.AddMob( new Character( new CharacterCore() ) );
             ch.Id = vnum;
             Current = ch;
             

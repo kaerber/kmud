@@ -46,8 +46,8 @@ namespace Kaerber.MUD.Controllers {
             _view.LoginGotPassword();
             _model.Password = password;
 
-            if( _userManager.UserExists( _model.Username ) ) {
-                var user = _userManager.LoadUser( ( string )_model.Username );
+            if( _userManager.Exists( string.Empty, _model.Username ) ) {
+                var user = _userManager.Load( string.Empty, ( string )_model.Username );
                 if( user.CheckPassword( _model.Password ) )
                     return NextController( user );
             }
@@ -62,7 +62,7 @@ namespace Kaerber.MUD.Controllers {
         }
 
         public IController RegisterGotUsername( string username ) {
-            if( _userManager.UserExists( username ) ) {
+            if( _userManager.Exists( string.Empty, username ) ) {
                 _view.RegisterUsernameExists();
                 return Start();
             }
@@ -89,8 +89,8 @@ namespace Kaerber.MUD.Controllers {
         }
 
         public IController RegisterGotEmail( string email ) {
-            var user = _userManager.CreateUser( ( string )_model.Username, ( string )_model.Password, email );
-            _userManager.SaveUser( user );
+            var user = _userManager.Create( ( string )_model.Username, ( string )_model.Password, email );
+            _userManager.Save( string.Empty, user );
             return NextController( user );
         }
 
@@ -99,12 +99,12 @@ namespace Kaerber.MUD.Controllers {
             return null;
         }
 
-
         private IController NextController( IUser user ) {
             _view.WelcomeUser( user );
             _container.RegisterInstance( user );
             return _container.Resolve<IUserController>();
         }
+
 
         private readonly dynamic _model;
         private readonly IConnectionView _view;

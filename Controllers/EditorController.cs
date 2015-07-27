@@ -14,7 +14,7 @@ namespace Kaerber.MUD.Controllers {
         }
 
         public void Save() {
-            _manager.Save( _entity );
+            _manager.Save( string.Empty, _entity );
         }
 
         public void List() {
@@ -23,7 +23,7 @@ namespace Kaerber.MUD.Controllers {
 
         private readonly IManager<T> _manager;
         private readonly IEditorView<T> _view;
-        private T _entity;
+        private readonly T _entity;
 
         private static CommandSet _commandSet = new CommandSet {
             { "create", new Create() },
