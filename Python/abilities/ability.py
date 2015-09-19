@@ -1,7 +1,7 @@
-from Kaerber.MUD.Entities import IAbility, EventReturnMethod, Event
+﻿from Kaerber.MUD.Entities import IAbility, EventReturnMethod, Event
 
 class ability( IAbility ):
-    """base character ability"""
+    """character ability"""
 
     def __init__( self ):
         self.eventSink = lambda e: None
@@ -13,6 +13,15 @@ class ability( IAbility ):
     @EventSink.setter
     def EventSink( self, sink ):
         self.eventSink = sink
+
+
+    @property
+    def Actions( self ):
+        return self.actions
+
+    @Actions.setter
+    def Actions( self, actions ):
+        self.actions = actions
 
 
     def ReceiveEvent( self, event ):

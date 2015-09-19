@@ -9,7 +9,7 @@ namespace Kaerber.MUD.Tests.Python.abilities {
         [Test]
         public void Scrap() {
             var manager = new AbilityManager( new PythonManager(), @"E:\Dev\Kaerber.MUD\Python\abilities" );
-            var movement = manager.Movement();
+            var movement = manager.Get( "movement" );
 
             Event response;
             movement.EventSink = e => response = e;

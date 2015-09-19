@@ -31,7 +31,34 @@
     <Compile Include="abilities\ability.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="abilities\movement.py">
+    <Compile Include="abilities\action.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="abilities\movement\down.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="abilities\movement\east.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="abilities\movement\go.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="abilities\movement\north.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="abilities\movement\south.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="abilities\movement\up.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="abilities\movement\west.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="abilities\movement\__init__.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="abilities\movement\_.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="abilities\__init__.py">
@@ -88,6 +115,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="abilities\" />
+    <Folder Include="abilities\movement\" />
     <Folder Include="aspects\" />
     <Folder Include="game\" />
   </ItemGroup>
