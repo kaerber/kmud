@@ -12,11 +12,13 @@ namespace Kaerber.MUD.Controllers {
         public UserController( IUser model, 
                                IUserView view, 
                                IManager<Character> characterManager,
-                               IUnityContainer container ) {
+                               IUnityContainer container,
+                               World world ) {
             _model = model;
             _view = view;
             _characterManager = characterManager;
             _container = container;
+            _world = world;
             _machine = new UserControllerStateMachine( this );
         }
 
@@ -28,12 +30,14 @@ namespace Kaerber.MUD.Controllers {
 
         public IController Run() {
             return _view.Commands()
-                .Select( cmd => _machine.State( cmd ) )
-                .FirstOrDefault( controller => controller != this );
+                        .Select( cmd => _machine.State( cmd ) )
+                        .FirstOrDefault( controller => controller != this );
         }
 
         public IController GotCharacterName( string name ) {
             var character = _characterManager.Load( Path.Combine( "players", _model.Username ), name );
+            character.SetRoom( _world.Rooms[character.RoomId] );
+            character.RespawnAt = _world.Rooms[character.RespawnAtId];
             return NextController( character );
         }
 
@@ -53,6 +57,7 @@ namespace Kaerber.MUD.Controllers {
         private readonly IManager<Character> _characterManager;
 
         private readonly IUnityContainer _container;
+        private readonly World _world;
 
         private readonly UserControllerStateMachine _machine;
     }

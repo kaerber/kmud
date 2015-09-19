@@ -24,22 +24,19 @@ namespace Kaerber.MUD.Entities {
             Time += ( ticks - _ticks )/10000;
             _ticks = ticks;
 
-            if( Update != null )
-                Update( Time );
+            Update?.Invoke( Time );
 
             // tick
             if( Time/TimeHour > _hour ) {
                 _hour++;
                 _round = 0;
-                if( Hour != null )
-                    Hour();
+                Hour?.Invoke();
             }
 
             // round
             if( ( Time % TimeHour ) / TimeRound > _round ) {
                 _round++;
-                if( Round != null )
-                    Round();
+                Round?.Invoke();
             }
         }
 

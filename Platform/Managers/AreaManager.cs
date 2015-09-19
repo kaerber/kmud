@@ -1,34 +1,35 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Newtonsoft.Json;
 
 using Kaerber.MUD.Common;
 using Kaerber.MUD.Entities;
 
-using Newtonsoft.Json;
-
 namespace Kaerber.MUD.Platform.Managers {
     public class AreaManager : IManager<Area> {
-        public AreaManager( string root, IManager<Character> characterManager ) {
+        public AreaManager( string root,
+                            IManager<Character> characterManager,
+                            IManager<Item> itemManager ) {
             _root = root;
             _characterManager = characterManager;
+            _itemManager = itemManager;
         }
 
         public IList<string> List( string path ) {
-            throw new System.NotImplementedException();
+            var areapath = Path.Combine( _root, path );
+            return Directory.GetDirectories( areapath )
+                            .Select( Path.GetFileName )
+                            .ToList();
         }
 
         public Area Load( string path, string name ) {
             var json = File.ReadAllText( FormPath( path, name ) );
-            var area = Deserialize( JsonConvert.DeserializeObject<Dictionary<string, object>>( json ) );
+            var area = Deserialize( JsonConvert.DeserializeObject( json ) );
 
-            area.Mobs = LoadMobs( path, name );
-            if( World.Instance != null )
-                area.Mobs.ForEach( mob => {
-                    mob.Dirty += area.OnDirty;
-                    World.Instance.Mobs.Add( mob.Id, mob );
-                } );
-
+            area.Mobs = Load( path, name, _characterManager );
+            area.Items = Load( path, name, _itemManager );
             return area;
         }
 
@@ -36,78 +37,40 @@ namespace Kaerber.MUD.Platform.Managers {
             File.WriteAllText( FormPath( path, area.Id ), JsonConvert.SerializeObject( Serialize( area ) ) );
         }
 
-        public Area Deserialize( IDictionary<string, object> data ) {
+
+        public List<T> Load<T>( string path, string name, IManager<T> manager ) {
+            var areapath = Path.Combine( path, name );
+            return manager.List( areapath )
+                          .Select( n => manager.Load( areapath, n ) )
+                          .ToList();
+        }
+
+
+        private string FormPath( string path, string name ) {
+            return Path.Combine( _root, path, name, "area.json" );
+        }
+
+
+        public static Area Deserialize( dynamic data ) {
             var area = new Area();
-            if( data.ContainsKey( "Aspects" ) )
-                area.Aspects.Deserialize( data["Aspects"] );
+            EntitySerializer.Deserialize( data, area );
 
-            area.Id = ( string )data["Vnum"];
-            /*area.Names = World.ConvertToTypeEx<string>( data, "Names" );
-            area.ShortDescr = World.ConvertToTypeEx<string>( data, "ShortDescr" );
 
-            area.Affects = new AffectSet(
-                World.ConvertToTypeEx( data, "Affects", new List<Affect>() ),
-                area );
-
-            area.Handlers = World.ConvertToTypeEx( data, "Handlers", new HandlerSet() );
-
-            area.Items = World.ConvertToType<List<Item>>( data["Items"].ToString() );
-            if( World.Instance != null )
-                area.Items.ForEach( item => {
-                    item.Dirty += area.OnDirty;
-                    World.Instance.Items.Add( item.Id, item );
-                } );
-            area.ItemId = World.ConvertToTypeExs<int>( data, "itemId" );
-
-            area.MobId = World.ConvertToTypeExs<int>( data, "mobId" );
-
-            area.Rooms = World.ConvertToType<List<Room>>( data["Rooms"].ToString() );
-            if( World.Instance != null )
-                area.Rooms.ForEach( room => {
-                    room.Dirty += area.OnDirty;
-                    room.Area = area;
-                    World.Instance.Rooms.Add( room.Id, room );
-                } );
-            area.RoomId = World.ConvertToTypeExs<int>( data, "roomId" );*/
+            Func<dynamic, Room> deserializeRoom = roomData => RoomManager.Deserialize( roomData );
+            area.Rooms = new List<Room>( Enumerable.Select<dynamic, Room>( data.Rooms, deserializeRoom ) );
 
             return area;
         }
 
-        public IDictionary<string, object> Serialize( Area area ) {
-            var affToSave = area.Affects.Where( aff => !aff.Flags.HasFlag( AffectFlags.NoSave ) );
-            var data = new Dictionary<string, object> {
-                { "Vnum", area.Id },
-                { "Names", area.Names },
-                { "ShortDescr", area.ShortDescr },
-            }
-                .AddIf( "Affects", affToSave, affToSave.Any() )
-                .AddIf( "Handlers", area.Handlers, area.Handlers.Count > 0 );
-
-            data.Add( "Aspects", area.Aspects.Serialize() );
-            return data.AddEx( "roomId", area.RoomId )
-                       .AddEx( "Items", area.Items )
-                       .AddEx( "itemId", area.ItemId )
-                       .AddEx( "Mobs", area.Mobs )
-                       .AddEx( "mobId", area.MobId );
+        public static IDictionary<string, object> Serialize( Area area ) {
+            var data = EntitySerializer.Serialize( area );
+            data.Add( "Rooms", area.Rooms.Select( RoomManager.Serialize ) );
+            return data;
         }
 
-        public List<Character> LoadMobs( string path, string name ) {
-            var areapath = Path.Combine( path, name );
-            return _characterManager.List( areapath )
-                                    .Select( n => _characterManager.Load( areapath, n ) )
-                                    .ToList();
-        }
-
-        public void SaveMobs( string path, string name, List<Character> mobs ) {
-            var areapath = Path.Combine( path, name );
-            mobs.ForEach( mob => _characterManager.Save( areapath, mob ) );
-        }
-
-        private string FormPath( string path, string name ) {
-            return Path.Combine( _root, path, name, "area.data" );
-        }
 
         private readonly string _root;
         private readonly IManager<Character> _characterManager;
+        private readonly IManager<Item> _itemManager;
     }
 }

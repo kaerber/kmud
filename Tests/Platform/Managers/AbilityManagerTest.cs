@@ -8,14 +8,14 @@ namespace Kaerber.MUD.Tests.Platform.Managers {
     public class AbilityManagerTest {
         [Test]
         public void MovementTest() {
-            var manager = new AbilityManager( new PythonManager() );
+            var manager = new AbilityManager( new PythonManager(), @"E:\Dev\Kaerber.MUD\Python\abilities" );
             var movement = manager.Movement();
             var e = Event.Create( "test_event",
                                   EventReturnMethod.None,
                                   new EventArg( "message", "test" ) );
             movement.ReceiveEvent( e );
 
-            Assert.AreEqual( "Movement!", e["message"] );
+            Assert.AreEqual( "test", e["message"] );
         }
     }
 }

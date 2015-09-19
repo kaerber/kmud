@@ -1,4 +1,4 @@
-from Kaerber.MUD.Entities import *
+﻿from Kaerber.MUD.Entities import *
 from aspect import Aspect
 import currency
 
@@ -8,10 +8,10 @@ def construct():
 
 class MoneyAspect( Aspect ):
     def Coins( self ):
-        return( self.Host.Inventory.FindAll( lambda item : item.Flags.HasFlag( ItemFlags.Money ) ) )
+        return [ item for item in self.Host.Inventory if item.Flags.HasFlag( ItemFlags.Money ) ]
 
     def Value( self ):
-        return( reduce( lambda value, coin: value + coin.TotalValue, self.Coins(), 0 ) )
+        return sum( [ coin.TotalValue for coin in self.Coins() ] )
 
 
     # events
@@ -21,7 +21,9 @@ class MoneyAspect( Aspect ):
     def this_can_pay_money( self, event ):
         if( self.Value() >= event["amount"] ):
             return True
-        self.Host.Event( "this_couldnt_afford_amount", EventReturnMethod.None, { "this": self.Host, "amount": event["amount"] } )
+        self.Host.Event( "this_couldnt_afford_amount", 
+                         EventReturnMethod.None, 
+                         { "this": self.Host, "amount": event["amount"] } )
         return False
 
 

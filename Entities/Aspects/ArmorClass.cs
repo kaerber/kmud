@@ -16,7 +16,6 @@ namespace Kaerber.MUD.Entities.Aspects
             Slash = source.Slash;
         }
 
-        [MudEdit( "Armor class vs slashing weapons" )]
         public int Slash { get; set; }
 
         public int GetAC() {

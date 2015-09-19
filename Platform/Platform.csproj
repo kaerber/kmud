@@ -94,7 +94,10 @@
     <Compile Include="Managers\AreaManager.cs" />
     <Compile Include="Managers\CharacterManager.cs" />
     <Compile Include="Managers\CommandManager.cs" />
+    <Compile Include="Managers\EntitySerializer.cs" />
+    <Compile Include="Managers\ItemManager.cs" />
     <Compile Include="Managers\PythonManager.cs" />
+    <Compile Include="Managers\RoomManager.cs" />
     <Compile Include="Managers\UserManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

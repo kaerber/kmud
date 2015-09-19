@@ -1,8 +1,6 @@
 ﻿using Kaerber.MUD.Entities.Aspects;
 
 using Kaerber.MUD.Entities;
-using Kaerber.MUD.Server;
-
 using NUnit.Framework;
 using Moq;
 
@@ -10,48 +8,11 @@ namespace Kaerber.MUD.Tests.Entities {
     [TestFixture]
     public class RoomTest : BaseEntityTest {
         [Test]
-        public void CastAffectToRoomTest() {
-            World.Instance = new World();
-            World.Instance.Initialize( UnityConfigurator.Configure() );
-
-            var room = new Room();
-            room.Affects.Add( new Affect( new AffectInfo {
-                Name = "horde_room",
-                Target = AffectTarget.Room
-            } )
-            { Duration = Clock.TimeHour } );
-
-            Assert.AreEqual( 1, room.Affects.Count );
-            Assert.AreEqual( "horde_room", room.Affects[0].Name );
-
-            Assert.Throws<EntityException>( () => room.Affects.Add(
-                    new Affect( new AffectInfo {
-                            Name = "horde_mob",
-                            Target = AffectTarget.Character
-                        }
-                    )
-                    { Duration = -1 }
-                )
-            );
-            Assert.AreEqual( 1, room.Affects.Count );
-        }
-
-        [Test]
         public void TickTest() {
             var room = new Room();
             var ch = new Character();
             room.Characters.Add( ch );
             room.Tick();
-        }
-
-        [Test]
-        public void AreaTest() {
-            World.Instance = new World();
-            World.Instance.Areas.Add( new Area() );
-            var room = new Room { Id = "test_room" };
-            World.Instance.Areas[ 0 ].Rooms.Add( room );
-
-            Assert.AreEqual( World.Instance.Areas[ 0 ], room.Area );
         }
 
         [Test]

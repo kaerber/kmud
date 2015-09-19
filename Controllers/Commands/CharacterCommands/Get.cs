@@ -33,7 +33,8 @@ namespace Kaerber.MUD.Controllers.Commands.CharacterCommands {
                         pc.View.Write( "You do not see that here.\n" );
                         return;
                     }
-                    var containerItem = container.Container.FindItem( input.Arguments.ElementAt( 0 ) );
+                    var containerItem = container.Container.Items.Find( 
+                        item => item.MatchNames( input.Arguments.ElementAt( 0 ) ) );
                     if( containerItem == null ) {
                         pc.View.Write( $"{container.ShortDescr} does not contain it!\n" );
                         return;

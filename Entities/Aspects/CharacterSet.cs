@@ -49,33 +49,21 @@ namespace Kaerber.MUD.Entities.Aspects
         }
 
 
-        public bool Contains( Character ch )
-        {
-            return ( _list.Contains( ch ) );
+        public bool Contains( Character ch ) {
+            return _list.Contains( ch );
         }
 
-
-        public void CopyTo( Character[] array, int arrayIndex )
-        {
+        public void CopyTo( Character[] array, int arrayIndex ) {
             _list.CopyTo( array, arrayIndex );
         }
 
-
-        public virtual bool Remove( Character ch )
-        {
-            return ( _list.Remove( ch ) );
+        public virtual bool Remove( Character ch ) {
+            return _list.Remove( ch );
         }
 
+        public virtual int Count => _list.Count;
 
-        public virtual int Count
-        {
-            get { return ( _list.Count ); }
-        }
-
-        public bool IsReadOnly
-        {
-            get { return ( false ); }
-        }
+        public bool IsReadOnly => false;
         #endregion
 
 

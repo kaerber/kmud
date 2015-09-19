@@ -50,7 +50,11 @@ namespace Kaerber.MUD.Server {
             container.RegisterType<TelnetSession, TelnetSession>();
             container.RegisterType<ITelnetInputParser, TelnetInputParser>();
 
-            container.RegisterInstance<IUserManager>( new UserManager( World.UsersRootPath ) );
+            container.RegisterType<IUserManager, UserManager>(
+                new ContainerControlledLifetimeManager(),
+                new InjectionConstructor(
+                    new ResolvedParameter<string>( "UsersRootPath" ),
+                    new ResolvedParameter<IManager<Character>>() ) );
             return container;
         }
    }

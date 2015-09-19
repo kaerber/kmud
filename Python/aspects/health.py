@@ -1,4 +1,4 @@
-from aspect import Aspect
+﻿from aspect import Aspect
 
 from Kaerber.MUD.Entities import *
 
@@ -35,8 +35,8 @@ class HealthAspect( Aspect ):
         return { 'Wounds': self.Wounds }
 
     def Deserialize( self, data ):
-        if( 'Wounds' in data ):
-            self.Wounds = data['Wounds']
+        if( data.Value != None ):
+            self.Wounds = int( data.Value )
         else:
             self.Restore()
 

@@ -2,15 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 
-using Kaerber.MUD.Common;
-
 namespace Kaerber.MUD.Entities.Aspects {
     public class MobReset {
-        [MudEdit( "Vnum" )]
         public string Vnum { get; set; }
 
-        [MudEdit( "Equipment" )]
-        public List<MobObjReset> Eq { get; set; }
+        public List<MobItemReset> Eq { get; set; }
 
         public void Update( Room host ) {
             if( host.Characters.Count( ch => ch.Id == Vnum ) >= 1 )
@@ -27,8 +23,30 @@ namespace Kaerber.MUD.Entities.Aspects {
             }
 
             var mob = host.LoadMob( Vnum );
-            if( Eq != null )
-                Eq.ForEach( mobEq => mobEq.Update( mob ) );
+            Eq?.ForEach( mobEq => mobEq.Update( mob ) );
+        }
+
+
+        public static MobReset Deserialize( dynamic data ) {
+            Func<dynamic, MobItemReset> deserializeMobItemReset =
+                mobItemData => MobItemReset.Deserialize( mobItemData );
+            var mobReset = new MobReset {
+                Vnum = data.Vnum,
+                Eq = new List<MobItemReset>()
+            };
+
+            if( data.Eq != null )
+                mobReset.Eq = new List<MobItemReset>( 
+                    Enumerable.Select( data.Eq, deserializeMobItemReset ) );
+
+            return mobReset;
+        }
+
+        public static IDictionary<string, object> Serialize( MobReset mobReset ) {
+            return new Dictionary<string, object> {
+                ["Vnum"] = mobReset.Vnum,
+                ["Eq"] = mobReset.Eq.Select( MobItemReset.Serialize )
+            };
         }
     }
 }

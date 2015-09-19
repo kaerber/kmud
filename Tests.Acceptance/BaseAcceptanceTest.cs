@@ -1,5 +1,5 @@
 ﻿using System;
-
+using Kaerber.MUD.Common;
 using Kaerber.MUD.Controllers;
 using Kaerber.MUD.Entities;
 using Kaerber.MUD.Entities.Aspects;
@@ -39,7 +39,6 @@ namespace Kaerber.MUD.Tests.Acceptance {
         protected void ConfigureTelnetContainer() {
             Container = TelnetSession.TelnetContainer( 
                 UnityConfigurator.Configure() );
-            Container.RegisterInstance( new Clock( 0 ) );
 
             MockConnection = new Mock<TelnetConnection>( null, null );
             Container.RegisterInstance( MockConnection.Object );
@@ -47,11 +46,10 @@ namespace Kaerber.MUD.Tests.Acceptance {
         }
 
         protected void CreateTestEnvironment() {
-            World = new World();
+            var container = UnityConfigurator.Configure();
+            container.RegisterInstance( new Clock( 0 ) );
+            World = container.Resolve<World>();
             World.Instance = World;
-            World.Initialize( Container );
-
-            MUD.Server.Server.InitializeCommandManager( Container );
  
             TestRoom = AddTestRoom( "test", "Test", World );
 
@@ -59,6 +57,9 @@ namespace Kaerber.MUD.Tests.Acceptance {
         }
 
         protected void CreateTestPlayer() {
+            var user = new User();
+            Container.RegisterInstance<IUser>( user );
+
             PlayerModel = CreateTestCharacter( "test char", "test char", TestRoom, World );
             Container.RegisterInstance( PlayerModel );
 

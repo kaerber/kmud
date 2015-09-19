@@ -1,13 +1,14 @@
 ﻿using NUnit.Framework;
 
 using Kaerber.MUD.Entities;
+using Newtonsoft.Json;
 
 namespace Kaerber.MUD.Tests.Entities {
     [TestFixture]
     public class MLFunctionTest : BaseEntityTest {
         [Test]
         public void DeserializeTest() {
-            var function = World.Serializer.Deserialize<MLFunction>( "{'Code':'import clr'}" );
+            var function = MLFunction.Deserialize( JsonConvert.DeserializeObject( "{'Code':'import clr'}" ) );
             Assert.AreEqual( "import clr", function.Code );
         }
 
@@ -17,8 +18,8 @@ namespace Kaerber.MUD.Tests.Entities {
                 Code = "import clr"
             };
 
-            var data = World.Serializer.Serialize( function );
-            Assert.AreEqual( "{\"Code\":\"import clr\"}", data );
+            var json = JsonConvert.SerializeObject( MLFunction.Serialize( function ) );
+            Assert.AreEqual( "{\"Code\":\"import clr\"}", json );
         }
 
         [Test]

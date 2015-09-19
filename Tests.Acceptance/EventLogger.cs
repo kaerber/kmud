@@ -10,28 +10,24 @@ namespace Kaerber.MUD.Tests.Acceptance
     {
         public List<Event> Log = new List<Event>();
 
-        public IAspect Clone()
-        {
+        public IAspect Clone() {
             throw new NotImplementedException();
         }
 
 
         public Entity Host { get; set; }
 
-        public IDictionary<string, object> Serialize()
-        {
+        public IDictionary<string, object> Serialize() {
             throw new NotImplementedException();
         }
 
 
-        public IAspect Deserialize( IDictionary<string, object> data )
-        {
+        public IAspect Deserialize( IDictionary<string, object> data ) {
             throw new NotImplementedException();
         }
 
 
-        public void ReceiveEvent( Event e )
-        {
+        public void ReceiveEvent( Event e ) {
             Log.Add( e );
         }
     }

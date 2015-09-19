@@ -6,6 +6,10 @@ using Moq;
 using NUnit.Framework;
 
 using Kaerber.MUD.Entities;
+using Kaerber.MUD.Platform.Managers;
+using Kaerber.MUD.Server;
+using Microsoft.Practices.Unity;
+using Newtonsoft.Json;
 
 namespace Kaerber.MUD.Tests.Entities {
     [TestFixture]
@@ -21,7 +25,7 @@ namespace Kaerber.MUD.Tests.Entities {
         }
 
         private static string SerializeItem( Item item ) {
-            return World.Serializer.Serialize( item );
+            return JsonConvert.SerializeObject( ItemManager.Serialize( item ) );
         }
 
 
@@ -30,9 +34,9 @@ namespace Kaerber.MUD.Tests.Entities {
             foreach( var x in typeof( WearLocation ).GetEnumValues() ) {
                 Assert.Contains( x, WearLocationStrings.Strings.Keys );
                 Assert.False( string.IsNullOrWhiteSpace( WearLocationStrings.Strings[( WearLocation )x].Name ),
-                    string.Format( "No WearLocationString-Name for WearLocation.{0}", ( WearLocation )x ) );
+                              $"No WearLocationString-Name for WearLocation.{x}" );
                 Assert.False( string.IsNullOrWhiteSpace( WearLocationStrings.Strings[( WearLocation )x].Prefix ),
-                    string.Format( "No WearLocationString-Prefix for WearLocation.{0}", ( WearLocation )x ) );
+                              $"No WearLocationString-Prefix for WearLocation.{x}" );
             }
         }
 
@@ -48,7 +52,7 @@ namespace Kaerber.MUD.Tests.Entities {
             item.Stats = mockStats.Object;
             item.Weapon = mockWeapon.Object;
 
-            var data = item.Serialize();
+            var data = ItemManager.Serialize( item );
 
             Assert.IsTrue( data.ContainsKey( "Vnum" ) );
             Assert.IsTrue( data.ContainsKey( "ShortDescr" ) );
@@ -70,7 +74,8 @@ namespace Kaerber.MUD.Tests.Entities {
             weapon.BaseDamage = 35;
             original.Weapon = weapon;
 
-            var item = World.Serializer.Deserialize<Item>( SerializeItem( original ) );
+            var item = ItemManager.Deserialize( 
+                JsonConvert.DeserializeObject( SerializeItem( original ) ) );
 
             Assert.AreEqual( "ser_item", item.Id );
             Assert.AreEqual( "Serialized Item", item.ShortDescr );
@@ -87,7 +92,8 @@ namespace Kaerber.MUD.Tests.Entities {
 
         [Test]
         public void CreateItem() {
-            World.Instance = new World();
+            var container = UnityConfigurator.Configure();
+            World.Instance = container.Resolve<World>();
 
             var template1 = new Item { Id = "test_1", ShortDescr = "Test 1" };
             World.Instance.Items.Add( template1.Id, template1 );
@@ -97,7 +103,8 @@ namespace Kaerber.MUD.Tests.Entities {
 
         [Test]
         public void CreateItemWithStack() {
-            World.Instance = new World();
+            var container = UnityConfigurator.Configure();
+            World.Instance = container.Resolve<World>();
 
             var template2 = new Item { Id = "test_2", ShortDescr = "Test 2", MaxCount = 5 };
             World.Instance.Items.Add( template2.Id, template2 );

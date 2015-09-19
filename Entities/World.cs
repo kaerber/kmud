@@ -1,15 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
-using System.Web.Script.Serialization;
+using System.Linq;
 using Microsoft.Practices.ObjectBuilder2;
-using Microsoft.Practices.Unity;
 
 using Kaerber.MUD.Common;
 using Kaerber.MUD.Entities.Aspects;
 
 namespace Kaerber.MUD.Entities {
-    public class World : Area {
+    public class World {
         public static readonly string RootPath;
         public static readonly string AssetsRootPath;
         public static readonly string UsersRootPath;
@@ -17,11 +16,6 @@ namespace Kaerber.MUD.Entities {
         public static readonly string MlLibPath;
         public static readonly string CommandsPath;
         public static readonly string AffectsPath;
-
-        public static World Instance;
-        public static JavaScriptSerializer Serializer;
-
-        public static Random RndGen = new Random();
 
         static World() {
             RootPath = ConfigurationManager.AppSettings.Get( "RootPath" );
@@ -33,52 +27,20 @@ namespace Kaerber.MUD.Entities {
             AffectsPath = ConfigurationManager.AppSettings.Get( "AffectsPath" ); 
         }
 
-        public long Time { get { return _clock.Time; } }
+        public long Time => _clock.Time;
 
-        public List<Area> Areas;
-        public new Dictionary<string, Room> Rooms;
-        public new Dictionary<string, Character> Mobs;
-        public new Dictionary<string, Item> Items;
-        public Dictionary<string, SkillData> Skills;
-        public new Dictionary<string, AffectInfo> Affects;
-        public new Dictionary<string, AspectInfo> Aspects;
+        public World( IManager<Area> areaManager, Clock clock ) {
+            _areaManager = areaManager;
+            _clock = clock;
 
-        public World() {
             Areas = new List<Area>();
             Rooms = new Dictionary<string, Room>();
             Mobs = new Dictionary<string, Character>();
             Items = new Dictionary<string, Item>();
-            Skills = new Dictionary<string, SkillData>();
-            Affects = new Dictionary<string, AffectInfo>();
 
-            UpdateQueue = new TimedEventQueue( null );
-        }
+            _updateQueue = new TimedEventQueue( null );
 
-        public void Initialize( IUnityContainer container ) {
-            _container = container;
-            _clock = container.Resolve<Clock>();
-            _clock.Update += UpdateQueue.Run;
-            _clock.Round += () => Rooms.Values.ForEach( room => room.Round() );
-            _clock.Hour += () => Rooms.Values.ForEach( room => room.Tick() );
-        }
-
-        public override ISerialized Deserialize( IDictionary<string, object> data ) {
-            Areas = ConvertToType<List<string>>( data["Areas"] )
-                .ConvertAll( vnum => new Area { Id = vnum } );
-            
-            Skills = ConvertToTypeEx( data, "Skills", new Dictionary<string, SkillData>() );
-            Affects = ConvertToTypeEx( data, "AffectData", new Dictionary<string, AffectInfo>() );
-            Aspects = ConvertToTypeEx( data, "AspectInfo", new Dictionary<string, AspectInfo>() );
-
-            return base.Deserialize( data );
-        }
-
-        public override IDictionary<string, object> Serialize() {
-            return base.Serialize()
-                .AddEx( "Areas", Areas.ConvertAll( area => area.Id ) )
-                .AddEx( "Skills", Skills )
-                .AddEx( "AffectData", Affects ) 
-                .AddIf( "AspectInfo", Aspects, Aspects != null && Aspects.Count > 0 );
+            InitClock( _clock );
         }
 
         public virtual void Pulse( long ticks ) {
@@ -86,46 +48,44 @@ namespace Kaerber.MUD.Entities {
         }
 
         public void LoadAreas() {
-            Areas = Areas.ConvertAll( area => Load( area.Id ) );
-            Areas.ForEach( area => area.Initialize() );
+            Areas = _areaManager.List( "areas" )
+                               .Select( name => _areaManager.Load( "areas", name ) )
+                               .ToList();
+            Areas.ForEach( a => a.Initialize( _updateQueue ) );
+
+            Rooms = Areas.SelectMany( a => a.Rooms ).ToDictionary( r => r.Id, r => r );
+            Mobs = Areas.SelectMany( a => a.Mobs ).ToDictionary( m => m.Id, m => m );
+            Items = Areas.SelectMany( a => a.Items ).ToDictionary( i => i.Id, i => i );
+
+            Rooms.Values.ForEach( r => r.Update() );
         }
 
 
-        public override Room GetRoom( string id ) {
+        public Room GetRoom( string id ) {
             if( id == null )
                 return null;
 
             return Rooms.ContainsKey( id ) ? Rooms[id] : null;
         }
 
-        private IUnityContainer _container;
-        private Clock _clock;
-
-        #region Serialization
-        // TODO: this responsibility does not belong to World
-        public static T ConvertToType<T>( object data ) {
-            return ( Serializer.ConvertToType<T>( data ) );
+        private void InitClock( Clock clock ) {
+            clock.Update += _updateQueue.Run;
+            clock.Round += () => Rooms.Values.ForEach( room => room.Round() );
+            clock.Hour += () => Rooms.Values.ForEach( room => room.Tick() );
         }
 
-        public static T ConvertToTypeEx<T>( IDictionary<string, object> dict,
-            string key ) where T : class {
-            return ( dict.ContainsKey( key )
-                ? ConvertToType<T>( dict[key] )
-                : default( T ) );
-        }
+        public List<Area> Areas;
+        public Dictionary<string, Room> Rooms;
+        public Dictionary<string, Character> Mobs;
+        public Dictionary<string, Item> Items;
 
-        public static T ConvertToTypeEx<T>( IDictionary<string, object> dict,
-            string key,
-            T defaultValue ) where T : class {
-            return ( ConvertToTypeEx<T>( dict, key ) ?? defaultValue );
-        }
+        private readonly Clock _clock;
+        private readonly TimedEventQueue _updateQueue;
+        private readonly IManager<Area> _areaManager;
 
-        public static T ConvertToTypeExs<T>( IDictionary<string, object> dict,
-            string key ) where T : struct {
-            return ( dict.ContainsKey( key )
-                ? ConvertToType<T>( dict[key] )
-                : default( T ) );
-        }
-        #endregion
+        public static World Instance;
+        public static Random RndGen = new Random();
+
+
     }
 }

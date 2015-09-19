@@ -43,7 +43,7 @@ namespace Kaerber.MUD.Tests.Entities.Aspects
         }
 
         [Test]
-        public void EbentThisCanPayMoney()
+        public void EventThisCanPayMoney()
         {
             var aspect = AspectFactory.Money();
             var coin = new Item( _silver );
@@ -60,7 +60,6 @@ namespace Kaerber.MUD.Tests.Entities.Aspects
             var cantPay = Event.Create( "this_can_pay_money", EventReturnMethod.And, new EventArg( "amount", 120 ) );
             aspect.ReceiveEvent( cantPay );
             Assert.IsFalse( cantPay.ReturnValue );
-
         }
     }
 }

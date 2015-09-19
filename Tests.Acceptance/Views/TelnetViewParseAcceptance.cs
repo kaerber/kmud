@@ -38,6 +38,7 @@ namespace Kaerber.MUD.Tests.Acceptance.Views {
         }
 
         [Test]
+        [Ignore]
         public void CommandParamSword_ReturnsFirstSwordInRoom() {
             Test( With( () => ItemsInRoom( BronzeShield, SilverSword, MithrilSword ) ),
                   On( () => ParseCommand( "get sword" ) ),

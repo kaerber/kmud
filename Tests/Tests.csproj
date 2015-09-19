@@ -76,6 +76,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Moq.4.2.1502.0911\lib\net40\Moq.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="nunit.core">
       <HintPath>..\packages\NUnitTestAdapter.WithFramework.1.2\lib\nunit.core.dll</HintPath>
       <Private>False</Private>
@@ -106,30 +110,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Controllers\Commands\DigTest.cs" />
     <Compile Include="Controllers\Commands\GoTest.cs" />
     <Compile Include="Controllers\Commands\KillTest.cs" />
     <Compile Include="Controllers\Commands\MLCommandTest.cs" />
     <Compile Include="Controllers\Commands\SayTest.cs" />
-    <Compile Include="Controllers\ComplexNodeTest.cs" />
     <Compile Include="Controllers\ConnectionControllerStateMachineTest.cs" />
-    <Compile Include="Controllers\DictionaryNodeTest.cs" />
-    <Compile Include="Controllers\EnumNodeTest.cs" />
-    <Compile Include="Controllers\FlagsNodeTest.cs" />
-    <Compile Include="Controllers\HierarchyNodeTest.cs" />
-    <Compile Include="Controllers\ListNodeTest.cs" />
-    <Compile Include="Controllers\NumberNodeTest.cs" />
     <Compile Include="Controllers\PlayerInputTest.cs" />
-    <Compile Include="Controllers\StringNodeTest.cs" />
     <Compile Include="Controllers\UserLoginConnectionCommandTest.cs" />
     <Compile Include="Entities\Abilities\AutoAttackAbilityTest.cs" />
     <Compile Include="Entities\Abilities\KillAbilityTest.cs" />
     <Compile Include="Entities\ActionQueueSetTest.cs" />
     <Compile Include="Entities\Actions\AutoAttackActionTest.cs" />
-    <Compile Include="Entities\AffectInfoTest.cs" />
-    <Compile Include="Entities\AffectSetTest.cs" />
-    <Compile Include="Entities\AffectTest.cs" />
-    <Compile Include="Entities\AreaTest.cs" />
     <Compile Include="Entities\Aspects\AspectFactoryTest.cs" />
     <Compile Include="Entities\Aspects\CharacterSetTest.cs" />
     <Compile Include="Entities\Aspects\CombatTest.cs" />
@@ -158,18 +149,17 @@
     <Compile Include="Entities\EntityTest.cs" />
     <Compile Include="Entities\EventTest.cs" />
     <Compile Include="Entities\ExitTest.cs" />
-    <Compile Include="Entities\HandlerSetTest.cs" />
     <Compile Include="Entities\ItemTest.cs" />
     <Compile Include="Entities\MLFunctionTest.cs" />
     <Compile Include="Entities\RoomTest.cs" />
     <Compile Include="Entities\Room_ExitsTest.cs" />
     <Compile Include="Entities\SpecializationTest.cs" />
     <Compile Include="Entities\UserTest.cs" />
-    <Compile Include="Entities\WorldTest.cs" />
     <Compile Include="ExtensionMethodsTest.cs" />
     <Compile Include="MoqExtensions.cs" />
     <Compile Include="Platform\Managers\AbilityManagerTest.cs" />
     <Compile Include="Platform\Managers\AreaManagerTest.cs" />
+    <Compile Include="Platform\Managers\CharacterManagerTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Python\abilities\AbilityTest.cs" />
     <Compile Include="Python\aspects\HealthTest.cs" />

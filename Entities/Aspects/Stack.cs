@@ -2,21 +2,13 @@
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 
-using Kaerber.MUD.Common;
-
 namespace Kaerber.MUD.Entities.Aspects {
-    public class Stack : ISerialized {
-        private int _count;
-        private int _max;
-
-        public int MaxCount { get { return ( _max ); } }
-
-        public int Count { get { return ( _count ); } }
-
-        public bool IsFull { get { return ( Count >= MaxCount && MaxCount > 0 ); } }
-
-        
+    public class Stack {
         public Stack() {}
+
+        public int MaxCount => _max;
+        public int Count => _count;
+        public bool IsFull => Count >= MaxCount && MaxCount > 0;
 
         public Stack( Stack template ) {
             _max = template.MaxCount;
@@ -26,19 +18,6 @@ namespace Kaerber.MUD.Entities.Aspects {
             _max = maxCount;
         }
 
-        public ISerialized Deserialize( IDictionary<string, object> data ) {
-            _max = World.ConvertToType<int>( data["MaxCount"] );
-            _count = World.ConvertToType<int>( data["Count"] );
-
-            return( this );
-        }
-
-        public IDictionary<string, object> Serialize() {
-            return( new Dictionary<string, object>()
-                .AddEx( "MaxCount", MaxCount )
-                .AddEx( "Count", Count ) );
-        }
-
         public int Add( int volume ) {
             Contract.Requires( volume >= 0 );
 
@@ -46,7 +25,7 @@ namespace Kaerber.MUD.Entities.Aspects {
                 ? Math.Min( MaxCount - Count, volume )
                 : volume;
             _count += diff;
-            return ( diff );
+            return diff;
         }
 
         public int Remove( int volume ) {
@@ -55,7 +34,26 @@ namespace Kaerber.MUD.Entities.Aspects {
             var diff = Math.Min( _count, volume );
             _count -= diff;
 
-            return ( diff );
+            return diff;
         }
+
+
+        public static Stack Deserialize( dynamic data ) {
+            return new Stack {
+                _max = data.MaxCount,
+                _count = data.Count
+            };
+        }
+
+        public static IDictionary<string, object> Serialize( Stack stack ) {
+            return new Dictionary<string, object> {
+                ["MaxCount"] = stack.MaxCount,
+                ["Count"] = stack.Count
+            };
+        }
+
+
+        private int _count;
+        private int _max;
     }
 }

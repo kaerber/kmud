@@ -87,15 +87,15 @@ namespace Kaerber.MUD.Tests.Entities.Aspects {
 
             set.Add( itemWithLimitedStack, 1 );
             Assert.AreEqual( 2, set.CountItems( "test_3" ) );
-            Assert.AreEqual( 1, set.FindAll( item => item.Id == "test_3" ).Count() );
+            Assert.AreEqual( 1, set.Count( item => item.Id == "test_3" ) );
 
             set.Add( itemWithLimitedStack, 4 );
             Assert.AreEqual( 6, set.CountItems( "test_3" ) );
-            Assert.AreEqual( 2, set.FindAll( item => item.Id == "test_3" ).Count() );
+            Assert.AreEqual( 2, set.Count( item => item.Id == "test_3" ) );
 
             set.Add( itemWithLimitedStack, 100 );
             Assert.AreEqual( 106, set.CountItems( "test_3" ) );
-            Assert.AreEqual( 22, set.FindAll( item => item.Id == "test_3" ).Count() );
+            Assert.AreEqual( 22, set.Count( item => item.Id == "test_3" ) );
 
 
             var itemWithUnlimitedStack = new Item { Id = "test_4", ShortDescr = "Test3", MaxCount = 0 };

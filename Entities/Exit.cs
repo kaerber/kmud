@@ -3,7 +3,7 @@
 using Kaerber.MUD.Common;
 
 namespace Kaerber.MUD.Entities {
-    public class Exit : ISerialized {
+    public class Exit {
         private Room _to;
 
         public Exit() {}
@@ -18,22 +18,6 @@ namespace Kaerber.MUD.Entities {
             To = to;
         }
 
-        public ISerialized Deserialize( IDictionary<string, object> data ) {
-            Name = World.Serializer.ConvertToType<string>( data[ "Name" ] );
-            toRoom = World.Serializer.ConvertToType<string>( data[ "To" ] );
-
-            return ( this );
-        }
-
-        public IDictionary<string, object> Serialize() {
-            return ( new Dictionary<string, object> {
-                    { "Name", Name },
-                    { "To", toRoom }
-                }
-            );
-        }
-
-        [MudEdit( "Leads to room" )]
         public string toRoom { get; set; }
 
         public Room To {
@@ -44,7 +28,21 @@ namespace Kaerber.MUD.Entities {
             }
         }
 
-        [MudEdit( "Name of the exit" )]
         public string Name { get; set; }
+
+
+        public static Exit Deserialize( dynamic data ) {
+            return new Exit {
+                Name = data.Name,
+                toRoom = data.To
+            };
+        }
+
+        public static IDictionary<string, object> Serialize( Exit exit ) {
+            return new Dictionary<string, object> {
+                ["Name"] = exit.Name,
+                ["To"] = exit.toRoom
+            };
+        }
     }
 }

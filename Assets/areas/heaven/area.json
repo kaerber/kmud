@@ -1,0 +1,125 @@
+{
+  "Vnum": "heaven",
+  "Names": "heaven",
+  "ShortDescr": "Heaven",
+  "Aspects": {},
+  "Rooms": [
+    {
+      "Vnum": "heaven_01",
+      "Names": "somewhere heaven",
+      "ShortDescr": "Somewhere in heaven.",
+      "Aspects": {},
+      "Description": "You are standing on a soft white cloud, surrounded by a warm glow.",
+      "Exits": [
+        {
+          "Name": "north",
+          "To": "heaven_02"
+        },
+        {
+          "Name": "west",
+          "To": "heaven_04"
+        }
+      ],
+      "Resets": {
+        "MobResets": [
+          {
+            "Vnum": "heaven_01",
+            "Eq": null
+          }
+        ]
+      }
+    },
+    {
+      "Vnum": "heaven_02",
+      "Names": "",
+      "ShortDescr": "Another place in heaven.",
+      "Aspects": {},
+      "Exits": [
+        {
+          "Name": "south",
+          "To": "heaven_01"
+        },
+        {
+          "Name": "west",
+          "To": "heaven_03"
+        }
+      ],
+      "Resets": {
+        "MobResets": [
+          {
+            "Vnum": "heaven_02",
+            "Eq": null
+          }
+        ]
+      }
+    },
+    {
+      "Vnum": "heaven_03",
+      "Names": "",
+      "ShortDescr": "A road to heaven.",
+      "Aspects": {},
+      "Exits": [
+        {
+          "Name": "east",
+          "To": "heaven_02"
+        },
+        {
+          "Name": "south",
+          "To": "heaven_04"
+        }
+      ],
+      "Resets": {
+        "MobResets": [
+          {
+            "Vnum": "heaven_03",
+            "Eq": null
+          }
+        ]
+      }
+    },
+    {
+      "Vnum": "heaven_04",
+      "Names": "",
+      "ShortDescr": "Heaven's Door.",
+      "Aspects": {},
+      "Exits": [
+        {
+          "Name": "north",
+          "To": "heaven_03"
+        },
+        {
+          "Name": "east",
+          "To": "heaven_01"
+        },
+        {
+          "Name": "down",
+          "To": "kesh_tog"
+        }
+      ],
+      "Resets": {
+        "MobResets": [
+          {
+            "Vnum": "heaven_04",
+            "Eq": [
+              {
+                "Vnum": "heaven_angel_tunic",
+                "Location": "Body"
+              }
+            ]
+          }
+        ],
+        "ItemResets": [
+          {
+            "Vnum": "heaven_angel_feather"
+          },
+          {
+            "Vnum": "heaven_angel_tunic"
+          }
+        ]
+      }
+    }
+  ],
+  "roomId": 0,
+  "itemId": 0,
+  "mobId": 0
+}

@@ -4,7 +4,7 @@ using Kaerber.MUD.Entities;
 using Kaerber.MUD.Entities.Aspects;
 
 using Moq;
-
+using Newtonsoft.Json;
 using NUnit.Framework;
 
 
@@ -15,7 +15,6 @@ namespace Kaerber.MUD.Tests.Entities.Aspects
         public static dynamic CreateTestStats() {
             var stats = AspectFactory.Stats();
             stats.Health = 100;
-            stats.Mana = 50;
             stats.Attack = 10;
             stats.Armor = 11;
             stats.MagicAttack = 30;
@@ -123,7 +122,6 @@ namespace Kaerber.MUD.Tests.Entities.Aspects
 
             Assert.IsNotNull( data );
             Assert.AreEqual( 100, data["hp"] );
-            Assert.AreEqual( 50, data["mana"] );
             Assert.AreEqual( stats.Attack, data["attack"] );
             Assert.AreEqual( stats.Armor, data["armor"] );
             Assert.AreEqual( 30, data["mattack"] );
@@ -142,19 +140,17 @@ namespace Kaerber.MUD.Tests.Entities.Aspects
 
         [Test]
         public void Deserialize() {
-            var data = new Dictionary<string, dynamic> {
-                { "hp", 200 }, { "mana", 50 },
-                { "attack", 15 }, { "armor", 14 },
-                { "mattack", 30 }, { "marmor", 31 },
-                { "accuracy", 21 }, { "evasion", 17 }, { "critchance", 3 },
-                { "strength", 25 }, { "dexterety", 26 }, { "constitution", 27 }, { "intellect", 28 }, { "wisdom", 29 }
-            };
+            var data = JsonConvert.DeserializeObject(
+                "{ 'hp': 200, " +
+                "'attack': 15, 'armor': 14," +
+                "'mattack': 30, 'marmor': 31," +
+                "'accuracy': 21, 'evasion': 17, 'critchance': 3 ," +
+                "'strength': 25, 'dexterety': 26, 'constitution': 27, 'intellect': 28, 'wisdom': 29 }" );
 
             var stats = AspectFactory.Stats();
             stats.Deserialize( data );
 
             Assert.AreEqual( 200, stats.Health );
-            Assert.AreEqual( 50, stats.Mana );
             Assert.AreEqual( 15, stats.Attack );
             Assert.AreEqual( 14, stats.Armor );
             Assert.AreEqual( 30, stats.MagicAttack );

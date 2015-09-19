@@ -16,8 +16,7 @@ namespace Kaerber.MUD.Controllers.Commands.CharacterCommands {
                 pc.View.Write( "Saved.\n" );
             }
             else if( input.Arguments.ElementAt( 0 ) == "area" ) {
-                pc.Model.Room.Area.Save();
-                pc.View.WriteFormat( "Area {0} saved.\n", pc.Model.Room.Area.Id );
+                pc.View.WriteFormat( "Area of room {0} NOT saved.\n", pc.Model.Room.Id );
             }
         }
 

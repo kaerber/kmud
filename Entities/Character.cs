@@ -11,12 +11,6 @@ using Kaerber.MUD.Entities.Aspects;
 
 namespace Kaerber.MUD.Entities
 {
-    [Flags]
-    public enum MobFlags {
-        Sentinel = 1,
-        StayArea = 2
-    }
-
     public class Character : Entity {
         public Character() : this( new CharacterCore() ) {}
 
@@ -29,10 +23,11 @@ namespace Kaerber.MUD.Entities
             Setup();
         }
 
-        public Character( Character template, CharacterCore core ) : base( template.Id, template.Names, template.ShortDescr ) {
+        public Character( Character template, CharacterCore core ) 
+            : base( template.Id, template.Names, template.ShortDescr ) {
+
             _core = core;
             NaturalWeapon = template.NaturalWeapon.Clone();
-            Flags = template.Flags;
             Setup();
             if( template.Aspects != null )
                 Aspects = template.Aspects.Clone();
@@ -65,6 +60,17 @@ namespace Kaerber.MUD.Entities
         private Equipment _eq;
 
         public Room RespawnAt;
+        public string RespawnAtId { get; set; }
+
+        public Room Room {
+            get { return _room; }
+            private set {
+                _room = value;
+                RoomId = value?.Id;
+            }
+        }
+
+        public string RoomId { get; set; }
 
         public ItemSet Inventory;
 
@@ -72,8 +78,6 @@ namespace Kaerber.MUD.Entities
 
         public Action<Event> ViewEvent;
 
-
-        public Room Room { get; private set; }
 
         public Equipment Eq {
             get { return _eq; }
@@ -83,11 +87,7 @@ namespace Kaerber.MUD.Entities
             }
         }
 
-        [MudEdit( "Natural weapons (punches, claws, bites, etc)", CustomType = "PythonObject" )]
         public dynamic NaturalWeapon { get; set; }
-
-        [MudEdit( "Flags" )]
-        public MobFlags Flags { get; set; }
 
         [Obsolete]
         public dynamic Health => Aspects.health;
@@ -97,59 +97,9 @@ namespace Kaerber.MUD.Entities
 
         private dynamic Combat => Aspects.combat;
 
-        [MudEdit( "Stats", CustomType = "PythonObject" )]
         public dynamic Stats => Aspects.stats;
 
         public ActionQueueSet ActionQueueSet { get; set; }
-
-        #region Save & Load
-        public override IDictionary<string, object> Serialize() {
-            var data = base.Serialize()
-                .AddEx( "Flags", Flags )
-                .AddIf( "Inventory", Inventory, Inventory.Count > 0 )
-                .AddIf( "Equipment", Eq, Eq.Count > 0 )
-
-                .AddIf( "LoginAt", Room != null ? Room.Id : string.Empty, Room != null )
-                .AddIf( "RespawnAt", RespawnAt != null ? RespawnAt.Id : string.Empty, RespawnAt != null )
-
-                .AddIf( "Data", Data, Data != null && Data.Keys.Count > 0 );
-
-            data.Add( "Stats", Stats.Serialize() );
-            data.Add( "NaturalWeapon", NaturalWeapon.Serialize() );
-
-            return data;
-        }
-
-        public override ISerialized Deserialize( IDictionary<string, object> data ) {
-            Contract.Requires( World != null );
-
-            base.Deserialize( data );
-
-            if( data.ContainsKey( "Stats" ) )
-                Stats.Deserialize( data["Stats"] );
-
-            if( data.ContainsKey( "NaturalWeapon" ) )
-                NaturalWeapon.Deserialize( data["NaturalWeapon"] );
-
-            Flags = World.ConvertToTypeExs<MobFlags>( data, "Flags" );
-
-            Inventory = new ItemSet( 
-                World.ConvertToTypeEx( data, "Inventory", new List<Item>() ) );
-            Eq = World.ConvertToTypeEx( data, "Equipment", new Equipment() );
-
-            var respawnAt = World.ConvertToTypeEx<string>( data, "RespawnAt" );
-            RespawnAt = World.GetRoom( respawnAt );
-
-            var loginAt = World.ConvertToTypeEx<string>( data, "LoginAt" );
-            SetRoom( World.GetRoom( loginAt ) );
-            if( Room == null )
-                SetRoom( RespawnAt );
-
-            Data = World.ConvertToTypeEx( data, "Data", new Dictionary<string, string>() );
-
-            return this;
-        }
-        #endregion
 
         public override string ToString() { return ShortDescr; }
 
@@ -362,5 +312,6 @@ namespace Kaerber.MUD.Entities
 
 
         private readonly CharacterCore _core;
+        private Room _room;
     }
 }

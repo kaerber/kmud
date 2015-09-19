@@ -5,7 +5,7 @@ using Kaerber.MUD.Entities;
 using Kaerber.MUD.Entities.Aspects;
 
 using Moq;
-
+using Newtonsoft.Json;
 using NUnit.Framework;
 
 namespace Kaerber.MUD.Tests.Entities.Aspects
@@ -33,7 +33,7 @@ namespace Kaerber.MUD.Tests.Entities.Aspects
         public void DeserializeReturnsSelfTest() {
             var health = AspectFactory.Health();
             health.Restore = new Action( () => {} );
-            var self = health.Deserialize( new Dictionary<string, object>() );
+            var self = health.Deserialize( JsonConvert.DeserializeObject( "{}" ) );
             Assert.IsNotNull( self );
         }
 

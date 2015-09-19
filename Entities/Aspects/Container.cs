@@ -15,9 +15,12 @@ namespace Kaerber.MUD.Entities.Aspects {
         }
 
 
-        public Item FindItem( string partialName )
-        {
-            return ( Items.Find( item => item.MatchNames( partialName ) ) );
+        public static Container Deserialize( dynamic data ) {
+            return new Container();
+        }
+
+        public static IDictionary<string, object> Serialize( Container container ) {
+            return new Dictionary<string, object>();
         }
     }
 }

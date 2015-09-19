@@ -12,7 +12,7 @@ using Microsoft.Scripting.Hosting;
 using IronPython.Hosting;
 
 namespace Kaerber.MUD.Entities {
-    public class MLFunction : ISerialized, IFormattable {
+    public class MLFunction {
         static MLFunction() {
             _engine = Python.CreateEngine();
             var searchPaths = _engine.GetSearchPaths();
@@ -26,23 +26,12 @@ namespace Kaerber.MUD.Entities {
                 Assembly.GetAssembly( typeof( Enumerable ) ) );
         }
 
-        [MudEdit( "Body of the function." )]
         public string Code {
             get { return _code; }
             set {
                 _compiledCode = null;
                 _code = value;
             }
-        }
-
-        public ISerialized Deserialize( IDictionary<string, object> data ) {
-            Code = World.ConvertToType<string>( data["Code"] );
-            return this;
-        }
-
-        public IDictionary<string, object> Serialize() {
-            return new Dictionary<string, object>()
-                .AddEx( "Code", Code );
         }
 
         public dynamic Execute( params EventArg[] args ) {
@@ -65,10 +54,10 @@ namespace Kaerber.MUD.Entities {
             try {
                 _compiledCode.Execute( scope );
             }
-            catch( SystemExitException ) {} // Exit from function
+            catch( SystemExitException ) { } // Exit from function
 
             dynamic returnValue;
-            return scope.TryGetVariable( "ret_val", out returnValue ) 
+            return scope.TryGetVariable( "ret_val", out returnValue )
                 ? returnValue
                 : null;
         }
@@ -78,26 +67,31 @@ namespace Kaerber.MUD.Entities {
             return source.Compile();
         }
 
-        private string _code;
-        private CompiledCode _compiledCode;
-
-        private readonly Dictionary<string, dynamic> _data = new Dictionary<string, dynamic>();
-
-
-        public static void LoadAssemblies( params Assembly[] assemblies )
-        {
+        public static void LoadAssemblies( params Assembly[] assemblies ) {
             _engine.Runtime.LoadAssembly( Assembly.GetAssembly( typeof( IronPython.Modules.ArrayModule ) ) );
             assemblies.ToList().ForEach( assembly => _engine.Runtime.LoadAssembly( assembly ) );
         }
 
-        public static dynamic Eval( string code )
-        {
+        public static dynamic Eval( string code ) {
             return new MLFunction { Code = code }.Execute();
         }
 
-        private static readonly ScriptEngine _engine;
-        public string ToString( string format, IFormatProvider formatProvider ) {
-            throw new NotImplementedException();
+
+        public static MLFunction Deserialize( dynamic data ) {
+            return new MLFunction {
+                Code = data.Code
+            };
         }
+
+        public static IDictionary<string, object> Serialize( MLFunction mlFunction ) {
+            return new Dictionary<string, object>()
+                .AddEx( "Code", mlFunction.Code );
+        }
+
+        private string _code;
+        private CompiledCode _compiledCode;
+        private readonly Dictionary<string, dynamic> _data = new Dictionary<string, dynamic>();
+
+        private static readonly ScriptEngine _engine;
     }
 }

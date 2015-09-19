@@ -45,7 +45,6 @@
     <Compile Include="ISession.cs" />
     <Compile Include="IUser.cs" />
     <Compile Include="MudComplexTypeAttribute.cs" />
-    <Compile Include="MudEditAttribute.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

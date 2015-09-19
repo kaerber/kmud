@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-using Kaerber.MUD.Entities;
 using Kaerber.MUD.Server;
 
 using NUnit.Framework;
@@ -11,19 +10,16 @@ namespace Kaerber.MUD.Tests.Entities {
         [TestFixtureSetUp]
         public virtual void FixtureSetup() {
             Launcher.InitializeML();
-            World.Serializer = Launcher.InitializeSerializer();
         }
 
         public static void AssertSequenceEqual<T>( IEnumerable<T> expected, IEnumerable<T> actual ) {
             var lexpected = expected.ToList();
             var lactual = actual.ToList();
             Assert.IsTrue( lexpected.SequenceEqual( lactual ),
-                           string.Format( "Expected {0}, but was {1}",
-                                          FormatSequence( lexpected ),
-                                          FormatSequence( lactual ) ) );
+                           $"Expected {FormatSequence( lexpected )}, but was {FormatSequence( lactual )}" );
         }
 
-        public static string FormatSequence<T>( IEnumerable<T> sequence ) {
+        public static string FormatSequence<T>( IList<T> sequence ) {
             return "[" + string.Join( ", ", sequence.Select( item => item.ToString() ) ) + "]";
         }
     }

@@ -9,7 +9,7 @@ namespace Kaerber.MUD.Tests.Server {
     public class ServerTest {
         [Test]
         public void Update_CallsUpdateOnWorld() {
-            var world = new Mock<World>();
+            var world = new Mock<World>( null, new Clock( 0 ) );
             world.Setup( w => w.Pulse( 0 ) );
             World.Instance = world.Object;
             var server = new MUD.Server.Server();

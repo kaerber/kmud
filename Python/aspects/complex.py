@@ -1,4 +1,4 @@
-import sys
+﻿import sys
 
 from aspect import Aspect
 
@@ -56,9 +56,9 @@ class ComplexAspect( Aspect ):
     def Deserialize( self, data ):
         for item in data:
             try:
-                self[item.Key] = self.Construct( item.Key ).Deserialize( item.Value ) 
+                self[item.Name] = self.Construct( item.Name ).Deserialize( item.First ) 
             except ImportError:
-                self.log.Debug( "Aspect " + item.Key + " not found." )
+                self.log.Debug( "Aspect " + item.Name + " not found." )
 
         return self
 

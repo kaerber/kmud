@@ -1,11 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Configuration;
-using System.IO;
 
 using Kaerber.MUD.Common;
-using Kaerber.MUD.Controllers.Commands;
 using Kaerber.MUD.Entities;
-using Kaerber.MUD.Platform.Managers;
 using Kaerber.MUD.Telnet;
 
 using Microsoft.Practices.Unity;
@@ -19,14 +16,10 @@ namespace Kaerber.MUD.Server {
         }
 
         public void Initialize() {
-            World.Instance = World.Serializer.Deserialize<World>(
-                File.ReadAllText( World.AssetsRootPath + "world.data" ) );
-            World.Instance.Initialize( _container );
-            _container.RegisterInstance( World.Instance );
+            var world = _container.Resolve<World>();
+            World.Instance = world;
 
-            World.Instance.LoadAreas();
-
-            InitializeCommandManager( _container );
+            world.LoadAreas();
 
             var portNumber = int.Parse( ConfigurationManager.AppSettings.Get( "PortNumber" ) );
             var listener = new TelnetListener();
@@ -50,11 +43,6 @@ namespace Kaerber.MUD.Server {
             var session = container.Resolve<TelnetSession>();
             session.Start();
             _sessions.Add( session );
-        }
-
-        public static void InitializeCommandManager( IUnityContainer container ) {
-            var commandManager = new CommandManager( World.CommandsPath );
-            container.RegisterInstance<IManager<ICommand>>( commandManager );
         }
 
         private readonly UnityContainer _container;

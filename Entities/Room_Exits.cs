@@ -1,13 +1,11 @@
 ﻿using System.Diagnostics.Contracts;
 
-using Kaerber.MUD.Common;
 using Kaerber.MUD.Entities.Aspects;
 
 namespace Kaerber.MUD.Entities {
     public partial class Room {
-        private ExitSet _exits;
+        public ExitSet _exits;
 
-        [MudEdit( "Exits" )]
         public virtual ExitSet Exits {
             get { return _exits; }
             set { _exits = value; }

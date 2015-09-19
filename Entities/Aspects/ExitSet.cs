@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Kaerber.MUD.Entities.Aspects {
@@ -20,6 +21,17 @@ namespace Kaerber.MUD.Entities.Aspects {
 
         public virtual new void Add( Exit item ) {
             base.Add( item );
+        }
+
+
+        public static ExitSet Deserialize( dynamic data ) {
+            Func<dynamic, Exit> deserializeExit = exitData => Exit.Deserialize( exitData );
+            return new ExitSet( Enumerable.Select( data, deserializeExit ) );
+        }
+
+        public static List<IDictionary<string, object>> Serialize( ExitSet exitSet ) {
+            return exitSet.Select( Exit.Serialize )
+                          .ToList();
         }
     }
 }

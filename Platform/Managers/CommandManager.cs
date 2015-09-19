@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
@@ -6,11 +7,8 @@ using Kaerber.MUD.Common;
 using Kaerber.MUD.Controllers.Commands;
 using Kaerber.MUD.Controllers.Commands.CharacterCommands;
 using Kaerber.MUD.Entities;
-
-using Microsoft.Practices.ObjectBuilder2;
-
+using Newtonsoft.Json;
 using CommandSet = System.Collections.Generic.Dictionary<string, Kaerber.MUD.Controllers.Commands.ICommand>;
-using Data = System.Collections.Generic.Dictionary<string, dynamic>;
 
 namespace Kaerber.MUD.Platform.Managers {
     public class CommandManager : IManager<ICommand> {
@@ -44,13 +42,15 @@ namespace Kaerber.MUD.Platform.Managers {
         }
 
         private void LoadCommands( string data ) {
-            World.Serializer.Deserialize<List<Data>>( data )
-                 .Select( Deserialize )
-                 .ForEach( command => _commands.Add( command.Name, command ) );
+            Func<dynamic, MLCommand> deserializeCommand = d => Deserialize( d );
+
+            dynamic json = JsonConvert.DeserializeObject( data );
+            foreach( var command in Enumerable.Select( json, deserializeCommand ) )
+                _commands.Add( command.Name, command );
         }
 
         private string SaveCommands() {
-            return World.Serializer.Serialize(
+            return JsonConvert.SerializeObject(
                 _commands.Values.OfType<MLCommand>().Select( Serialize ) );
         }
 
@@ -59,11 +59,17 @@ namespace Kaerber.MUD.Platform.Managers {
         private readonly string _root;
         private readonly CommandSet _commands = new CommandSet {
             { "go", new Go() },
+            { "n", new Go( "north" ) },
             { "north", new Go( "north" ) },
+            { "e", new Go( "east" ) },
             { "east", new Go( "east" ) },
+            { "s", new Go( "south" ) },
             { "south", new Go( "south" ) },
+            { "w", new Go( "west" ) },
             { "west", new Go( "west" ) },
+            { "u", new Go( "up" ) },
             { "up", new Go( "up" ) },
+            { "d", new Go( "down" ) },
             { "down", new Go( "down" ) },
             { "look", new Look() },
             { "examine", new Examine() },
@@ -84,20 +90,18 @@ namespace Kaerber.MUD.Platform.Managers {
             { "default", new UnknownCommand() },
 
             { "save", new Save() },
-
-            { "edit", new Edit() }
         };
 
 
-        private static object Serialize( ICommand command ) {
-            return new Data {
+        private static Dictionary<string, object> Serialize( ICommand command ) {
+            return new Dictionary<string, object> {
                 { "name", command.Name },
                 { "code", command.Code }
             };
         }
 
-        private static ICommand Deserialize( Data data ) {
-            return new MLCommand( data["name"], data["code"] );
+        private static MLCommand Deserialize( dynamic data ) {
+            return new MLCommand( data.Path, ( string )data.First );
         }
     }
 }

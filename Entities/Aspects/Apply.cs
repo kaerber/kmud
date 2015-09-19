@@ -28,19 +28,15 @@ namespace Kaerber.MUD.Entities.Aspects
             HitRoll = source.HitRoll;
         }
 
-        [MudEdit( "Health" )]
         public int HP { get; set; }
 
-        [MudEdit( "Mana" )]
         public int Mana { get; set; }
 
         
         private ArmorClass AC { get; set; }
 
-        [MudEdit( "Armor" )]
         public int Armor { get; set; }
 
-        [MudEdit( "Bonus to the chance to hit enemy" )]
         public int HitRoll { get; set; }
     }
 }

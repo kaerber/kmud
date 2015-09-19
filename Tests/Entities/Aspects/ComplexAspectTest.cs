@@ -4,7 +4,7 @@ using Kaerber.MUD.Entities;
 using Kaerber.MUD.Entities.Aspects;
 
 using Moq;
-
+using Newtonsoft.Json;
 using NUnit.Framework;
 
 namespace Kaerber.MUD.Tests.Entities.Aspects {
@@ -108,9 +108,7 @@ namespace Kaerber.MUD.Tests.Entities.Aspects {
         public void DeserializeTest() {
             var complex = AspectFactory.Complex();
             complex.stats = AspectFactory.Stats();
-            var data = new Dictionary<string, object> {
-                { "stats", new Dictionary<string, object>() }
-            };
+            var data = JsonConvert.DeserializeObject( "{ 'stats': {} }" );
 
             complex.Deserialize( data );
 

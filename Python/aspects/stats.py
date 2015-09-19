@@ -1,4 +1,4 @@
-import System
+﻿import System
 
 from aspect import Aspect
 
@@ -52,7 +52,7 @@ class StatsAspect( Aspect ):
         return clone
 
     def Serialize( self ):
-        return { "hp" : self.Health, "mana" : self.Mana,
+        return { "hp" : self.Health,
             "attack" : self.Attack, "armor" : self.Armor,
             "mattack" : self.MagicAttack, "marmor" : self.MagicArmor,
             "accuracy" : self.Accuracy, "evasion" : self.Evasion, "critchance" : self.CriticalHitChance,
@@ -61,22 +61,20 @@ class StatsAspect( Aspect ):
 
 
     def Deserialize( self, data ):
-        data = dict( data )
-        self.Health = data.get( "hp", 0 )
-        self.Mana = data.get( "mana", 0 )
-        self.Attack = data.get( "attack", 0 )
-        self.Armor = data.get( "armor", 0 )
-        self.MagicAttack = data.get( "mattack", 0 )
-        self.MagicArmor = data.get( "marmor", 0 )
-        self.Accuracy = data.get( "accuracy", 0 )
-        self.Evasion = data.get( "evasion", 0 )
-        self.CriticalHitChance = data.get( "critchance", 0 )
+        self.Health = int( data.hp or 0 )
+        self.Attack = int( data.attack or 0 )
+        self.Armor = int( data.armor or 0 )
+        self.MagicAttack = int( data.mattack or 0 )
+        self.MagicArmor = int( data.marmor or 0 )
+        self.Accuracy = int( data.accuracy or 0 )
+        self.Evasion = int( data.evasion or 0 )
+        self.CriticalHitChance = int( data.critchance or 0 )
 
-        self.Strength = data.get( "strength", 0 )
-        self.Dexterety = data.get( "dexterety", 0 )
-        self.Constitution = data.get( "constitution", 0 )
-        self.Intellect = data.get( "intellect", 0 )
-        self.Wisdom = data.get( "wisdom", 0 )
+        self.Strength = int( data.strength or 0 )
+        self.Dexterety = int( data.dexterety or 0 )
+        self.Constitution = int( data.constitution or 0 )
+        self.Intellect = int( data.intellect or 0 )
+        self.Wisdom = int( data.wisdom or 0 )
 
         return self
 

@@ -1,4 +1,4 @@
-import random
+﻿import random
 
 from aspect import Aspect
 
@@ -26,11 +26,7 @@ class WeaponAspect( Aspect ):
             "BaseDamage" : self.BaseDamage }
 
     def Deserialize( self, data ):
-        if "BaseDamage" in data:
-            self.BaseDamage = data["BaseDamage"]
-        elif "Average" in data:
-            self.BaseDamage = data["Average"]
-
+        self.BaseDamage = int( data.BaseDamage )
         return self
 
     # events

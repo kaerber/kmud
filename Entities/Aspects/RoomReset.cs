@@ -1,45 +1,54 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
 using Kaerber.MUD.Common;
 
 namespace Kaerber.MUD.Entities.Aspects
 {
     [MudComplexType]
-    public class RoomReset : ISerialized
-    {
+    public class RoomReset {
         public Room Host { get; set; }
 
-        [MudEdit( "MobResets" )]
         public List<MobReset> MobResets { get; set; }
-        [MudEdit( "ObjectResets" )]
-        public List<ObjectReset> ObjectResets { get; set; }
 
-        #region ISerialized members
-        public ISerialized Deserialize( IDictionary<string, object> data )
-        {
-            MobResets = World.ConvertToTypeEx<List<MobReset>>( data, "MobResets", null );
-            ObjectResets = World.ConvertToTypeEx<List<ObjectReset>>( data, "ObjectResets", null );
+        public List<ItemReset> ItemResets { get; set; }
 
-            return ( this );
+
+        public void Update() {
+            MobResets?.ForEach( mr => mr.Update( Host ) );
+            ItemResets?.ForEach( or => or.Update( Host ) );
         }
 
-        public IDictionary<string, object> Serialize()
-        {
-            return (
-                new Dictionary<string, object>()
-                .AddIf( "MobResets", MobResets, MobResets != null && MobResets.Count > 0 )
-                .AddIf( "ObjectResets", ObjectResets, ObjectResets != null && ObjectResets.Count > 0 )
-            );
+
+        public static RoomReset Deserialize( dynamic data ) {
+            var roomReset = new RoomReset();
+
+            if( data.MobResets != null ) {
+                Func<dynamic, MobReset> deserializeMobReset =
+                    mobResetData => MobReset.Deserialize( mobResetData );
+                roomReset.MobResets = new List<MobReset>(
+                    Enumerable.Select( data.MobResets, deserializeMobReset ) );
+            }
+
+            if( data.ItemResets != null ) {
+                Func<dynamic, ItemReset> deserializeItemReset =
+                    itemResetData => ItemReset.Deserialize( itemResetData );
+                roomReset.ItemResets = new List<ItemReset>(
+                    Enumerable.Select( data.ItemResets, deserializeItemReset ) );
+            }
+
+            return roomReset;
         }
-        #endregion
 
-        public void Update()
-        {
-            if( MobResets != null )
-                MobResets.ForEach( mr => mr.Update( Host ) );
+        public static IDictionary<string, object> Serialize( RoomReset roomReset ) {
+            var data = new Dictionary<string, object>();
+            if( roomReset.MobResets != null && roomReset.MobResets.Count > 0 )
+                data.Add( "MobResets", roomReset.MobResets.Select( MobReset.Serialize ) );
+            if( roomReset.ItemResets != null && roomReset.ItemResets.Count > 0 )
+                data.Add( "ItemResets", roomReset.ItemResets.Select( ItemReset.Serialize ) );
 
-            if( ObjectResets != null )
-                ObjectResets.ForEach( or => or.Update( Host ) );
+            return data;
         }
     }
 }
