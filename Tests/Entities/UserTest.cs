@@ -17,7 +17,9 @@ namespace Kaerber.MUD.Tests.Entities {
 
             const string userName = "Luch1";
 
-            var user = new UserManager( World.UsersRootPath, new CharacterManager( World.AssetsRootPath ) )
+            var abilityManager = new AbilityManager( new PythonManager(), @"E:\Dev\Kaerber.MUD\Python\abilities" );
+            var user = new UserManager( @"E:\Dev\Kaerber.MUD\assets\players\",
+                                        new CharacterManager( @"E:\Dev\Kaerber.MUD\assets\", abilityManager ) )
                 .Load( string.Empty, userName );
             Assert.NotNull( user );
             Assert.AreEqual( user.Username, userName );

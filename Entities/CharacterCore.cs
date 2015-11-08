@@ -23,9 +23,13 @@ namespace Kaerber.MUD.Entities {
                 return false;
 
             var ability = ( IAbility )value;
-            _dict[binder.Name] = ability;
-            ability.EventSink = e => EventSink( e );
+            Add( binder.Name, ability );
             return true;
+        }
+
+        public void Add( string name, IAbility ability ) {
+            _dict[name] = ability;
+            ability.EventSink = e => EventSink( e );
         }
 
         public void ReceiveEvent( Event e ) {

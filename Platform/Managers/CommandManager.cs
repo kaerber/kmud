@@ -31,7 +31,7 @@ namespace Kaerber.MUD.Platform.Managers {
 
         public void Save( string path, ICommand entity ) {
             _commands[entity.Name] = entity;
-            File.WriteAllText( World.CommandsPath, SaveCommands() );
+            File.WriteAllText( _root, SaveCommands() );
         }
 
         private void LoadAll() {

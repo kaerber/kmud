@@ -2,17 +2,39 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Kaerber.MUD.Common;
 using Kaerber.MUD.Entities;
 using Microsoft.Scripting.Hosting;
+using Newtonsoft.Json;
 
 namespace Kaerber.MUD.Platform.Managers {
-    public class AbilityManager {
-        public AbilityManager( PythonManager pythonManager, string path ) {
+    public class AbilityManager : IManager<IAbility> {
+        public AbilityManager( PythonManager pythonManager, string root ) {
             _pythonManager = pythonManager;
-            _path = path;
+            _root = root;
             _engine = _pythonManager.GetEngine();
             _abilityConstructors = new Dictionary<string, Func<IAbility>>();
             _actions = new Dictionary<string, IAction>();
+        }
+
+        public IList<string> List( string path ) {
+            var abilitypath = Path.Combine( path, "abilities" );
+            return Directory.GetFiles( abilitypath )
+                            .Select( Path.GetFileNameWithoutExtension )
+                            .ToList();
+        }
+
+        public IAbility Load( string path, string name ) {
+            var ability = Get( name );
+            var filepath = Path.Combine( path, "abilities", name + ".json" );
+            var state = JsonConvert.DeserializeObject( File.ReadAllText( filepath ) );
+            ability.SetState( state );
+
+            return ability;
+        }
+
+        public void Save( string path, IAbility entity ) {
+            throw new NotImplementedException();
         }
 
         public IAbility Get( string ability ) {
@@ -21,7 +43,6 @@ namespace Kaerber.MUD.Platform.Managers {
                 .ToDictionary( action => action, action => LoadAction( ability, action ) );
             return result;
         }
-
 
         private IAbility LoadAbility( string ability ) {
             if( _abilityConstructors.ContainsKey( ability ) )
@@ -63,15 +84,14 @@ namespace Kaerber.MUD.Platform.Managers {
         }
 
         private string AbilityDirectory( string ability ) {
-            return Path.Combine( _path, ability );
+            return Path.Combine( _root, ability );
         }
 
         private readonly PythonManager _pythonManager;
-        private readonly string _path;
+        private readonly string _root;
 
         private readonly ScriptEngine _engine;
         private readonly Dictionary<string, Func<IAbility>> _abilityConstructors;
         private readonly Dictionary<string, IAction> _actions;
-
     }
 }

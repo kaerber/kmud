@@ -3,6 +3,7 @@
 using Kaerber.MUD.Entities;
 
 using Microsoft.Scripting.Hosting;
+using Newtonsoft.Json.Linq;
 
 namespace Kaerber.MUD.Platform.Managers {
     public class PythonManager {
@@ -17,6 +18,7 @@ namespace Kaerber.MUD.Platform.Managers {
 
             var runtime = _engine.Runtime;
             runtime.LoadAssembly( typeof( CharacterCore ).Assembly );
+            runtime.LoadAssembly( typeof( JProperty ).Assembly );
             return _engine;
         }
 

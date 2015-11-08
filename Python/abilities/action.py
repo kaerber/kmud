@@ -3,4 +3,7 @@
 class action( IAction ):
     """character action"""
 
+    def Parameters():
+        return []
+
 

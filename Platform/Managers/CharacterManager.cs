@@ -10,20 +10,23 @@ using Kaerber.MUD.Entities;
 
 namespace Kaerber.MUD.Platform.Managers {
     public class CharacterManager : IManager<Character> {
-        public CharacterManager( string root ) {
+        public CharacterManager( string root, IManager<IAbility> abilityManager ) {
             _root = root;
+            _abilityManager = abilityManager;
         }
 
         public IList<string> List( string path ) {
             var charpath = Path.Combine( _root, path, "characters" );
-            return Directory.GetFiles( charpath )
-                            .Select( Path.GetFileNameWithoutExtension )
+            return Directory.GetDirectories( charpath )
+                            .Select( Path.GetFileName )
                             .ToList();
         }
 
-        public Character Load( string path, string name) {
-            var json = File.ReadAllText( FormPath( path, name ) );
-            return Deserialize( JsonConvert.DeserializeObject( json ) );
+        public Character Load( string path, string name ) {
+            var core = LoadCore( path, name );
+
+            var data = LoadData( path, name );
+            return Deserialize( data, core );
         }
 
         public void Save( string path, Character character ) {
@@ -37,14 +40,8 @@ namespace Kaerber.MUD.Platform.Managers {
             return ch;
         }
 
-
-        private string FormPath( string path, string name ) {
-            return Path.Combine( _root, path, "characters", name + ".json" );
-        }
-
-
-        public static Character Deserialize( dynamic data ) {
-            var character = new Character( new CharacterCore() );
+        public static Character Deserialize( dynamic data, CharacterCore core ) {
+            var character = new Character( core );
             EntitySerializer.Deserialize( data, character );
 
             if( data.Stats != null )
@@ -90,11 +87,36 @@ namespace Kaerber.MUD.Platform.Managers {
             return data;
         }
 
+        public CharacterCore LoadCore( string path, string name ) {
+            var core = new CharacterCore();
+            var directory = CharacterDirectory( path, name );
+            foreach( var abilityName in _abilityManager.List( directory ) ) {
+                var ability = _abilityManager.Load( directory, abilityName );
+                core.Add( abilityName, ability );
+            }
+            return core;
+        }
+
         public static Character Create( Character template, CharacterCore core, IEventHandler specialization ) {
             return new Character( template, core ) { Spec = specialization };
         }
 
+        public dynamic LoadData( string path, string name ) {
+            var json = File.ReadAllText( FormPath( path, name ) );
+            return JsonConvert.DeserializeObject( json );
+        }
+
+
+        private string FormPath( string path, string name ) {
+            return Path.Combine( CharacterDirectory( path, name ), "character.json" );
+        }
+
+        private string CharacterDirectory( string path, string name ) {
+            return Path.Combine( _root, path, "characters", name );
+        }
+
 
         private readonly string _root;
+        private readonly IManager<IAbility> _abilityManager;
     }
 }

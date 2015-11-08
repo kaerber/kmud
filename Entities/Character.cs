@@ -5,7 +5,6 @@ using System.Linq;
 
 using IronPython.Runtime;
 
-using Kaerber.MUD.Common;
 using Kaerber.MUD.Entities.Abilities;
 using Kaerber.MUD.Entities.Aspects;
 

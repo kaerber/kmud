@@ -36,7 +36,8 @@ namespace Kaerber.MUD.Controllers {
 
         public IController GotCharacterName( string name ) {
             var character = _characterManager.Load( Path.Combine( "players", _model.Username ), name );
-            character.SetRoom( _world.Rooms[character.RoomId] );
+            var limbo = _world.Rooms["limbo"];
+            character.SetRoom( limbo );
             character.RespawnAt = _world.Rooms[character.RespawnAtId];
             return NextController( character );
         }

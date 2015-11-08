@@ -41,7 +41,7 @@ namespace Kaerber.MUD.Tests.Entities {
                      "'Handlers':{'map':{'ch_says_text':{'Code':'import clr'}}}" +
                  "}" );
 
-            var entity = CharacterManager.Deserialize( data );
+            var entity = CharacterManager.Deserialize( data, new CharacterCore() );
             Assert.IsNotNull( entity ); 
         }
 

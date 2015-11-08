@@ -33,7 +33,7 @@ namespace Kaerber.MUD.Views {
                 Write( "\n" )
                     .Write( "Please, select your character to login:\n" )
                     .Write( string.Join( "\n", _model.Characters
-                            .Select( ( ch, i ) => string.Format( "{0}. {1}", i+1, ch ) ) ) ) )();
+                            .Select( ( ch, i ) => $"{i + 1}. {ch}" ) ) ) )();
 
             _fail = () => Write( "No such character.\n" )
                 .Write( "\n" );

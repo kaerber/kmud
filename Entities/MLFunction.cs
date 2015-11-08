@@ -1,29 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
-using IronPython.Runtime.Exceptions;
-
-using Kaerber.MUD.Common;
-
 using Microsoft.Scripting.Hosting;
-
+using IronPython.Runtime.Exceptions;
 using IronPython.Hosting;
+using Microsoft.Practices.ObjectBuilder2;
 
 namespace Kaerber.MUD.Entities {
     public class MLFunction {
         static MLFunction() {
             _engine = Python.CreateEngine();
-            var searchPaths = _engine.GetSearchPaths();
-            searchPaths.Add( World.LibPath );
-            searchPaths.Add( World.MlLibPath );
-            _engine.SetSearchPaths( searchPaths );
-
-            LoadAssemblies(
-                Assembly.GetAssembly( typeof( Character ) ),
-                Assembly.GetAssembly( typeof( IEnumerable<string> ) ),
-                Assembly.GetAssembly( typeof( Enumerable ) ) );
         }
 
         public string Code {
@@ -35,10 +22,6 @@ namespace Kaerber.MUD.Entities {
         }
 
         public dynamic Execute( params EventArg[] args ) {
-            return Execute( args.ToDictionary( a => a.Name, a => a.Value ) );
-        }
-
-        public dynamic Execute( List<EventArg> args ) {
             return Execute( args.ToDictionary( a => a.Name, a => a.Value ) );
         }
 
@@ -65,6 +48,13 @@ namespace Kaerber.MUD.Entities {
         private CompiledCode Compile() {
             var source = _engine.CreateScriptSourceFromString( _code );
             return source.Compile();
+        }
+
+
+        public static void AddSearchPaths( params string[] searchPaths ) {
+            var paths = _engine.GetSearchPaths();
+            searchPaths.ForEach( paths.Add );
+            _engine.SetSearchPaths( paths );
         }
 
         public static void LoadAssemblies( params Assembly[] assemblies ) {
