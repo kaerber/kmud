@@ -10,6 +10,7 @@ using NUnit.Framework;
 using Kaerber.MUD.Entities;
 using Kaerber.MUD.Entities.Aspects;
 using Kaerber.MUD.Platform.Managers;
+using Kaerber.MUD.Server;
 
 namespace Kaerber.MUD.Tests.Entities
 {
@@ -27,6 +28,11 @@ namespace Kaerber.MUD.Tests.Entities
             Character Target { get; }
             void UseAbility( ICombatAbility ability );
             void MakeAttack( IAttack attack );
+        }
+
+        [SetUp]
+        public void SetUp() {
+            UnityConfigurator.Configure();
         }
 
         [Test]

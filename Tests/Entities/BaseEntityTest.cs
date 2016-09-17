@@ -10,6 +10,7 @@ namespace Kaerber.MUD.Tests.Entities {
         [TestFixtureSetUp]
         public virtual void FixtureSetup() {
             Launcher.InitializeML();
+            UnityConfigurator.Configure();
         }
 
         public static void AssertSequenceEqual<T>( IEnumerable<T> expected, IEnumerable<T> actual ) {

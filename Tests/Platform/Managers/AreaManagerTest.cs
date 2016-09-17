@@ -2,7 +2,7 @@
 using Kaerber.MUD.Common;
 using Kaerber.MUD.Entities;
 using Kaerber.MUD.Platform.Managers;
-
+using Kaerber.MUD.Server;
 using NUnit.Framework;
 
 namespace Kaerber.MUD.Tests.Platform.Managers {
@@ -10,6 +10,7 @@ namespace Kaerber.MUD.Tests.Platform.Managers {
     public class AreaManagerTest {
         [SetUp]
         public void Setup() {
+            UnityConfigurator.Configure();
             _abilityManager = new AbilityManager( new PythonManager(), @"E:\Dev\Kaerber.MUD\Python\abilities" );
             _characterManager = new CharacterManager( @"E:\Dev\Kaerber.MUD\Assets", _abilityManager );
             _itemManager = new ItemManager( @"E:\Dev\Kaerber.MUD\Assets" );

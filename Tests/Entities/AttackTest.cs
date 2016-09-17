@@ -2,7 +2,7 @@
 
 using Kaerber.MUD.Entities;
 using Kaerber.MUD.Entities.Aspects;
-
+using Kaerber.MUD.Server;
 using NUnit.Framework;
 
 namespace Kaerber.MUD.Tests.Entities
@@ -27,8 +27,9 @@ namespace Kaerber.MUD.Tests.Entities
         private dynamic _attack;
 
         [TestFixtureSetUp]
-        public void TestFixtureSetUp()
-        {
+        public void TestFixtureSetUp() {
+            UnityConfigurator.Configure();
+
             _attack = AspectFactory.Attack();
 
             _attack.SetAssaulterWeaponBaseDamage( 22 );

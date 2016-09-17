@@ -4,6 +4,7 @@ using System.Linq;
 using Kaerber.MUD.Common;
 using Kaerber.MUD.Entities;
 using Kaerber.MUD.Platform.Managers;
+using Kaerber.MUD.Server;
 using NUnit.Framework;
 
 namespace Kaerber.MUD.Tests.Platform.Managers {
@@ -14,6 +15,7 @@ namespace Kaerber.MUD.Tests.Platform.Managers {
             _abilityManager = new AbilityManager( new PythonManager(), @"E:\Dev\Kaerber.MUD\Python\abilities" );
             _characterManager = new CharacterManager( @"E:\Dev\Kaerber.MUD\Assets", _abilityManager );
             _userManager = new UserManager( @"E:\Dev\Kaerber.MUD\Assets\players", _characterManager );
+            UnityConfigurator.Configure();
         }
 
         [Test]

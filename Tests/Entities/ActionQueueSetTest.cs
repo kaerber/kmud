@@ -1,5 +1,5 @@
 ﻿using Kaerber.MUD.Entities;
-
+using Kaerber.MUD.Server;
 using Moq;
 
 using NUnit.Framework;
@@ -7,8 +7,12 @@ using NUnit.Framework;
 namespace Kaerber.MUD.Tests.Entities
 {
     [TestFixture]
-    public class ActionQueueSetTest
-    {
+    public class ActionQueueSetTest {
+        [SetUp]
+        public void SetUp() {
+            UnityConfigurator.Configure();
+        }
+
         public class ActionQueueSetWhiteBox: ActionQueueSet
         {
             public ActionQueueSetWhiteBox( Character host ) : base( host ) {}

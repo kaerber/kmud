@@ -137,7 +137,6 @@
     <Compile Include="Entities\Aspects\WeaponTest.cs" />
     <Compile Include="Entities\AttackTest.cs" />
     <Compile Include="Entities\BaseEntityTest.cs" />
-    <Compile Include="Entities\CharacterCoreTest.cs" />
     <Compile Include="Entities\CharacterEquipmentTest.cs" />
     <Compile Include="Entities\CharacterTest.cs" />
     <Compile Include="Entities\ClockTest.cs" />

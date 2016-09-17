@@ -16,7 +16,7 @@ namespace Kaerber.MUD.Entities {
             if( e.Target == Level )
                 ReceiveEvent( e );
             else
-                EventSink.Invoke( e );
+                EventSink?.Invoke( e );
         }
 
         public dynamic Event( Event e ) {

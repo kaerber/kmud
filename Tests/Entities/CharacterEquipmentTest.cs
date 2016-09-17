@@ -2,7 +2,7 @@
 
 using Kaerber.MUD.Entities;
 using Kaerber.MUD.Entities.Aspects;
-
+using Kaerber.MUD.Server;
 using Moq;
 
 using NUnit.Framework;
@@ -11,6 +11,11 @@ namespace Kaerber.MUD.Tests.Entities
 {
     [TestFixture]
     public class CharacterEquipmentTest : BaseEntityTest {
+        [SetUp]
+        public void SetUp() {
+            UnityConfigurator.Configure();
+        }
+
         [Test]
         public void EquipTest() {
             var mockItem = new Mock<Item>();
