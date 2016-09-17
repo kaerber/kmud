@@ -31,12 +31,6 @@ namespace Kaerber.MUD.Tests.Platform.Managers {
             } );
         }
 
-        [Test]
-        public void LoadKaerberCoreLoadsMovement() {
-            dynamic core = _characterManager.LoadCore( Path.Combine( "players", "Luch1" ), "kaerber" );
-            Assert.IsNotNull( core.movement );
-        }
-
         private IManager<IAbility> _abilityManager;
         private CharacterManager _characterManager;
         private UserManager _userManager;

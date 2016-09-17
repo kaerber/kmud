@@ -28,6 +28,7 @@ namespace Kaerber.MUD.Tests.Platform.Managers {
             Assert.AreEqual( "test", e["message"] );
         }
 
+        //TODO: It is not testing an ability manager
         [Test]
         public void ActionsOfMovementAbilityAreLoaded() {
             var movement = _manager.Get( "movement" );

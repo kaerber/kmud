@@ -58,7 +58,7 @@ namespace Kaerber.MUD.Tests.Entities.Aspects
             var stats = AspectFactory.Stats();
             stats.Armor = 100;
 
-            var ev = Event.Create( "ch_attacks_this",
+            var ev = Event.Create( "ch_is_attacking_this",
                 EventReturnMethod.None,
                 new EventArg( "ch", null ),
                 new EventArg( "ch1", null ),
@@ -73,7 +73,7 @@ namespace Kaerber.MUD.Tests.Entities.Aspects
             var stats = AspectFactory.Stats();
             stats.Armor = 100;
 
-            var ev = Event.Create( "this_attacks_ch1",
+            var ev = Event.Create( "this_is_attacking_ch1",
                 EventReturnMethod.None,
                 new EventArg( "ch", null ),
                 new EventArg( "ch1", null ),
@@ -88,7 +88,7 @@ namespace Kaerber.MUD.Tests.Entities.Aspects
             var stats = AspectFactory.Stats();
             stats.Attack = 100;
 
-            var ev = Event.Create( "ch_attacks_this",
+            var ev = Event.Create( "ch_is_attacking_this",
                 EventReturnMethod.None,
                 new EventArg( "ch", null ),
                 new EventArg( "ch1", null ),
@@ -103,7 +103,7 @@ namespace Kaerber.MUD.Tests.Entities.Aspects
             var stats = AspectFactory.Stats();
             stats.Attack = 100;
 
-            var ev = Event.Create( "this_attacks_ch1",
+            var ev = Event.Create( "this_is_attacking_ch1",
                 EventReturnMethod.None,
                 new EventArg( "ch", null ),
                 new EventArg( "ch1", null ),

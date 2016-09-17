@@ -22,11 +22,6 @@ namespace Kaerber.MUD.Tests.Entities.Aspects {
         }
 
         [Test]
-        public void Movement() {
-            Assert.IsNotNull( AspectFactory.Movement() );
-        }
-
-        [Test]
         public void AI() {
             Assert.IsNotNull( AspectFactory.AI() );
         }

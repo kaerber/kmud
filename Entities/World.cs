@@ -41,12 +41,8 @@ namespace Kaerber.MUD.Entities {
             Rooms.Values.ForEach( r => r.Update() );
         }
 
-
-        public Room GetRoom( string id ) {
-            if( id == null )
-                return null;
-
-            return Rooms.ContainsKey( id ) ? Rooms[id] : null;
+        public void ReceiveEvent( Event e ) {
+            
         }
 
         private void InitClock( Clock clock ) {

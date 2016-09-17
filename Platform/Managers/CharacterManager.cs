@@ -23,10 +23,8 @@ namespace Kaerber.MUD.Platform.Managers {
         }
 
         public Character Load( string path, string name ) {
-            var core = LoadCore( path, name );
-
             var data = LoadData( path, name );
-            return Deserialize( data, core );
+            return Deserialize( data );
         }
 
         public void Save( string path, Character character ) {
@@ -34,14 +32,14 @@ namespace Kaerber.MUD.Platform.Managers {
                                JsonConvert.SerializeObject( Serialize( character ) ) );
         }
 
-        public static Character Create( CharacterCore core ) {
-            var ch = new Character( core );
+        public static Character Create() {
+            var ch = new Character();
             ch.Initialize();
             return ch;
         }
 
-        public static Character Deserialize( dynamic data, CharacterCore core ) {
-            var character = new Character( core );
+        public static Character Deserialize( dynamic data ) {
+            var character = new Character();
             EntitySerializer.Deserialize( data, character );
 
             if( data.Stats != null )
@@ -87,18 +85,8 @@ namespace Kaerber.MUD.Platform.Managers {
             return data;
         }
 
-        public CharacterCore LoadCore( string path, string name ) {
-            var core = new CharacterCore();
-            var directory = CharacterDirectory( path, name );
-            foreach( var abilityName in _abilityManager.List( directory ) ) {
-                var ability = _abilityManager.Load( directory, abilityName );
-                core.Add( abilityName, ability );
-            }
-            return core;
-        }
-
-        public static Character Create( Character template, CharacterCore core, IEventHandler specialization ) {
-            return new Character( template, core ) { Spec = specialization };
+        public static Character Create( Character template, IEventTarget specialization ) {
+            return new Character( template ) { Spec = specialization };
         }
 
         public dynamic LoadData( string path, string name ) {

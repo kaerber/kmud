@@ -1,7 +1,7 @@
 ﻿using Kaerber.MUD.Entities.Abilities;
 
 namespace Kaerber.MUD.Entities.Aspects {
-    public class Spec : IEventHandler {
+    public class Spec : EventTarget {
         public AutoAttackAbility AutoAttack;
 
         public Spec( string name ) {
@@ -11,7 +11,7 @@ namespace Kaerber.MUD.Entities.Aspects {
 
         public string Id { get; private set; }
 
-        public void ReceiveEvent( Event e ) {
+        public override void ReceiveEvent( Event e ) {
             AutoAttack.ReceiveEvent( e );
         }
     }

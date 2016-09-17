@@ -51,7 +51,7 @@ namespace Kaerber.MUD.Controllers {
 
             lock( View ) {
                 View.Command = true;
-                lock( Model.Room )
+                lock( Model.Sync )
                     cmd.Execute( this, input );
             }
         }
@@ -63,12 +63,12 @@ namespace Kaerber.MUD.Controllers {
         public void Quit() {
             SaveCharacter();
 
-            if( !Model.Room.Event( "ch_can_quit", EventReturnMethod.And, new EventArg( "ch", Model ) ) )
+            if( !Model.Can( "quit", new EventArg( "ch", Model ) ) )
                 return;
 
-            Model.Room.Event( "ch_has_quit", EventReturnMethod.None, new EventArg( "ch", Model ) );
+            Model.Has( "has_quit", new EventArg( "ch", Model ) );   // todo fix double has
 
-            Model.Room.RemoveCharacter( Model );
+            Model.Room.RemoveCharacter( Model );    // todo remove direct access to ch.room.characters
 
             View.Quit();
         }

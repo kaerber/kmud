@@ -88,9 +88,6 @@
     <Compile Include="aspects\money.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="aspects\movement.py">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="aspects\patrol.py">
       <SubType>Code</SubType>
     </Compile>

@@ -41,9 +41,9 @@ namespace Kaerber.MUD.Controllers.Commands.CharacterCommands {
             }
 
             var from = pc.Model.Room;
-            pc.Model.MoveToRoom( exit.To );
+            pc.Model.MoveToRoom( exit );
 
-            pc.Model.Movement.WentFromRoom( from, exit.To );
+            pc.Model.WentFromRoom( from, exit.To );
 
             pc.View.RenderRoom( pc.Model.Room );
         }

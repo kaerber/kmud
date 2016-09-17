@@ -1,0 +1,25 @@
+{
+  "Vnum": "horde_giant_spider",
+  "Names": "giant spider",
+  "ShortDescr": "giant spider",
+  "Aspects": {
+    "health": { "Value": 0 },
+    "combat": { },
+  },
+  "Stats": {
+    "HP": 40,
+    "AC": {
+      "Slash": 4,
+      "Host": null
+    },
+    "HitRoll": 2,
+    "Host": null
+  },
+  "NaturalWeapon": {
+    "BaseDamage": 40
+  },
+  "Flags": 0,
+  "PowerLevel": 0,
+  "PowerPoints": 0,
+  "ToNextPowerLevel": 0
+}

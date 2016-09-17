@@ -30,7 +30,7 @@ namespace Kaerber.MUD.Tests.Acceptance.Entities
             PlayerModel.SetRoom( null );
             PlayerModel = new Character { World = this.World };
 
-            PlayerModel = CharacterManager.Deserialize( deserializedData, new CharacterCore() );
+            PlayerModel = CharacterManager.Deserialize( deserializedData );
             Assert.AreEqual( wounds, PlayerModel.Health.Wounds );
         }
     }

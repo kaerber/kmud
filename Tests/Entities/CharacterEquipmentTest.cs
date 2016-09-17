@@ -25,7 +25,7 @@ namespace Kaerber.MUD.Tests.Entities
             var mockEquipment = new Mock<Equipment>();
             mockEquipment.Setup( equipment => equipment.Equip( mockItem.Object ) );
 
-            var self = new Character( new CharacterCore() )
+            var self = new Character()
                 { Eq = mockEquipment.Object, Inventory = mockInventory.Object };
             self.SetRoom( mockRoom.Object );
 
@@ -53,7 +53,7 @@ namespace Kaerber.MUD.Tests.Entities
             var mockRoom = new Mock<Room>();
             mockRoom.Setup( room => room.ReceiveEvent( It.IsAny<Event>() ) );
 
-            var self = new Character( new CharacterCore() )
+            var self = new Character()
                 { Eq = mockEquipment.Object, Inventory = mockInventory.Object };
             self.SetRoom( mockRoom.Object );
 
@@ -83,7 +83,7 @@ namespace Kaerber.MUD.Tests.Entities
             mockRoom.Setup( room => room.ReceiveEvent( It.IsAny<Event>() ) )
                 .Callback<Event>( listEvents.Add );
 
-            var self = new Character( new CharacterCore() )
+            var self = new Character()
                 { Inventory = mockInventory.Object, Eq = mockEquipment.Object };
             self.SetRoom( mockRoom.Object );
 
@@ -119,7 +119,7 @@ namespace Kaerber.MUD.Tests.Entities
                         ev.ReturnValue = false;
                 } );
 
-            var self = new Character( new CharacterCore() )
+            var self = new Character()
                 { Inventory = mockInventory.Object, Eq = mockEquipment.Object };
             self.SetRoom( mockRoom.Object );
 
@@ -149,7 +149,7 @@ namespace Kaerber.MUD.Tests.Entities
             mockRoom.Setup( room => room.ReceiveEvent( It.IsAny<Event>() ) )
                 .Callback<Event>( eventList.Add );
 
-            var self = new Character( new CharacterCore() )
+            var self = new Character()
                 { Eq = mockEquipment.Object };
             self.SetRoom( mockRoom.Object );
 
@@ -182,7 +182,7 @@ namespace Kaerber.MUD.Tests.Entities
                         e.ReturnValue = false;
                 } );
 
-            var self = new Character( new CharacterCore() )
+            var self = new Character()
                 { Eq = mockEquipment.Object };
             self.SetRoom( mockRoom.Object );
 
@@ -216,7 +216,7 @@ namespace Kaerber.MUD.Tests.Entities
                         e.ReturnValue = true;
                 } );
 
-            var self = new Character( new CharacterCore() )
+            var self = new Character()
                 { Eq = mockEquipment.Object };
             self.SetRoom( mockRoom.Object );
 
@@ -264,7 +264,7 @@ namespace Kaerber.MUD.Tests.Entities
                     eventList.Add( ev );
                 } );
 
-            var self = new Character( new CharacterCore() )
+            var self = new Character()
                 { Inventory = mockInventory.Object, Eq = mockEquipment.Object };
             self.SetRoom( mockRoom.Object );
 

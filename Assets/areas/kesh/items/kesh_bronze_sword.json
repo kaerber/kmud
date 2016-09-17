@@ -1,0 +1,12 @@
+{
+  "Vnum": "kesh_bronze_sword",
+  "Names": "bronze sword",
+  "ShortDescr": "short sword",
+  "WearLoc": 40,
+  "Weapon": {
+    "BaseDamage": 20
+  },
+  "ApplyChar": null,
+  "Flags": 0,
+  "Cost": 0
+}

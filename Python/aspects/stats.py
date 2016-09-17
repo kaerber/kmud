@@ -80,7 +80,7 @@ class StatsAspect( Aspect ):
 
 
     # events
-    def ch_attacks_this( self, event ):
+    def ch_is_attacking_this( self, event ):
         attack = event['attack']
         attack.AddDefenderConstitution( self.Constitution )
         attack.AddDefenderWisdom( self.Wisdom )
@@ -90,7 +90,7 @@ class StatsAspect( Aspect ):
         attack.AddDefenderEvasion( self.Evasion + self.evasionDexteretyBonus() )
 
 
-    def this_attacks_ch1( self, event ):
+    def this_is_attacking_ch1( self, event ):
         attack = event['attack']
         attack.AddAssaulterStrength( self.Strength )
         attack.AddAssaulterIntellect( self.Intellect )

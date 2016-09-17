@@ -46,11 +46,11 @@ namespace Kaerber.MUD.Tests.Acceptance.Entities {
 
             PlayerModel.Kill( _vch );
             TestRoom.Update();
-            Assert.AreEqual( 1, logger.Log.Count( e => e.Name == "ch_attacks_ch1" && e["ch"] == PlayerModel ) );
+            Assert.AreEqual( 1, logger.Log.Count( e => e.Name == "ch_is_attacking_ch1" && e["ch"] == PlayerModel ) );
 
             World.Pulse( ( World.Time + 3000 )*10000 );
             TestRoom.Update();
-            Assert.AreEqual( 2, logger.Log.Count( e => e.Name == "ch_attacks_ch1" && e["ch"] == PlayerModel ) );
+            Assert.AreEqual( 2, logger.Log.Count( e => e.Name == "ch_is_attacking_ch1" && e["ch"] == PlayerModel ) );
         }
 
         private Character _vch;

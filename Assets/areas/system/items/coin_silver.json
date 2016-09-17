@@ -1,0 +1,13 @@
+{
+  "Vnum": "coin_silver",
+  "Names": "silver coin",
+  "ShortDescr": "silver coin",
+  "Aspects": {},
+  "WearLoc": 0,
+  "Flags": 2,
+  "Stack": {
+    "MaxCount": 0,
+    "Count": 0
+  },
+  "Cost": 1
+}

@@ -18,16 +18,5 @@ namespace Kaerber.MUD.Tests {
             Assert.AreEqual( "match", list.Match( "match", "def" ) );
             Assert.AreEqual( "mat", list.Match( "mat", "def" ) );
         }
-
-        [Test]
-        public void NotNullTest() {
-            Func<List<int>> funcRef = null;
-            Assert.IsNotNull( funcRef.NotNull() );
-            Assert.IsNotNull( funcRef.NotNull()() );
-
-            Func<int> funcVal = null;
-            Assert.IsNotNull( funcVal.NotNull() );
-            Assert.AreEqual( 0, funcVal.NotNull()() );
-        }
     }
 }

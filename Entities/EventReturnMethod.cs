@@ -4,6 +4,7 @@
         And,
         Or,
         List,
-        Sum
+        Sum,
+        First
     }
 }

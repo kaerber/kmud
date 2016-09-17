@@ -16,7 +16,7 @@ namespace Kaerber.MUD.Tests.Entities
     [TestFixture]
     public class CharacterTest : BaseEntityTest {
         public class CharacterWhiteBox : Character {
-            public CharacterWhiteBox() : base( new CharacterCore() ) {}
+            public CharacterWhiteBox() : base() {}
 
             public void SetActionQueueSet( ActionQueueSet testDouble ) {
                 ActionQueueSet = testDouble;
@@ -31,7 +31,7 @@ namespace Kaerber.MUD.Tests.Entities
 
         [Test]
         public void MobFromTemplate() {
-            var template = new Character( new CharacterCore() ) {
+            var template = new Character() {
                 Names = "test mob",
                 ShortDescr = "Test mob",
                 Id = "test_mob"
@@ -43,7 +43,7 @@ namespace Kaerber.MUD.Tests.Entities
 
             template.NaturalWeapon.BaseDamage = 101;
 
-            var instance = new Character( template, new CharacterCore() );
+            var instance = new Character( template );
 
             Assert.AreEqual( template.Stats.Armor, instance.Stats.Armor );
 
@@ -61,7 +61,7 @@ namespace Kaerber.MUD.Tests.Entities
 
         [Test]
         public void ReceiveEventTest() {
-            var ch = new Character( new CharacterCore() );
+            var ch = new Character();
             
             ch.ReceiveEvent( Event.Create( "test_event" ) );
 
@@ -72,8 +72,8 @@ namespace Kaerber.MUD.Tests.Entities
 
        [Test]
         public void KillTest() {
-            var ch = new Character( new CharacterCore() );
-            var vch = new Character( new CharacterCore() );
+            var ch = new Character();
+            var vch = new Character();
             var mockCombat = new Mock<IMockCombat>();
             mockCombat.Setup( combat => combat.UseAbility( It.IsAny<KillAbility>() ) );
             ch.Aspects.combat = mockCombat.Object;
@@ -91,7 +91,7 @@ namespace Kaerber.MUD.Tests.Entities
             mockRoom.Setup( room => room.SelectCharacters( It.IsAny<Predicate<Character>>() ) )
                 .Returns( mockCharSet.Object );
 
-            var self = new Character( new CharacterCore() );
+            var self = new Character();
             self.SetRoom( mockRoom.Object );
 
             var foes = self.GetFoes();
@@ -112,7 +112,7 @@ namespace Kaerber.MUD.Tests.Entities
         public void CharIsNotSafeFromOtherChars() {
             var enemy = new Mock<Character>();
 
-            var self = new Character( new CharacterCore() );
+            var self = new Character();
 
             Assert.IsFalse( self.IsSafeFrom( enemy.Object ) );
         }
@@ -120,8 +120,8 @@ namespace Kaerber.MUD.Tests.Entities
 
         [Test]
         public void TargetTest() {
-            var ch = new Character( new CharacterCore() );
-            var vch = new Character( new CharacterCore() );
+            var ch = new Character();
+            var vch = new Character();
             var mockCombat = new Mock<IMockCombat>();
             mockCombat.Setup( combat => combat.UseAbility( It.IsAny<KillAbility>() ) );
             mockCombat.Setup( combat => combat.Target )
@@ -141,8 +141,8 @@ namespace Kaerber.MUD.Tests.Entities
 
         [Test]
         public void InCombatTest() {
-            var ch = new Character( new CharacterCore() );
-            var vch = new Character( new CharacterCore() );
+            var ch = new Character();
+            var vch = new Character();
             var mockCombat = new Mock<IMockCombat>();
             var isInCombat = new Queue<Character>( new[] { null, vch } );
             mockCombat.Setup( combat => combat.UseAbility( It.IsAny<KillAbility>() ) );
@@ -165,7 +165,7 @@ namespace Kaerber.MUD.Tests.Entities
             var mockRoom = new Mock<Room>();
             mockRoom.Setup( room => room.ReceiveEvent( It.IsAny<Event>() ) );
 
-            var ch = new Character( new CharacterCore() );
+            var ch = new Character();
             ch.SetRoom( mockRoom.Object );
 
             ch.SendEvent( Event.Create( "test_event" ) );
@@ -178,12 +178,10 @@ namespace Kaerber.MUD.Tests.Entities
         public void EventIsForwardedToSpecialization() {
             var eventForwarded = Event.Create( "test_event" );
 
-            var mockSpec = new Mock<IEventHandler>();
+            var mockSpec = new Mock<IEventTarget>();
             mockSpec.Setup( spec => spec.ReceiveEvent( eventForwarded ) );
 
-            var self = CharacterManager.Create( new Character( new CharacterCore() ), 
-                                         new CharacterCore(), 
-                                         mockSpec.Object );
+            var self = CharacterManager.Create( new Character(), mockSpec.Object );
             self.ReceiveEvent( eventForwarded );
 
             mockSpec.VerifyAll();
@@ -196,7 +194,7 @@ namespace Kaerber.MUD.Tests.Entities
             var mockStats = new Mock<IAspect>();
             mockStats.Setup( spec => spec.ReceiveEvent( eventForwarded ) );
 
-            var self = new Character( new CharacterCore() );
+            var self = new Character();
             self.Aspects.stats = mockStats.Object;
 
             self.ReceiveEvent( eventForwarded );
@@ -212,7 +210,7 @@ namespace Kaerber.MUD.Tests.Entities
             var mockEquipment = new Mock<Equipment>();
             mockEquipment.Setup( equipment => equipment.ReceiveEvent( e ) );
 
-            var self = new Character( new CharacterCore() ) { Eq = mockEquipment.Object };
+            var self = new Character() { Eq = mockEquipment.Object };
 
             self.ReceiveEvent( e );
 
@@ -251,7 +249,7 @@ namespace Kaerber.MUD.Tests.Entities
             mockCombat.Setup( combat => combat.Target )
                 .Returns( mockEnemy.Object );
 
-            var self = new Character( new CharacterCore() );
+            var self = new Character();
             self.SetRoom( mockRoom.Object );
             self.Aspects.combat = mockCombat.Object;
 
@@ -260,12 +258,12 @@ namespace Kaerber.MUD.Tests.Entities
             mockCombat.VerifyAll();
             mockRoom.VerifyAll();
 
-            Assert.AreEqual( "ch_attacks_ch1", eArg.Name );
+            Assert.AreEqual( "ch_is_attacking_ch1", eArg.Name );
         }
 
         [Test]
         public void SetRoomRemovesCharFromPreviousRoomAndAddsToNext() {
-            var ch = new Character( new CharacterCore() )
+            var ch = new Character()
                 { ShortDescr = "Character", Names = "test character" };
 
             var mockRoomPrev = new Mock<Room>();
@@ -284,7 +282,7 @@ namespace Kaerber.MUD.Tests.Entities
 
         [Test]
         public void SpecIsNotNullTest() {
-            var ch = new Character( new CharacterCore() );
+            var ch = new Character();
             ch.Initialize();
             Assert.IsNotNull( ch.Spec );
         }
@@ -296,12 +294,11 @@ namespace Kaerber.MUD.Tests.Entities
             mockRoomFrom.Setup( room => room.ReceiveEvent( It.IsAny<Event>() ) )
                 .Callback<Event>( e => events.Add( e.Name, e ) );
 
-            var mockRoomTo = new Mock<Room>();
-
-            var ch = new Character( new CharacterCore() );
+            var exit = new Mock<Exit>();
+            var ch = new Character();
             ch.SetRoom( mockRoomFrom.Object );
 
-            ch.MoveToRoom( mockRoomTo.Object );
+            ch.MoveToRoom( exit.Object );
 
             mockRoomFrom.VerifyAll();
             Assert.IsTrue( events.ContainsKey( "ch_can_leave_room" ) );
@@ -316,11 +313,13 @@ namespace Kaerber.MUD.Tests.Entities
             var mockRoomTo = new Mock<Room>();
             mockRoomTo.Setup( room => room.ReceiveEvent( It.IsAny<Event>() ) )
                 .Callback<Event>( e => events.Add( e.Name, e ) );
+            var exit = new Mock<Exit>();
+            exit.Setup( e => e.To ).Returns( mockRoomTo.Object );
 
-            var ch = new Character( new CharacterCore() );
+            var ch = new Character();
             ch.SetRoom( mockRoomFrom.Object );
 
-            ch.MoveToRoom( mockRoomTo.Object );
+            ch.MoveToRoom( exit.Object );
 
             mockRoomTo.VerifyAll();
             Assert.IsTrue( events.ContainsKey( "ch_can_enter_room" ) );

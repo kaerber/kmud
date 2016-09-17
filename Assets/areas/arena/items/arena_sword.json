@@ -1,0 +1,12 @@
+{
+  "Vnum": "arena_sword",
+  "Names": "basic sword",
+  "ShortDescr": "basic sword",
+  "Aspects": {},
+  "WearLoc": 40,
+  "Flags": 0,
+  "Cost": 0,
+  "Weapon": {
+    "BaseDamage": 22
+  }
+}

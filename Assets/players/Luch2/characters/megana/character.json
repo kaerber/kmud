@@ -1,0 +1,70 @@
+{
+  "Vnum": "pc",
+  "Names": "megana",
+  "ShortDescr": "Megana",
+  "Affects": [ ],
+  "Handlers": { "map": { } },
+  "Aspects": {
+    "health": { "Wounds": 0 },
+    "stats": {
+      "mana": 0,
+      "attack": 0,
+      "strength": 20,
+      "constitution": 20,
+      "wisdom": 20,
+      "mattack": 0,
+      "dexterety": 20,
+      "critchance": 0,
+      "armor": 0,
+      "marmor": 0,
+      "hp": 0,
+      "accuracy": 0,
+      "evasion": 0,
+      "intellect": 20
+    }
+  },
+  "Inventory": [
+    {
+      "Vnum": "heaven_angel_feather",
+      "Names": "angel feather",
+      "ShortDescr": "an angel\u0027s feather",
+      "Affects": [ ],
+      "Handlers": { "map": { } },
+      "WearLoc": 0,
+      "ApplyChar": null
+    }
+  ],
+  "Equipment": {
+    "Body": {
+      "Vnum": "heaven_angel_tunic",
+      "Names": "angel tunic",
+      "ShortDescr": "a tunic of an angel",
+      "Affects": [ ],
+      "Handlers": { "map": { } },
+      "WearLoc": 20,
+      "ApplyChar": {
+        "HP": 3,
+        "AC": { "Slash": 5 },
+        "HitRoll": 0
+      }
+    },
+    "RightHand": {
+      "Vnum": "kesh_bronze_sword",
+      "Names": "bronze sword",
+      "ShortDescr": "a bronze sword",
+      "Affects": [ ],
+      "Handlers": { "map": { } },
+      "WearLoc": 40,
+      "Weapon": {
+        "BaseDamage": 20
+      },
+      "ApplyChar": null
+    }
+  },
+  "LoginAt": "horde_center",
+  "RespawnAt": "heaven_04",
+  "Flags": 1,
+  "PowerLevel": 0,
+  "PowerPoints": 0,
+  "ToNextPowerLevel": 0
+}

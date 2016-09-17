@@ -32,11 +32,7 @@ namespace Kaerber.MUD.Entities.Aspects {
         public virtual void Remove( Item item ) {
             if( !Stuff.ContainsValue( item ) )
                 return;
-            Host.Room.Event( "ch_removed_item",
-                             EventReturnMethod.None,
-                             new EventArg( "ch", Host ),
-                             new EventArg( "item", item )
-                );
+            Host.Has( "removed_item", new EventArg( "ch", Host ), new EventArg( "item", item ) );
 
             Stuff.Remove( item.WearLoc );
             Host.Inventory.Add( item );

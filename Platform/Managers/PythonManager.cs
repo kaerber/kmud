@@ -1,4 +1,5 @@
-﻿using IronPython.Hosting;
+﻿using System.Collections.Generic;
+using IronPython.Hosting;
 
 using Kaerber.MUD.Entities;
 
@@ -11,13 +12,14 @@ namespace Kaerber.MUD.Platform.Managers {
             if( _engine != null )
                 return _engine;
 
-            _engine = Python.CreateEngine();
+            var options = new Dictionary<string, object> { ["Debug"] = true };
+            _engine = Python.CreateEngine( options );
             var paths = _engine.GetSearchPaths();
             paths.Add( _pythonPath );
             _engine.SetSearchPaths( paths );
 
             var runtime = _engine.Runtime;
-            runtime.LoadAssembly( typeof( CharacterCore ).Assembly );
+            runtime.LoadAssembly( typeof( Character ).Assembly );
             runtime.LoadAssembly( typeof( JProperty ).Assembly );
             return _engine;
         }

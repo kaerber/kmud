@@ -1,0 +1,10 @@
+{
+  "Vnum": "ch_corpse",
+  "Names": "corpse {0}",
+  "ShortDescr": "corpse of {0}",
+  "Aspects": {},
+  "WearLoc": 0,
+  "Container": {},
+  "Flags": 0,
+  "Cost": 0
+}

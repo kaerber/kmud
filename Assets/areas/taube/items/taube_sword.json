@@ -1,0 +1,13 @@
+{
+  "Vnum": "taube_sword",
+  "Names": "steel sword",
+  "ShortDescr": "steel sword",
+  "Aspects": { },
+  "WearLoc": 40,
+  "Weapon": {
+    "BaseDamage": 17
+  },
+  "ApplyChar": null,
+  "Flags": 0,
+  "Cost": 100
+}

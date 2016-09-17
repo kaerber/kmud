@@ -5,14 +5,10 @@
   "Aspects": {
     "health": {
       "Value": 0
-    },
-    "mana": {
-      "Value": 0
     }
   },
   "Flags": 2,
   "Stats": {
-    "mana": 0,
     "attack": 0,
     "strength": 40,
     "constitution": 40,

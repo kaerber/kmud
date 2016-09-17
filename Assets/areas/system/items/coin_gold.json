@@ -1,0 +1,13 @@
+{
+  "Vnum": "heaven_gold",
+  "Names": "gold coin",
+  "ShortDescr": "gold coin",
+  "Aspects": {},
+  "WearLoc": 0,
+  "Flags": 2,
+  "Stack": {
+    "MaxCount": 0,
+    "Count": 0
+  },
+  "Cost": 100
+}

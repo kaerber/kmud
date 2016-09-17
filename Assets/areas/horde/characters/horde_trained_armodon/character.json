@@ -1,0 +1,23 @@
+{
+  "Vnum": "horde_trained_armodon",
+  "Names": "trained armodon",
+  "ShortDescr": "trained armodon",
+  "Aspects": {
+    "health": { "Value": 0 },
+    "combat": { }
+  },
+  "Stats": {
+    "HP": 30,
+    "AC": {
+      "Slash": 3
+    },
+    "HitRoll": 3
+  },
+  "NaturalWeapon": {
+    "BaseDamage": 30  
+  },
+  "Flags": 0,
+  "PowerLevel": 0,
+  "PowerPoints": 0,
+  "ToNextPowerLevel": 0
+}

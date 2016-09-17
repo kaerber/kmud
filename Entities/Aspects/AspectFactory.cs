@@ -18,10 +18,6 @@ namespace Kaerber.MUD.Entities.Aspects {
             return Aspect( "combat" );
         }
 
-        public static dynamic Movement() {
-            return Aspect( "movement" );
-        }
-
         public static dynamic AI() {
             return Aspect( "ai" );
         }

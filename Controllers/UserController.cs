@@ -39,6 +39,7 @@ namespace Kaerber.MUD.Controllers {
             var limbo = _world.Rooms["limbo"];
             character.SetRoom( limbo );
             character.RespawnAt = _world.Rooms[character.RespawnAtId];
+            character.Event( "ch_loaded", EventReturnMethod.None, new EventArg( "ch", character ) );
             return NextController( character );
         }
 

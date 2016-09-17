@@ -39,19 +39,19 @@ namespace Kaerber.MUD.Controllers.Commands.CharacterCommands {
                 return;
             }
 
-            if( !ch.Room.Event( "ch_can_put_item_into_container", EventReturnMethod.And,
-                                new EventArg( "ch", ch ), 
-                                new EventArg( "item", item ), 
-                                new EventArg( "container", container ) ) )
+            if( !ch.Can( "put_item_into_container",
+                         new EventArg( "ch", ch ),
+                         new EventArg( "item", item ),
+                         new EventArg( "container", container ) ) )
                 return;
 
             container.Container.Items.Add( item );
             ch.Inventory.Remove( item );
 
-            ch.Room.Event( "ch_put_item_into_container", EventReturnMethod.None,
-                           new EventArg( "ch", ch ), 
-                           new EventArg( "item", item ), 
-                           new EventArg( "container", container ) );
+            ch.Has( "put_item_into_container",
+                    new EventArg( "ch", ch ),
+                    new EventArg( "item", item ),
+                    new EventArg( "container", container ) );
         }
 
         public string ToString( string format, IFormatProvider formatProvider ) {

@@ -16,7 +16,7 @@ namespace Kaerber.MUD.Tests.Controllers.Commands {
     public class GoTest : BaseEntityTest {
         [Test]
         public void ExecuteTest() {
-            var ch = new Character( new CharacterCore() );
+            var ch = new Character();
             var mockView = new Mock<ICharacterView>();
             var mockCommandManager = new Mock<IManager<ICommand>>();
             var pc = new CharacterController( ch, mockView.Object, mockCommandManager.Object, null, null );

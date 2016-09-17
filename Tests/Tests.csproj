@@ -130,7 +130,6 @@
     <Compile Include="Entities\Aspects\HealthTest.cs" />
     <Compile Include="Entities\Aspects\ItemSetTest.cs" />
     <Compile Include="Entities\Aspects\MoneyTest.cs" />
-    <Compile Include="Entities\Aspects\MovementTest.cs" />
     <Compile Include="Entities\Aspects\RaceFactoryTest.cs" />
     <Compile Include="Entities\Aspects\RaceTest.cs" />
     <Compile Include="Entities\Aspects\SpecFactoryTest.cs" />

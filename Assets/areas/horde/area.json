@@ -1,0 +1,96 @@
+{
+  "Vnum": "horde",
+  "Names": "horde mode",
+  "ShortDescr": "Horde mode",
+  "Rooms": [
+    {
+      "Vnum": "horde_center",
+      "Names": "center platform",
+      "ShortDescr": "Beneath a great tree",
+      "Handlers": { "map": { "ch_said_text": { "Code": "import clr\n\nfrom aspects.horde import *\n\nvnums = [\u0027horde_center\u0027, \u0027horde_00\u0027, \u0027horde_01\u0027, \u0027horde_02\u0027, \u0027horde_03\u0027]\n        \nrooms = map( ch.InRoom.Area.GetRoom, vnums )\n\n# Stage 1\nStages = [[ \"horde_wall_of_wood\", \"horde_grizzly_bear\" ]]\n\ndef Start():\n    ch.Write( \"Horde mode start.\\n\" )\n    rooms[0].Aspects.Add( \u0027horde\u0027, HordeAspect() ) \n    rooms[0].Aspects[\u0027horde\u0027].Setup( rooms, Stages ) \n    rooms[0].Aspects[\u0027horde\u0027].Start() \n    rooms[0].Aspects[\u0027horde\u0027].AddPlayer( ch )\n\nif( text.Trim().ToLower() == \u0027start\u0027 ):\n    Start()" } } },
+      "Description": "You are standing in the shade of a great tree.\nSome distant rustling noises and groaning are coming from all directions.",
+      "Exits": [
+        {
+          "Name": "north",
+          "To": "horde_00"
+        },
+        {
+          "Name": "south",
+          "To": "horde_01"
+        },
+        {
+          "Name": "east",
+          "To": "horde_02"
+        },
+        {
+          "Name": "west",
+          "To": "horde_03"
+        },
+        {
+          "Name": "up",
+          "To": "horde_04"
+        }
+      ],
+      "Resets": { "ItemResets": [ { "Vnum": "kesh_bronze_sword" } ] }
+    },
+    {
+      "Vnum": "horde_00",
+      "Names": "northern wing",
+      "ShortDescr": "North from the great tree",
+      "Exits": [
+        {
+          "Name": "south",
+          "To": "horde_center"
+        }
+      ]
+    },
+    {
+      "Vnum": "horde_01",
+      "Names": "southern wing",
+      "ShortDescr": "South of the great tree",
+      "Exits": [
+        {
+          "Name": "north",
+          "To": "horde_center"
+        }
+      ]
+    },
+    {
+      "Vnum": "horde_02",
+      "Names": "eastern wing",
+      "ShortDescr": "East of the great tree",
+      "Exits": [
+        {
+          "Name": "west",
+          "To": "horde_center"
+        }
+      ]
+    },
+    {
+      "Vnum": "horde_03",
+      "Names": "western wing",
+      "ShortDescr": "West of the great tree",
+      "Exits": [
+        {
+          "Name": "east",
+          "To": "horde_center"
+        }
+      ]
+    },
+    {
+      "Vnum": "horde_04",
+      "Names": "safe room",
+      "ShortDescr": "Amid the branches of the great tree",
+      "Exits": [
+        {
+          "Name": "down",
+          "To": "horde_center"
+        }
+      ]
+    }
+  ],
+  "roomId": 5,
+  "Items": [ ],
+  "itemId": 0,
+  "mobId": 0
+}

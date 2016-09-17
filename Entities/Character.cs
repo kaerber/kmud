@@ -1,69 +1,42 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
 using System.Linq;
-
 using IronPython.Runtime;
-
 using Kaerber.MUD.Entities.Abilities;
 using Kaerber.MUD.Entities.Aspects;
+using static Kaerber.MUD.Entities.Event;
 
-namespace Kaerber.MUD.Entities
-{
-    public class Character : Entity {
-        public Character() : this( new CharacterCore() ) {}
-
-        public Character( CharacterCore core ) {
-            _core = core;
-
+namespace Kaerber.MUD.Entities {
+    public class Character : Entity, IEventSource {
+        public Character() {
             NaturalWeapon = AspectFactory.Weapon();
             NaturalWeapon.BaseDamage = 1;
 
             Setup();
         }
 
-        public Character( Character template, CharacterCore core ) 
+        public Character( Character template )
             : base( template.Id, template.Names, template.ShortDescr ) {
-
-            _core = core;
             NaturalWeapon = template.NaturalWeapon.Clone();
             Setup();
             if( template.Aspects != null )
                 Aspects = template.Aspects.Clone();
         }
 
-        private void Setup() {
-            Race = RaceFactory.Default;
-            Spec = SpecFactory.Warrior;
-
-            Inventory = new ItemSet();
-            Eq = new Equipment();
-            Data = new Dictionary<string, string>();
-
-            ActionQueueSet = new ActionQueueSet( this );
-            UpdateQueue = new TimedEventQueue( null );
-
-            Aspects.stats = AspectFactory.Stats();
-            Aspects.health = AspectFactory.Health();
-            Aspects.combat = AspectFactory.Combat();
-            Aspects.movement = AspectFactory.Movement();
-        }
 
 
-        public IEventHandler Race { get; set; }
-        public IEventHandler Spec;
+        public IEventTarget Race { get; set; }
+        public IEventTarget Spec { get; set; }
 
         public bool IsInCombat => Target != null;
         public virtual Character Target => Combat.Target;
-
-        private Equipment _eq;
-
-        public Room RespawnAt;
         public string RespawnAtId { get; set; }
 
-        public Room Room {
+        public Room Room
+        {
             get { return _room; }
-            private set {
+            set
+            {
                 _room = value;
                 RoomId = value?.Id;
             }
@@ -71,11 +44,7 @@ namespace Kaerber.MUD.Entities
 
         public string RoomId { get; set; }
 
-        public ItemSet Inventory;
-
-        public Dictionary<string, string> Data;
-
-        public Action<Event> ViewEvent;
+        public object Sync => Room != null ? ( object )Room : this;
 
 
         public Equipment Eq {
@@ -91,16 +60,31 @@ namespace Kaerber.MUD.Entities
         [Obsolete]
         public dynamic Health => Aspects.health;
 
-        [Obsolete]
-        public dynamic Movement => Aspects.movement;
-
         private dynamic Combat => Aspects.combat;
 
         public dynamic Stats => Aspects.stats;
 
         public ActionQueueSet ActionQueueSet { get; set; }
 
-        public override string ToString() { return ShortDescr; }
+        private void Setup() {
+            Race = RaceFactory.Default;
+            Spec = SpecFactory.Warrior;
+
+            Inventory = new ItemSet();
+            Eq = new Equipment();
+            Data = new Dictionary<string, string>();
+
+            ActionQueueSet = new ActionQueueSet( this );
+            UpdateQueue = new TimedEventQueue( null );
+
+            Aspects.stats = AspectFactory.Stats();
+            Aspects.health = AspectFactory.Health();
+            Aspects.combat = AspectFactory.Combat();
+        }
+
+        public override string ToString() {
+            return ShortDescr;
+        }
 
         public void Restore() {
             Health.Restore();
@@ -108,11 +92,9 @@ namespace Kaerber.MUD.Entities
 
 
         public void Die() {
-            Contract.Requires( Room != null );
-
             if( !this.Can( "die" ) )
                 return;
-            
+
             var corpse = CreateCorpse();
             corpse.Container.Items.AddRange( Inventory );
             Inventory.Clear();
@@ -135,8 +117,8 @@ namespace Kaerber.MUD.Entities
         }
 
         public override void ReceiveEvent( Event e ) {
-            foreach( var ex in e.Parameters.Where( p => p.Value == this )
-                                           .Select( e.ChangeToThis ) ) {
+            foreach( var ex in e.Parameters.Where( p => p.Value is Character && p.Value == this )
+                                .Select( e.ChangeToThis ) ) {
                 HandleLocalEvent( ex );
                 e.ReturnValue = ex.ReturnValue;
             }
@@ -145,12 +127,10 @@ namespace Kaerber.MUD.Entities
         }
 
         private void HandleLocalEvent( Event e ) {
-            Contract.Requires( e != null );
-
             base.ReceiveEvent( e );
 
             Race?.ReceiveEvent( e );
-            Spec?.ReceiveEvent(e);
+            Spec?.ReceiveEvent( e );
 
             Eq?.ReceiveEvent( e );
             NaturalWeapon?.ReceiveEvent( e );
@@ -158,39 +138,6 @@ namespace Kaerber.MUD.Entities
             ViewEvent?.Invoke( e );
         }
 
-
-        public virtual void SendEvent( Event e ) {
-            Contract.Requires( Room != null );
-            Room.ReceiveEvent( e );
-        }
-
-        public virtual bool Can( string action, PythonDictionary args = null ) {
-            Contract.Requires( Room != null );
-            var canEvent = DoEvent( "ch_can_" + action, EventReturnMethod.And, args );
-            return canEvent.ReturnValue;
-        }
-
-
-        public virtual void Is( string action, PythonDictionary args = null ) {
-            Contract.Requires( Room != null );
-            DoEvent( "ch_" + action, EventReturnMethod.None, args );
-        }
-
-
-        public virtual void Has( string action, PythonDictionary args = null ) {
-            Contract.Requires( Room != null );
-            DoEvent( "ch_" + action, EventReturnMethod.None, args );
-        }
-
-
-        private Event DoEvent( string name, EventReturnMethod returnMethod, PythonDictionary args = null ) {
-            args = args ?? new PythonDictionary();
-            args.Add( "ch", this );
-            var doEvent = Entities.Event.Create( name, returnMethod, args );
-            SendEvent( doEvent );
-
-            return doEvent;
-        }
 
 
         public void SetRoom( Room room ) {
@@ -211,25 +158,39 @@ namespace Kaerber.MUD.Entities
             }
         }
 
-
-        public bool MoveToRoom( Room destination ) {
-            Contract.Requires( Room != null );
-            Contract.Requires( destination != null );
-
-            if( !Movement.CanLeaveRoom( Room ) )
-                return false;
-            if( !Movement.CanEnterRoom( destination ) )
-                return false;
-
-            var source = Room;
-            SetRoom( destination );
-
-            Movement.LeftRoom( source );
-            Movement.EnteredRoom( destination );
-
-            return true;
+        public void Action( string name, EventArg[] args, Action action ) {
+            if( !this.Can( name, args ) )
+                return;
+            action();
+            this.Has( name, args );
         }
 
+        public bool MoveToRoom( Exit exit ) {
+            var roomFrom = new EventArg( "room", Room );
+
+            if( !this.Can( "leave_room", roomFrom ) )
+                return false;
+            this.Has( "left_room", roomFrom );
+
+            if( exit.GoThrough( this ) )
+                return true;
+
+            SetRoom( roomFrom.Value );
+            this.Has( "entered_room", roomFrom );
+            return false;
+        }
+
+        public void WentFromRoom( Room from, Room to ) {    // todo: remove event
+            var @event = Create( "ch_went_from_room_to_room",
+                                 EventReturnMethod.None,
+                                 new EventArg( "ch", this ),
+                                 new EventArg( "room_from", from ),
+                                 new EventArg( "room_to", to ),
+                                 new EventArg( "exit", from.Exits[to] ),
+                                 new EventArg( "entrance", to.Exits[from] ) );
+            from.ReceiveEvent( @event );
+            to.ReceiveEvent( @event );
+        }
 
         public virtual CharacterSet GetFoes() {
             return Room.SelectCharacters( vch => !vch.IsSafeFrom( this ) );
@@ -244,33 +205,20 @@ namespace Kaerber.MUD.Entities
         }
 
         public virtual void EnqueueAction( string queueName, CharacterAction action ) {
-            Contract.Requires( !string.IsNullOrWhiteSpace( queueName ) );
-            Contract.Requires( action != null );
-
             ActionQueueSet.EnqueueAction( queueName, action );
         }
 
         public virtual void SetTimedEvent( long relativeTime, Action eventAction ) {
-            Contract.Requires( relativeTime >= 0 );
-            Contract.Requires( eventAction != null );
-
             UpdateQueue.AddRelative( relativeTime, eventAction );
         }
 
         public virtual void MakeAttack( IAttack attack ) {
-            Contract.Requires( attack != null );
-            Contract.Requires( Target != null );
-
-            this.Is( "attacks_ch1", new PythonDictionary { { "ch1", Target }, { "attack", attack } } );
+            this.Is( "attacking_ch1", new PythonDictionary { { "ch1", Target }, { "attack", attack } } );
             Combat.MakeAttack( attack );
         }
 
         public bool Equip( Item item ) {
-            Contract.Requires( Room != null );
-            Contract.Requires( item.WearLoc != WearLocation.Inventory );
-            Contract.Requires( Inventory.Contains( item ) );
-
-            if( !this.Can( "equip_item", new PythonDictionary{ { "item", item } } ) )
+            if( !this.Can( "equip_item", new PythonDictionary { { "item", item } } ) )
                 return false;
 
             if( Eq.Have( item.WearLoc ) ) {
@@ -288,9 +236,6 @@ namespace Kaerber.MUD.Entities
 
 
         public bool Unequip( Item item ) {
-            Contract.Requires( Room != null );
-            Contract.Requires( Eq.Have( item ) );
-
             if( !this.Can( "remove_item", new PythonDictionary { { "item", item } } ) )
                 return false;
 
@@ -301,8 +246,9 @@ namespace Kaerber.MUD.Entities
             return true;
         }
 
+
         public static Character CreateMob( string vnum ) {
-            var ch = new Character( World.Instance.Mobs[vnum], new CharacterCore() );
+            var ch = new Character( World.Instance.Mobs[vnum] );
             ch.Initialize();
             ch.Aspects.ai = AspectFactory.AI();
             ch.Restore();
@@ -310,7 +256,15 @@ namespace Kaerber.MUD.Entities
         }
 
 
-        private readonly CharacterCore _core;
+        private Equipment _eq;
         private Room _room;
+
+        public Dictionary<string, string> Data;
+
+        public ItemSet Inventory;
+
+        public Room RespawnAt;
+
+        public Action<Event> ViewEvent;
     }
 }

@@ -1,0 +1,44 @@
+{
+  "Vnum": "kesh",
+  "Names": "kesh rainbow city",
+  "ShortDescr": "Kesh The Rainbow City",
+  "Rooms": [
+    {
+      "Vnum": "kesh_tog",
+      "Names": "",
+      "ShortDescr": "Temple of the Gods",
+      "Exits": [
+        {
+          "Name": "horde",
+          "To": "horde_center"
+        },
+        {
+          "Name": "west",
+          "To": "kesh_00"
+        },
+        {
+          "Name": "village",
+          "To": "taube_village_green"
+        },
+        {
+          "Name": "arena",
+          "To": "arena_entrance"
+        }
+      ]
+    },
+    {
+      "Vnum": "kesh_00",
+      "Names": "",
+      "ShortDescr": "A guildhall of Kesh",
+      "Exits": [
+        {
+          "Name": "east",
+          "To": "kesh_tog"
+        }
+      ]
+    }
+  ],
+  "roomId": 1,
+  "itemId": 0,
+  "mobId": 0
+}

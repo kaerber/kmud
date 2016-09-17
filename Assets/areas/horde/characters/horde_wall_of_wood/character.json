@@ -1,0 +1,23 @@
+{
+  "Vnum": "horde_wall_of_wood",
+  "Names": "wall wood",
+  "ShortDescr": "wall of wood",
+  "Aspects": {
+    "health": { "Value": 0 },
+    "combat": { }
+  },
+  "Stats": {
+    "HP": 30,
+    "AC": {
+      "Slash": 3
+    },
+    "HitRoll": 0
+  },
+  "NaturalWeapon": {
+    "BaseDamage":  10
+  },
+  "Flags": 1,
+  "PowerLevel": 0,
+  "PowerPoints": 0,
+  "ToNextPowerLevel": 0
+}

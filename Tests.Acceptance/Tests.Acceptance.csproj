@@ -115,7 +115,6 @@
   <ItemGroup>
     <Compile Include="BaseAcceptanceTest.cs" />
     <Compile Include="Entities\CharacterAcceptance.cs" />
-    <Compile Include="Entities\CharacterCoreAcceptance.cs" />
     <Compile Include="Entities\CombatAcceptance.cs" />
     <Compile Include="Entities\MaxHealthAcceptance.cs" />
     <Compile Include="EventLogger.cs" />

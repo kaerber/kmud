@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
 
-using Kaerber.MUD.Common;
 using Kaerber.MUD.Entities.Aspects;
 
 namespace Kaerber.MUD.Entities {

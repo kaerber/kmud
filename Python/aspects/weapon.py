@@ -30,7 +30,7 @@ class WeaponAspect( Aspect ):
         return self
 
     # events
-    def this_attacks_ch1( self, event ):
+    def this_is_attacking_ch1( self, event ):
         event["attack"].SetAssaulterWeaponBaseDamage( self.BaseDamage )
 
     # editor support

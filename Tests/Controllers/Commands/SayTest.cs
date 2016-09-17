@@ -20,7 +20,7 @@ namespace Kaerber.MUD.Tests.Controllers.Commands
             var mockView = new Mock<ICharacterView>();
 
             var room = new Room();
-            var ch = new Character( new CharacterCore() );
+            var ch = new Character();
 
             ch.SetRoom( room );
             var command = new Say();

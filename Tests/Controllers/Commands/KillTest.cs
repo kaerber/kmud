@@ -11,8 +11,6 @@ namespace Kaerber.MUD.Tests.Controllers.Commands {
     [TestFixture]
     public class KillTest {
         public class CharacterMock : Character {
-            public CharacterMock() : base( new CharacterCore() ) {}
-
             private int _killCallCount;
 
             public override void Kill( Character vch ) {

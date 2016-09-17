@@ -12,14 +12,14 @@ namespace Kaerber.MUD.Tests.Entities
     {
         public static Event ThisAttacksCh1( Character ch, Character vch, dynamic attack  )
         {
-            return Event.Create( "this_attacks_ch1",
+            return Event.Create( "this_is_attacking_ch1",
                 EventReturnMethod.None,
                 new PythonDictionary { { "this", ch }, { "ch1", vch }, { "attack", attack } } );
         }
 
         public static Event ChAttacksThis( Character ch, Character vch, dynamic attack  )
         {
-            return Event.Create( "ch_attacks_this",
+            return Event.Create( "ch_is_attacking_this",
                 EventReturnMethod.None,
                 new PythonDictionary { { "ch", ch }, { "this", vch }, { "attack", attack } } );
         }

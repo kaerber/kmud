@@ -1,11 +1,7 @@
 ﻿using System.Collections.Generic;
 
-using Kaerber.MUD.Common;
-
 namespace Kaerber.MUD.Entities {
-    public class Exit {
-        private Room _to;
-
+    public class Exit { // todo rework into portal
         public Exit() {}
 
         public Exit( string name, string toRoom ) {
@@ -21,7 +17,7 @@ namespace Kaerber.MUD.Entities {
         public string toRoom { get; set; }
 
         public Room To {
-            get { return ( _to ?? ( _to = World.Instance.Rooms[toRoom] ) ); }
+            get { return _to ?? ( _to = World.Instance.Rooms[toRoom] ); }
             set {
                 _to = value;
                 toRoom = value.Id;
@@ -30,6 +26,13 @@ namespace Kaerber.MUD.Entities {
 
         public string Name { get; set; }
 
+        public bool GoThrough( Character ch ) {
+            ch.SetRoom( _to );
+            if( !ch.Can( "enter_room", new EventArg( "room", _to ) ) )
+                return false;
+            ch.Has( "entered_room", new EventArg( "room", _to ) );
+            return true;
+        }
 
         public static Exit Deserialize( dynamic data ) {
             return new Exit {
@@ -44,5 +47,8 @@ namespace Kaerber.MUD.Entities {
                 ["To"] = exit.toRoom
             };
         }
+
+
+        private Room _to;
     }
 }
