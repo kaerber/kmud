@@ -130,8 +130,6 @@
     <Compile Include="Entities\Aspects\HealthTest.cs" />
     <Compile Include="Entities\Aspects\ItemSetTest.cs" />
     <Compile Include="Entities\Aspects\MoneyTest.cs" />
-    <Compile Include="Entities\Aspects\RaceFactoryTest.cs" />
-    <Compile Include="Entities\Aspects\RaceTest.cs" />
     <Compile Include="Entities\Aspects\SpecFactoryTest.cs" />
     <Compile Include="Entities\Aspects\SpecTest.cs" />
     <Compile Include="Entities\Aspects\StackTest.cs" />
@@ -141,7 +139,6 @@
     <Compile Include="Entities\BaseEntityTest.cs" />
     <Compile Include="Entities\CharacterCoreTest.cs" />
     <Compile Include="Entities\CharacterEquipmentTest.cs" />
-    <Compile Include="Entities\CharacterRaceTest.cs" />
     <Compile Include="Entities\CharacterTest.cs" />
     <Compile Include="Entities\ClockTest.cs" />
     <Compile Include="Entities\EntityExceptionTest.cs" />
@@ -152,7 +149,6 @@
     <Compile Include="Entities\MLFunctionTest.cs" />
     <Compile Include="Entities\RoomTest.cs" />
     <Compile Include="Entities\Room_ExitsTest.cs" />
-    <Compile Include="Entities\SpecializationTest.cs" />
     <Compile Include="Entities\UserTest.cs" />
     <Compile Include="ExtensionMethodsTest.cs" />
     <Compile Include="MoqExtensions.cs" />

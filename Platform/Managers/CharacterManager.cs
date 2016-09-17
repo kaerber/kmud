@@ -86,7 +86,7 @@ namespace Kaerber.MUD.Platform.Managers {
         }
 
         public static Character Create( Character template, IEventTarget specialization ) {
-            return new Character( template ) { Spec = specialization };
+            return new Character( template ) { Class = specialization };
         }
 
         public dynamic LoadData( string path, string name ) {

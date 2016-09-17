@@ -23,10 +23,7 @@ namespace Kaerber.MUD.Entities {
                 Aspects = template.Aspects.Clone();
         }
 
-
-
-        public IEventTarget Race { get; set; }
-        public IEventTarget Spec { get; set; }
+        public IEventTarget Class { get; set; }
 
         public bool IsInCombat => Target != null;
         public virtual Character Target => Combat.Target;
@@ -67,8 +64,7 @@ namespace Kaerber.MUD.Entities {
         public ActionQueueSet ActionQueueSet { get; set; }
 
         private void Setup() {
-            Race = RaceFactory.Default;
-            Spec = SpecFactory.Warrior;
+            Class = ClassFactory.Warrior;
 
             Inventory = new ItemSet();
             Eq = new Equipment();
@@ -129,8 +125,7 @@ namespace Kaerber.MUD.Entities {
         private void HandleLocalEvent( Event e ) {
             base.ReceiveEvent( e );
 
-            Race?.ReceiveEvent( e );
-            Spec?.ReceiveEvent( e );
+            Class?.ReceiveEvent( e );
 
             Eq?.ReceiveEvent( e );
             NaturalWeapon?.ReceiveEvent( e );

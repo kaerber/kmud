@@ -10,7 +10,7 @@ namespace Kaerber.MUD.Tests.Entities.Aspects
         [Test]
         public void TestGetWarrior()
         {
-            var spec = SpecFactory.Warrior;
+            var spec = ClassFactory.Warrior;
             Assert.IsNotNull( spec );
             Assert.IsNotNull( spec.AutoAttack );
         }

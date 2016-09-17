@@ -96,8 +96,6 @@
     <Compile Include="ActionQueueSet.cs" />
     <Compile Include="Actions\AutoAttackAction.cs" />
     <Compile Include="Area.cs" />
-    <Compile Include="Aspects\Apply.cs" />
-    <Compile Include="Aspects\ArmorClass.cs" />
     <Compile Include="Aspects\AspectFactory.cs" />
     <Compile Include="Aspects\CharacterSet.cs" />
     <Compile Include="Aspects\Container.cs" />
@@ -107,11 +105,9 @@
     <Compile Include="Aspects\MobItemReset.cs" />
     <Compile Include="Aspects\MobReset.cs" />
     <Compile Include="Aspects\ItemReset.cs" />
-    <Compile Include="Aspects\Race.cs" />
-    <Compile Include="Aspects\RaceFactory.cs" />
     <Compile Include="Aspects\RoomReset.cs" />
-    <Compile Include="Aspects\Spec.cs" />
-    <Compile Include="Aspects\SpecFactory.cs" />
+    <Compile Include="Aspects\Class.cs" />
+    <Compile Include="Aspects\ClassFactory.cs" />
     <Compile Include="Aspects\Stack.cs" />
     <Compile Include="Aspects\TimedEvent.cs" />
     <Compile Include="Aspects\TimedEventQueue.cs" />
@@ -137,8 +133,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Room.cs" />
     <Compile Include="Room_Exits.cs" />
-    <Compile Include="ShortStatsQuery.cs" />
-    <Compile Include="Specialization.cs" />
     <Compile Include="Clock.cs" />
     <Compile Include="User.cs" />
     <Compile Include="Utilities\Converter.cs" />

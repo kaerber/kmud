@@ -18,7 +18,7 @@ namespace Kaerber.MUD.Tests.Entities.Aspects
             var mockAutoAttack = new Mock<AutoAttackAbility>();
             mockAutoAttack.Setup( autoattack => autoattack.ReceiveEvent( It.IsAny<Event>() ) )
                 .Callback<Event>( e => { testEvent = e; } );
-            var spec = new Spec( "test_spec" ) { AutoAttack = mockAutoAttack.Object };
+            var spec = new Class( "test_spec", AspectFactory.Stats() ) { AutoAttack = mockAutoAttack.Object };
             spec.ReceiveEvent( Event.Create( "test_event" ) );
 
             mockAutoAttack.VerifyAll();

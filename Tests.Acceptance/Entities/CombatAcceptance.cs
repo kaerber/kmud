@@ -26,7 +26,7 @@ namespace Kaerber.MUD.Tests.Acceptance.Entities {
 
         [Test]
         public void AutoAttackTriggeredTest() {
-            PlayerModel.Spec = SpecFactory.Warrior;
+            PlayerModel.Class = ClassFactory.Warrior;
 
             var mockActionQueueSet = new Mock<ActionQueueSet>();
             mockActionQueueSet.Setup( s => s.EnqueueAction( "autoattack", It.IsAny<AutoAttackAction>() ) );

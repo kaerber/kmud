@@ -284,7 +284,7 @@ namespace Kaerber.MUD.Tests.Entities
         public void SpecIsNotNullTest() {
             var ch = new Character();
             ch.Initialize();
-            Assert.IsNotNull( ch.Spec );
+            Assert.IsNotNull( ch.Class );
         }
 
         [Test]
