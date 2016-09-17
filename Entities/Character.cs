@@ -9,15 +9,11 @@ using static Kaerber.MUD.Entities.Event;
 namespace Kaerber.MUD.Entities {
     public class Character : Entity, IEventSource {
         public Character() {
-            NaturalWeapon = AspectFactory.Weapon();
-            NaturalWeapon.BaseDamage = 1;
-
             Setup();
         }
 
         public Character( Character template )
             : base( template.Id, template.Names, template.ShortDescr ) {
-            NaturalWeapon = template.NaturalWeapon.Clone();
             Setup();
             if( template.Aspects != null )
                 Aspects = template.Aspects.Clone();
@@ -51,8 +47,6 @@ namespace Kaerber.MUD.Entities {
                 _eq.Host = this;
             }
         }
-
-        public dynamic NaturalWeapon { get; set; }
 
         [Obsolete]
         public dynamic Health => Aspects.health;
@@ -125,7 +119,6 @@ namespace Kaerber.MUD.Entities {
             Class?.ReceiveEvent( e );
 
             Eq?.ReceiveEvent( e );
-            NaturalWeapon?.ReceiveEvent( e );
 
             ViewEvent?.Invoke( e );
         }

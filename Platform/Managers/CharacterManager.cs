@@ -44,8 +44,6 @@ namespace Kaerber.MUD.Platform.Managers {
 
             if( data.Stats != null )
                 character.Stats.Deserialize( data.Stats );
-            if( data.NaturalWeapon != null )
-                character.NaturalWeapon.Deserialize( data.NaturalWeapon );
 
             Func<dynamic, Item> deserializeItem = itemData => ItemManager.Deserialize( itemData );
 
@@ -80,7 +78,6 @@ namespace Kaerber.MUD.Platform.Managers {
                 .AddIf( "Data", character.Data, character.Data != null && character.Data.Keys.Count > 0 );
 
             data.Add( "Stats", character.Stats.Serialize() );
-            data.Add( "NaturalWeapon", character.NaturalWeapon.Serialize() );
 
             return data;
         }

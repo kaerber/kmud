@@ -41,8 +41,6 @@ namespace Kaerber.MUD.Tests.Entities
             template.Stats.Accuracy = 102;
             template.Stats.Health = 103;
 
-            template.NaturalWeapon.BaseDamage = 101;
-
             var instance = new Character( template );
 
             Assert.AreEqual( template.Stats.Armor, instance.Stats.Armor );
@@ -54,9 +52,6 @@ namespace Kaerber.MUD.Tests.Entities
             Assert.AreEqual( template.Names, instance.Names );
             Assert.AreEqual( template.ShortDescr, instance.ShortDescr );
             Assert.AreEqual( template.Id, instance.Id );
-
-            Assert.IsNotNull( instance.NaturalWeapon );
-            Assert.AreEqual( template.NaturalWeapon.BaseDamage, instance.NaturalWeapon.BaseDamage );
         }
 
         [Test]
