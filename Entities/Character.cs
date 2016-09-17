@@ -91,10 +91,7 @@ namespace Kaerber.MUD.Entities {
             if( !this.Can( "die" ) )
                 return;
 
-            var corpse = CreateCorpse();
-            corpse.Container.Items.AddRange( Inventory );
             Inventory.Clear();
-            corpse.Container.Items.AddRange( Eq.Items );
             Eq.Clear();
 
             this.Has( "died" );

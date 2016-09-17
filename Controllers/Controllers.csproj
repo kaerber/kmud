@@ -89,7 +89,6 @@
     <Compile Include="Commands\CharacterCommands\Inventory.cs" />
     <Compile Include="Commands\CharacterCommands\Kill.cs" />
     <Compile Include="Commands\CharacterCommands\Look.cs" />
-    <Compile Include="Commands\CharacterCommands\Put.cs" />
     <Compile Include="Commands\CharacterCommands\Quit.cs" />
     <Compile Include="Commands\CharacterCommands\Remove.cs" />
     <Compile Include="Commands\CharacterCommands\Reply.cs" />

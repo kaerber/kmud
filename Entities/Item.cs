@@ -27,8 +27,6 @@ namespace Kaerber.MUD.Entities {
 
         public virtual WearLocation WearLoc { get; set; }
 
-        public Container Container { get; set; }
-
         public dynamic Weapon { get; set; }
 
         public dynamic Stats { get; set; }
@@ -52,9 +50,6 @@ namespace Kaerber.MUD.Entities {
                 Stack = new Stack( template.Stack );
 
             Cost = template.Cost;
-
-            if( template.Container != null )
-                Container = new Container( template.Container );
         }
 
         public override void ReceiveEvent( Event e ) {
@@ -74,7 +69,7 @@ namespace Kaerber.MUD.Entities {
         
         public static Item Create( string vnum ) {
             Debug.Assert( World.Instance.Items.ContainsKey( vnum ) );
-            return ( new Item( World.Instance.Items[vnum] ) );
+            return new Item( World.Instance.Items[vnum] );
         }
     }
 }

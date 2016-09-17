@@ -79,7 +79,6 @@ namespace Kaerber.MUD.Platform.Managers {
             { "inventory", new Inventory() },
             { "equipment", new ShowEquipment() },
             { "get", new Get() },
-            { "put", new Put() },
             { "drop", new Drop() },
             { "wear", new Wear() },
             { "remove", new Remove() },

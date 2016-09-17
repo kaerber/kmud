@@ -98,7 +98,6 @@
     <Compile Include="Area.cs" />
     <Compile Include="Aspects\AspectFactory.cs" />
     <Compile Include="Aspects\CharacterSet.cs" />
-    <Compile Include="Aspects\Container.cs" />
     <Compile Include="Aspects\Equipment.cs" />
     <Compile Include="Aspects\ExitSet.cs" />
     <Compile Include="Aspects\IAspect.cs" />

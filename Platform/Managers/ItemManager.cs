@@ -46,8 +46,6 @@ namespace Kaerber.MUD.Platform.Managers {
                 item.Flags = ( ItemFlags )Enum.Parse( typeof( ItemFlags ), ( string )data.Flags );
             if( data.Stack != null )
                 item.Stack = Stack.Deserialize( data.Stack );
-            if( data.Container != null )
-                item.Container = Container.Deserialize( data.Container );
             if( data.Stats != null )
                 item.Stats = AspectFactory.Stats().Deserialize( data.Stats );
             if( data.Weapon != null )
@@ -60,7 +58,6 @@ namespace Kaerber.MUD.Platform.Managers {
         public static IDictionary<string, object> Serialize( Item item ) {
             var data = EntitySerializer.Serialize( item )
                 .AddEx( "WearLoc", item.WearLoc )
-                .AddIf( "Container", item.Container, item.Container != null )
                 .AddEx( "Flags", item.Flags )
                 .AddIf( "Stack", item.Stack, item.Stack != null )
                 .AddEx( "Cost", item.Cost );
