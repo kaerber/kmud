@@ -25,11 +25,9 @@ namespace Kaerber.MUD.Entities {
         public virtual Character Target => Combat.Target;
         public string RespawnAtId { get; set; }
 
-        public Room Room
-        {
-            get { return _room; }
-            set
-            {
+        public Room Room {
+            get => _room;
+            set {
                 _room = value;
                 RoomId = value?.Id;
             }
@@ -41,7 +39,7 @@ namespace Kaerber.MUD.Entities {
 
 
         public Equipment Eq {
-            get { return _eq; }
+            get => _eq;
             set {
                 _eq = value;
                 _eq.Host = this;
@@ -124,6 +122,35 @@ namespace Kaerber.MUD.Entities {
         }
 
 
+        public virtual void SendEvent( Event e ) {
+            Room.ReceiveEvent( e );
+        }
+
+        public virtual bool Can( string action, PythonDictionary args = null ) {
+            var canEvent = DoEvent( "ch_can_" + action, EventReturnMethod.And, args );
+            return canEvent.ReturnValue;
+        }
+
+
+        public virtual void Is( string action, PythonDictionary args = null ) {
+            DoEvent( "ch_" + action, EventReturnMethod.None, args );
+        }
+
+
+        public virtual void Has( string action, PythonDictionary args = null ) {
+            DoEvent( "ch_" + action, EventReturnMethod.None, args );
+        }
+
+
+        private Event DoEvent( string name, EventReturnMethod returnMethod, PythonDictionary args = null ) {
+            args = args ?? new PythonDictionary();
+            args.Add( "ch", this );
+            var doEvent = Entities.Event.Create( name, returnMethod, args );
+            SendEvent( doEvent );
+
+            return doEvent;
+        }
+
 
         public void SetRoom( Room room ) {
             if( Room != null ) {
@@ -165,7 +192,20 @@ namespace Kaerber.MUD.Entities {
             return false;
         }
 
-        public void WentFromRoom( Room from, Room to ) {    // todo: remove event
+        public bool TeleportToRoom( Room roomTo ) {
+            var roomFrom = new EventArg( "room", Room );
+
+            if( !this.Can( "leave_room", roomFrom ) )
+                return false;
+            this.Has( "left_room", roomFrom );
+
+            SetRoom( roomTo );
+            this.Has( "entered_room", new EventArg( "room", roomTo ) );
+            return true;
+        }
+
+        public void WentFromRoom( Room from, Room to ) {
+            // todo: remove event
             var @event = Create( "ch_went_from_room_to_room",
                                  EventReturnMethod.None,
                                  new EventArg( "ch", this ),
@@ -198,12 +238,12 @@ namespace Kaerber.MUD.Entities {
         }
 
         public virtual void MakeAttack( IAttack attack ) {
-            this.Is( "attacking_ch1", new PythonDictionary { { "ch1", Target }, { "attack", attack } } );
+            this.Is( "attacking_ch1", new PythonDictionary {{"ch1", Target}, {"attack", attack}} );
             Combat.MakeAttack( attack );
         }
 
         public bool Equip( Item item ) {
-            if( !this.Can( "equip_item", new PythonDictionary { { "item", item } } ) )
+            if( !this.Can( "equip_item", new PythonDictionary {{"item", item}} ) )
                 return false;
 
             if( Eq.Have( item.WearLoc ) ) {
@@ -214,20 +254,20 @@ namespace Kaerber.MUD.Entities {
             Inventory.Remove( item );
             Eq.Equip( item );
 
-            this.Has( "equipped_item", new PythonDictionary { { "item", item } } );
+            this.Has( "equipped_item", new PythonDictionary {{"item", item}} );
 
             return true;
         }
 
 
         public bool Unequip( Item item ) {
-            if( !this.Can( "remove_item", new PythonDictionary { { "item", item } } ) )
+            if( !this.Can( "remove_item", new PythonDictionary {{"item", item}} ) )
                 return false;
 
             Eq.Remove( item );
             Inventory.Add( item );
 
-            this.Has( "removed_item", new PythonDictionary { { "item", item } } );
+            this.Has( "removed_item", new PythonDictionary {{"item", item}} );
             return true;
         }
 

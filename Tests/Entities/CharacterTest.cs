@@ -17,8 +17,6 @@ namespace Kaerber.MUD.Tests.Entities
     [TestFixture]
     public class CharacterTest : BaseEntityTest {
         public class CharacterWhiteBox : Character {
-            public CharacterWhiteBox() : base() {}
-
             public void SetActionQueueSet( ActionQueueSet testDouble ) {
                 ActionQueueSet = testDouble;
             }

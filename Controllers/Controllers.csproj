@@ -90,6 +90,7 @@
     <Compile Include="Commands\CharacterCommands\Kill.cs" />
     <Compile Include="Commands\CharacterCommands\Look.cs" />
     <Compile Include="Commands\CharacterCommands\Quit.cs" />
+    <Compile Include="Commands\CharacterCommands\Recall.cs" />
     <Compile Include="Commands\CharacterCommands\Remove.cs" />
     <Compile Include="Commands\CharacterCommands\Reply.cs" />
     <Compile Include="Commands\CharacterCommands\Save.cs" />

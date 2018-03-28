@@ -1,8 +1,8 @@
 ﻿using System;
 
 namespace Kaerber.MUD.Controllers.Commands.CharacterCommands {
-    public class Inventory : ICommand {
-        public string Name => "Inventory";
+    public class Recall : ICommand {
+        public string Name => "recall";
 
         public string Code {
             get => throw new NotSupportedException();
@@ -10,11 +10,13 @@ namespace Kaerber.MUD.Controllers.Commands.CharacterCommands {
         }
 
         public void Execute( ICharacterController pc, PlayerInput input ) {
-            pc.View.Write( "Your inventory:\n" );
-            pc.View.RenderInventory( pc.Model );
+            var self = pc.Model;
+            if( self.Can( "recall" ) && self.TeleportToRoom( self.RespawnAt ) )
+                self.Has( "recalled" );
         }
 
-        public string ToString( string format, IFormatProvider formatProvider ) {
+        public string ToString(string format, IFormatProvider formatProvider)
+        {
             return Name;
         }
     }

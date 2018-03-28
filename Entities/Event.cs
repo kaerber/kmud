@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Linq;
-using Community.CsharpSqlite;
 using IronPython.Runtime;
 
 namespace Kaerber.MUD.Entities {
@@ -62,7 +61,14 @@ namespace Kaerber.MUD.Entities {
             }
         }
 
-
+        /// <summary>
+        /// Naming scheme:
+        /// ch_can_attack_vch - fired just before the action, you can stop the action
+        /// ch_is_attacking_vch - fired just before the action, you can do nothing about the action, kind of 'in the process' event
+        /// ch_has_attacked_vch - fired just after the action was completed
+        /// 
+        /// arguments
+        /// </summary>
         public virtual string Name { get; }
         public EventLevel Level { get; }
         public string Target { get; }
