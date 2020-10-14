@@ -39,9 +39,9 @@ namespace Kaerber.MUD.Server {
                 Assembly.GetAssembly( typeof( IEnumerable<string> ) ),
                 Assembly.GetAssembly( typeof( Enumerable ) ) );
 
-            var commandManager = new CommandManager( commandsPath );
+            var commandManager = new CommandManager();
             var pythonManager = new PythonManager();
-            var abilityManager = new AbilityManager( pythonManager, abilitiesPath );
+            var abilityManager = new AbilityManager();
             var characterManager = new CharacterManager( assetsRootPath, abilityManager );
 
             var itemManager = new ItemManager( assetsRootPath );

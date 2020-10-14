@@ -12,7 +12,7 @@ namespace Kaerber.MUD.Tests.Platform.Managers {
     public class CharacterManagerTest {
         [SetUp]
         public void Setup() {
-            _abilityManager = new AbilityManager( new PythonManager(), @"E:\Dev\Kaerber.MUD\Python\abilities" );
+            _abilityManager = new AbilityManager();
             _characterManager = new CharacterManager( @"E:\Dev\Kaerber.MUD\Assets", _abilityManager );
             _userManager = new UserManager( @"E:\Dev\Kaerber.MUD\Assets\players", _characterManager );
             UnityConfigurator.Configure();

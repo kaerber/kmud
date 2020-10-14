@@ -17,7 +17,7 @@ namespace Kaerber.MUD.Tests.Entities {
 
             const string userName = "Luch1";
 
-            var abilityManager = new AbilityManager( new PythonManager(), @"E:\Dev\Kaerber.MUD\Python\abilities" );
+            var abilityManager = new AbilityManager();
             var user = new UserManager( @"E:\Dev\Kaerber.MUD\assets\players\",
                                         new CharacterManager( @"E:\Dev\Kaerber.MUD\assets\", abilityManager ) )
                 .Load( string.Empty, userName );

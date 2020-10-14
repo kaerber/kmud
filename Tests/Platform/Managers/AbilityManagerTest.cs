@@ -14,7 +14,7 @@ namespace Kaerber.MUD.Tests.Platform.Managers {
     public class AbilityManagerTest : BaseEntityTest {
         [SetUp]
         public void Setup() {
-            _manager = new AbilityManager( new PythonManager(), @"E:\Dev\Kaerber.MUD\Python\abilities" );
+            _manager = new AbilityManager();
         }
 
         [Test]

@@ -7,7 +7,7 @@ namespace Kaerber.MUD.Tests.Acceptance.Server.Managers {
     public class CommandManagerAcceptance : BaseAcceptanceTest {
         [Test]
         public void Load_ReadsCommands() {
-            var commandManager = new CommandManager( @"E:\Dev\Kaerber.MUD\assets\commands.json" );
+            var commandManager = new CommandManager();
             var command = commandManager.Load( string.Empty, "kill" );
 
             Assert.IsNotNull( command );

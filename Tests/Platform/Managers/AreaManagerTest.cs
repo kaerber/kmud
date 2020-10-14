@@ -11,7 +11,7 @@ namespace Kaerber.MUD.Tests.Platform.Managers {
         [SetUp]
         public void Setup() {
             UnityConfigurator.Configure();
-            _abilityManager = new AbilityManager( new PythonManager(), @"E:\Dev\Kaerber.MUD\Python\abilities" );
+            _abilityManager = new AbilityManager();
             _characterManager = new CharacterManager( @"E:\Dev\Kaerber.MUD\Assets", _abilityManager );
             _itemManager = new ItemManager( @"E:\Dev\Kaerber.MUD\Assets" );
             _manager = new AreaManager( @"E:\Dev\Kaerber.MUD\Assets",
